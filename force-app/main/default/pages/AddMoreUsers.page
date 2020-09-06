@@ -1,0 +1,95 @@
+<apex:page standardController="Opportunity" lightningStylesheets="true" extensions="AddMoreUserController"> 
+    
+    <script src="/soap/ajax/38.0/connection.js" type="text/javascript"/>
+    <script src="/soap/ajax/38.0/apex.js" type="text/javascript"/>
+    <script type="text/javascript">
+            
+    var OppId = '{!Opportunity.Id}';                  
+    
+    function clickButtonFunction() {
+        alert('1');
+        Visualforce.remoting.Manager.invokeAction('{!$RemoteAction.AddMoreUserController.clickButton}', OppId,
+                                                  function(result, event) {
+                                                      alert('2');
+                                                      if (event.status) {
+                                                          // Refresh
+                                                          if (sforce.one != undefined) {
+                                                              // Lightning
+                                                              sforce.one.navigateToSObject(OppId);
+                                                              alert('3');
+                                                          } else {
+                                                              // Classic
+                                                              window.parent.location = '/' + OppId;
+                                                              alert('4');
+                                                          }
+                                                      }
+                                                      else {
+                                                          alert (event.message);
+                                                          
+                                                      } 
+                                                  });
+    }
+    </script>
+    
+    <apex:form >
+        <apex:outputText >
+            *For AO: All products should have an equal number of users. <br/>
+			 For AE there are 2 user counts: Business Users (Practice Manager and Document Manager) and Compliance Users (anything used in practice to complete work for a client – eg. Client Accounting, Tax, Corporate Compliance). When adjusting users for AE, you need to use the below rules:<br/> 
+             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1. Business User counts must match across Business products; <br/>
+             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 2. Compliance User counts must match across Compliance Products;<br/>
+             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 3. Business and Compliance User counts can be different but you cannot have more compliance users than business users.<br/>    
+            * To add more users against the product profile(s), please tick the 'Selected' checkbox and give the value in 'Quantity/Number of User' field;<br/>
+            * Column 'Product(s) to be Added' shows the product profile associated Salesforce product(s), which will be added as opportunity product if the product profile is selected;<br/>
+            * If the text color is <b><font color="blue">blue</font></b>, it means the Salesforce product has already been added as the opportunity product, and it won't be added again though the product profile is selected;
+            If the text color is <b>grey</b>, it will be added in as opportunity product if the product profile is selected; If the text color is <b><font color="red">red</font></b>, the associated product will NOT be added due to invalid currency or the product is inactive on the price book.
+        </apex:outputText>
+        <br/>
+        <br/>
+        <!--<apex:commandLink action="{!addSelected}" id="addSelected" value="Add Selected" styleClass="btn" style="text-decoration:none;padding:4px;" oncomplete="clickButtonFunction()"/> --> 
+        <apex:commandLink action="{!addSelected}" id="addSelected" value="Add Selected" styleClass="btn" style="text-decoration:none;padding:4px;"/>
+        <br/>
+        <br/>
+    	<apex:messages />
+        <apex:outputField value="{!Opportunity.Pricebook2Id}" rendered="false"/>
+        <apex:outputField value="{!Opportunity.CurrencyIsoCode}" rendered="false"/>
+        <apex:pageBlock >
+            <apex:pageBlockTable value="{!listProductProfileToHandle}" var="ppToHandle" >               
+                <apex:column headerValue="Selected"  width="20px">
+                    <apex:inputCheckbox value="{!ppToHandle.selected}">
+                      </apex:inputCheckbox>
+                </apex:column> 
+                <apex:column headerValue="Quantity/Number of Users"  width="5%">
+                    <apex:inputText value="{!ppToHandle.numNewUser}" style="width: 30px !important;">
+                      </apex:inputText>
+                </apex:column>
+                <apex:column headerValue="Product(s) To Be Added"  width="150 px">
+                    <apex:dynamicComponent componentValue="{!ppToHandle.UnescapedComp}" invokeAfterAction="true"/>
+                </apex:column>  
+                <apex:column headerValue="Product Profile Name"  width="100 px">
+                    <apex:outputText >{!ppToHandle.productProfile.name}
+                      </apex:outputText>
+                </apex:column>                
+                <apex:column headerValue="Compliance Users"  width="100 px">
+                    <apex:outputText >{!ppToHandle.productProfile.Compliance_Users__c}
+                      </apex:outputText>
+                </apex:column>   
+                <apex:column headerValue="Users"  width="100 px">
+                    <apex:outputText >{!ppToHandle.productProfile.Users__c}
+                      </apex:outputText>
+                </apex:column>   
+                <apex:column headerValue="Total Net Amount"  width="100 px">
+                    <apex:outputText >{!ppToHandle.productProfile.Total_Net_Amount__c}
+                      </apex:outputText>
+                </apex:column>     
+                <apex:column headerValue="Total Inc GST"  width="100 px">
+                    <apex:outputText >{!ppToHandle.productProfile.Total_Inc_GST__c}
+                      </apex:outputText>
+                </apex:column>  
+                <apex:column headerValue="Product Set"  width="100 px">
+                    <apex:outputText >{!ppToHandle.productProfile.Product_Set__c}
+                      </apex:outputText>
+                </apex:column>                  
+            </apex:pageBlockTable>
+        </apex:pageBlock>
+    </apex:form> 
+</apex:page>

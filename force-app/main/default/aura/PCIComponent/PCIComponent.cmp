@@ -1,0 +1,52 @@
+<aura:component implements="flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,force:lightningQuickActionWithoutHeader" access="global" controller="MYOB_PCIComponnetHandler">
+    <aura:handler name="init" value="{!this}" action="{!c.init}" />
+    
+    <aura:attribute name="iframeUrl" type="String" default="https://pcicardportal.myob.com/portals/selfportalweb/"/>
+    <aura:attribute name="width" type="String" default="450"/>
+    <aura:attribute name="height" type="String" default="250"/>
+    <aura:attribute name="scrolling" type="Boolean" default="true"/>
+    <aura:attribute name="frameBorder" type="String" />
+    <aura:attribute name="style" type="String" />
+    <aura:attribute name="sandbox" type="String" />
+    <aura:attribute name="paymentProfileId" type="String"/>
+    <aura:attribute name="message" type="String" default="Once all required information for creating credit card payment profile are validated, the button will be displayed and please click to proceed to create payment profile.  "/>
+    <aura:attribute name="error" type="String"/>
+    <aura:attribute name="cardToken" type="String"/>
+    <aura:attribute name="name_on_card" type="String"/>    
+    <aura:attribute name="last_four_digits" type="String"/>    
+    <aura:attribute name="type" type="String"/>    
+    <aura:attribute name="expiry_month" type="String"/>    
+    <aura:attribute name="expiry_year" type="String"/>         
+	<aura:attribute name="isSpinner" type="boolean" default="false"/>
+    <aura:handler event="aura:waiting" action="{!c.handleShowSpinner}"/>
+    <aura:handler event="aura:doneWaiting" action="{!c.handleHideSpinner}"/>
+    
+    <iframe src="{!v.iframeUrl}"
+            width="{!v.width}"
+            height="{!v.height}"
+            style="{!v.style}"
+            frameBorder="false"
+            sandbox="{!v.sandbox}"
+            scrolling="{!v.scrolling}"/>
+    <div>
+  		{!v.message}
+    </div>
+    <div aura:id="createPaymentProfileButton" class="slds-hide, slds-float_left">
+        <lightning:button class="slds-m-top_small" disabled="{!v.isSpinner}" label="{!v.isSpinner == true ? 'Creating...' : 'Create Payment Profile'}" onclick="{!c.createPaymentProfile}"/>
+    </div>
+    <div aura:id="closeButton" class="slds-float_right">
+        <lightning:button class="slds-m-top_small" label="Close" onclick="{!c.closeQuickAction}"/>
+    </div>     
+    <!--
+    <lightning:recordEditForm objectApiName="Opportunity" recordId="{!v.recordId}">
+        
+        <div aura:id="inputFieldPCI" class="slds-hide"> 
+            <lightning:inputField fieldName="PCI_Token__c" value="{!v.cardToken}" />
+        </div>
+       
+		<div aura:id="buttomSection" class="slds-hide">        
+            <lightning:button class="slds-m-top_small" type="submit" label="Update Opportunity"/>
+        </div>    
+    </lightning:recordEditForm>    
+	-->
+</aura:component>

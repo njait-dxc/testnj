@@ -1,0 +1,6 @@
+<aura:documentation>
+    <aura:description>Documentation</aura:description>
+    <aura:example name="BeyondTheme" ref="exampleComponentName" label="Label">
+        Beyond Theme
+    </aura:example>
+</aura:documentation>

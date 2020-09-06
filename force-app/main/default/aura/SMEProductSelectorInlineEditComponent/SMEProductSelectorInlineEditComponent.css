@@ -1,0 +1,22 @@
+.THIS#promoCodeSpan {
+    display: inline-block;
+    white-space: nowrap;
+    overflow: hidden !important;
+    text-overflow: ellipsis;
+}
+
+.THIS.spinnerHolder {
+    position: relative;
+    display: inline-block;
+    margin-left: 15px;
+    width: 55px;
+    vertical-align: middle;
+    white-space: nowrap;
+}
+
+.THIS .inputFieldWidth {
+    width: 50px;
+}
+
+.THIS .inputFieldPromoWidth {
+}

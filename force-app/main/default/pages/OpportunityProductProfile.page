@@ -1,0 +1,19 @@
+<apex:page standardcontroller="Opportunity" lightningStylesheets="true" extensions="AddMoreUserController">
+    <apex:form >
+        <apex:outputText >
+			This should be used to add additional users to existing products the client has or to look for recommended items against current products. 
+        </apex:outputText>     
+        <br/>
+   		<br/>
+        <apex:commandlink action="{!directToAddMoreUserPage}" id="directToAddMoreUserPage" value="Add User" styleClass="btn" style="text-decoration:none;padding:4px;">
+        </apex:commandlink>  
+        <apex:commandlink action="{!directToAddRecommededProductPage}" id="directToAddRecommededProductPage" value="Add Recommended Product" styleClass="btn" style="text-decoration:none;padding:4px;">
+        </apex:commandlink>          
+        <apex:outputField value="{!Opportunity.name}" rendered="false"/>
+        <apex:outputField value="{!Opportunity.Pricebook2Id}" rendered="false"/>
+        <apex:outputField value="{!Opportunity.CurrencyIsoCode}" rendered="false"/>
+    </apex:form>
+    <br/>
+    <br/>
+    <apex:relatedList subject="{!Opportunity.Account}" list="Product_Profiles__r"/>
+</apex:page>

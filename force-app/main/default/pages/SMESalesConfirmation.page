@@ -1,0 +1,239 @@
+<apex:page standardController="Opportunity" renderAs="pdf" extensions="SMESalesConfirmationExtension" showHeader="false" sidebar="false" standardStylesheets="false" applyBodyTag="false" applyHtmlTag="false">
+    <head>
+    
+        <style> 
+            body { font-family: 'Calibri, Helvetica, sans-serif'; }
+            .companyName { font: bold 30px; color: red; }  
+            .tdcontent {align:left;width:50%}
+            table.gridtable {
+               font-family: Calibri, Helvetica, sans-serif;
+               font-size:11px;
+               color:#333333;
+               border-width: 1px;
+               border-color: #666666;
+               border-collapse: collapse;
+            }
+            table.gridtable2 {
+               font-family: Calibri, Helvetica, sans-serif;
+               font-size:11px;
+               color:#333333;
+               border-width: 1px;
+               border-color:black;
+               border-collapse: collapse;
+            }            
+            table.gridtable th {
+               border-width: 1px;
+               padding: 8px;
+               border-style: solid;
+               border-color: #666666;
+               font-weight:bold;     
+               background-color: purple;
+               color: black;
+            }
+            table.gridtable td {
+                border-width: 0px;
+                padding: 8px;
+                border-style: solid;
+                border-color: #666666;
+                background-color: #ffffff;
+            }
+            table.gridtable2 th {
+               border-width: 1px;
+               padding: 8px;
+               border-style: solid;
+               border-color: #666666;
+               font-weight:bold;     
+               background-color: white;
+               color: black;
+             }
+            table.gridtable2 td {
+                border-width: 1px;
+                padding: 8px;
+                border-style: solid;
+                border-color: #666666;
+                background-color: #ffffff;
+                white-space: nowrap;
+            }
+            .breakPageAfter{
+              page-break-after:always;
+              font-family: Calibri, Helvetica, sans-serif;
+              font-size:13px;
+            }
+            table.gridtable31 td {
+                border-width: 0px;
+                padding: 8px;
+                border-style: solid;
+                border-color: #666666;
+                background-color: #ffffff;
+                width: 30% ;
+                font-family: Calibri, Helvetica, sans-serif;
+                font-size:8px;                
+            }
+            table.gridtable32 td {
+                border-width: 0px;
+                padding: 8px;
+                border-style: solid;
+                border-color: #666666;
+                background-color: white;
+                width: 40% ;
+            }
+            table.gridtable33 td {
+                border-width: 0px;
+                padding: 8px;
+                border-style: solid;
+                border-color: #666666;
+                background-color: #ffffff;
+                width: 30% ;
+                font-family: Calibri, Helvetica, sans-serif;
+                font-size:8px;
+            }                                                
+        </style>
+    
+    </head>    
+    <body>
+        <table Class = "gridtable" width="100%">
+            <tr>
+                <td Class = "gridtable31"> 
+                    <apex:image id="MYOBLogo" value="{!$Resource.MYOBLogo}" width="130" height="130"/>
+                </td>
+                <td Class = "gridtable32">        </td>
+                <td Class = "gridtable32">        </td>
+                <td Class = "gridtable32">        </td>
+                <td Class = "gridtable32">        </td>
+                <td Class = "gridtable32">        </td>
+                <td Class = "gridtable32">        </td>
+                <td Class = "gridtable32">        </td>
+                <td Class = "gridtable32">        </td>
+                <td Class = "gridtable32">        </td>
+                <td Class = "gridtable32">        </td>
+                <td Class = "gridtable32">        </td>
+                <td Class = "gridtable33">
+                    <APEX:OUTputLabel rendered="{!opp.CurrencyIsoCode = 'AUD'}">
+                    MYOB Australia Pty Ltd<br/>
+                    Level 3, 235 Springvale Road<br/>
+                    Glen Waverley VIC 3150, Australia<br/>
+                    ABN 13 086 760 198
+                    </APEX:OUTputLabel>
+                    <APEX:OUTputLabel rendered="{!opp.CurrencyIsoCode = 'NZD'}">
+                    MYOB NZ Limited<br/>
+                    PO Box 2864, Christchurch Mail Centre<br/>
+                    Christchurch 8140<br/>
+                    GST Number:  69-698-934
+                    </APEX:OUTputLabel>
+                </td>
+            </tr>
+
+        </table>
+        
+        <table width="100%" Class = "gridtable">
+            <tr>
+                <td><center><h2>ORDER CONFIRMATION</h2></center></td>
+            </tr>
+            <tr>
+                <td><h3><apex:outputLabel >Dear {!Opportunity.Main_Contact_Name__c}<br/><br/>Thank you for your recent volume subscription: <br/></apex:outputLabel></h3></td>
+            </tr>
+            <tr><td><br/></td></tr>        
+        </table>
+        
+        <table width="100%" Class = "gridtable2">           
+            <tr>
+                <th Class = "gridtable2">Product</th>
+                <th Class = "gridtable2">Quantity</th>
+                <th Class = "gridtable2">Fee (per Unit per Month) Ex. GST</th>
+                <th Class = "gridtable2">Fee (per Unit) per Month) Inc. GST</th>
+                <th Class = "gridtable2">Subscription (Months)</th>
+                <th Class = "gridtable2">Free Period (Days)</th>
+            </tr>
+            <apex:repeat value="{!listOppLineItems}" var="LineItem">
+                <tr>
+                  <td Class = "gridtable2">{!LineItem['Product2.Name']}</td>
+                  <td Class = "gridtable2">{!FLOOR(LineItem['Quantity'])}
+﻿                  
+                  </td>
+                  <td Class = "gridtable2">
+                        <apex:outputText value="{0, number, currency}">
+                            <apex:param value="{!LineItem['Initial_Purchase_Price_Ex_GST__c']}" />
+                        </apex:outputText>                  
+                  </td>
+                  <td Class = "gridtable2">
+                        <apex:outputText value="{0, number, currency}">
+                            <apex:param value="{!LineItem['UnitPrice']}" />
+                        </apex:outputText>                  
+                  </td>
+                  <td Class = "gridtable2">{!LineItem['Duration__c']}</td>
+                  <td Class = "gridtable2">{!LineItem['FreePeriod__c']}</td>
+                </tr>                
+            </apex:repeat>          
+       </table>
+
+       <APEX:OUTputLabel rendered="{!SizeOfMap > 0}">
+                <table width="100%" Class = "gridtable">
+                    <tr><td><br/></td></tr> 
+                    <tr>
+                        <td><h3>Details of Files Provisioned</h3></td>   
+                    </tr>
+                    <tr><td><br/></td></tr>        
+                </table>
+                    
+               <table width="100%" Class = "gridtable2">   
+                    <apex:repeat value="{!mapOrderItem }" var="key">
+                      <tr><th Class = "gridtable2">File Name</th><th Class = "gridtable2">Serial Number</th></tr>                     
+                      <apex:repeat value="{!mapOrderItem [key]}" var="row">
+                        <tr>
+                          <td>{!row['File_Name__c']}</td>
+                          <td>{!row['Serial_Number__c']}</td>
+                        </tr>
+                        
+                      </apex:repeat>
+                      <!--<tr><td><br/></td><td></td></tr>-->
+                    </apex:repeat>               
+                        
+                </table>
+        </APEX:OUTputLabel>
+        
+        <div style="page-break-after:always;">
+        
+        </div>
+
+        <div class="breakPageAfter" style="page-break-after:always;"> 
+            Payments will be drawn from your nominated Payment Profile at the designated frequency. Pro-rata charges may be applied for the first payment, then the regular payment cycle will commence for subsequent payments. You may change your payment profile at any time by logging into My.Myob - <a href="https://my.myob.com.au/Pages/Default.aspx">https://my.myob.com.au/Pages/Default.aspx.</a>
+            <br/>
+            <br/>
+            For Terms and Conditions, please visit <br/><a href="https://www.myob.com/au/support/customer-service/myob-legal-notices">https://www.myob.com/au/support/customer-service/myob-legal-notices</a>
+            <br/>
+            <br/>
+            For MYOB products information, please visit <br/><a href="https://www.myob.com/au/support">https://www.myob.com/au/support</a>
+            <br/>
+            <br/>
+            <br/>
+            <br/>            
+            <H3>We’re here to help!</H3>
+            <br/>
+            MYOB SME Partner Technical Support Line, Call us on 1300 555 117
+            <br/>
+            <br/>
+            Talk to us - <a href="https://www.myob.com/au/contact-us">https://www.myob.com/au/contact-us</a>
+            <br/>
+            <br/>
+            Head to our Community Form at <a href="https://community.myob.com/">https://community.myob.com/</a>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            Thank you for your continued support
+            <br/>
+            <br/>
+            {!Opportunity.Owner.FirstName}        {!Opportunity.Owner.LastName}  
+            <br/>
+            <br/>
+            {!Opportunity.Owner.Title}
+            <br/>  
+            <br/>    
+            Mobile: {!Opportunity.Owner.MobilePhone} 
+            <br/>
+            <br/>
+            Email: {!Opportunity.Owner.Email}                 
+        </div>        
+    </body>
+</apex:page>

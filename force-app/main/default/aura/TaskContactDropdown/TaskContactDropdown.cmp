@@ -1,0 +1,69 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" 
+                access="global" 
+                controller="TaskContactDropdownController">
+	
+    <!-- Attibute Definition -->
+    
+    <aura:attribute name="recordId"   type="string" default="00T0k00000J3YLkEAN" />
+    <aura:attribute name="ConWrapper" type="List" />
+    <aura:attribute name="hasError"   type="boolean" default="false"/>
+    <aura:attribute name="msgBody"    type="string" />
+    <aura:attribute name="contactId"  type="String" default=""/>
+    <aura:attribute name="showCmp"    type="boolean" default="true"/>
+    <aura:attribute name="showSpinner" type="boolean" default="false"/>
+
+    <!-- Handler Definition -->
+    <aura:handler name="init" value="{!this}" action="{!c.doinit}" />
+    <!-- Refresh the component when the page is refreshed -->
+    <aura:handler event="force:refreshView" action="{!c.doinit}" />
+
+
+
+    <aura:if isTrue="{!v.showCmp}"> 
+        <div class="slds-section slds-is-open" aura:id="ConUpdateSection">
+            <!--section header-->
+            <h3 class="slds-section__title">
+                <button aria-controls="conDropdown" class="slds-button slds-section__title-action">
+                    <span onclick="{!c.toggleSection}" data-auraId="ConUpdateSection">
+                        <lightning:icon iconName="utility:switch"
+                                        size="x-small"
+                                        class="slds-section__title-action-icon slds-button__icon_left"
+                                        alternativeText="button icon" 
+                                        />
+                    </span>
+                    <span class="slds-truncate" title="Fruits">Update Contact Information</span>
+                </button>
+            </h3>
+            <!--section body-->
+            <div class="slds-section__content" id="conDropdown">
+                <!-- Spinner -->
+                <aura:if isTrue="{!v.showSpinner}"> 	
+                    <div class="spinnerClass">
+                        <lightning:spinner alternativeText="Loading" size="small" />
+                    </div>
+                </aura:if>
+                <aura:if isTrue="{!v.hasError}"> 	
+                    <ui:message title="Error" severity="error" closable="true">
+                        {!v.msgBody}
+                    </ui:message> 
+                </aura:if> 
+
+                <lightning:layout multipleRows="true">
+                    <lightning:layoutItem padding='around-small' size="12" smallDeviceSize="12" mediumDeviceSize="6">
+                        <lightning:select name="taskWhoId" aura:id="taskWhoId" label="Contact" value="{!v.contactId}" >
+                                <option value="">-- Select a Contact --</option>
+                                <aura:iteration items="{!v.ConWrapper}" var="item">
+                                    <option text="{!item.label}" value="{!item.value}" selected="{!item.selected}"></option>
+                                </aura:iteration>
+                        </lightning:select>
+                    </lightning:layoutItem>
+                    <lightning:layoutItem padding='around-small' size="12" smallDeviceSize="12" mediumDeviceSize="6">
+                        <div class="slds-align_absolute-center slds-m-top_large">
+                            <lightning:button variant="brand" label="Save" title="Save" disabled ="{!empty(v.contactId)}" onclick="{! c.updateTaskContactJs }" />
+                        </div>    
+                    </lightning:layoutItem>
+                </lightning:layout>
+            </div>
+        </div>
+    </aura:if>  
+</aura:component>

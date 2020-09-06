@@ -1,0 +1,14 @@
+<apex:page standardController="Account" lightningStylesheets="true">
+    
+            <apex:image url="https://myob--c.ap7.content.force.com/servlet/servlet.FileDownload?file=0150I000007OQdf" width="65" height="80" rendered="{!Account.Customer_Success__c=TRUE}" id="CustomerSuccessFlag" title="Customer Success Project" alt="Customer Success Project" value="Customer Success Project"/>
+            &nbsp;
+            <apex:image url="https://myob--c.ap18.content.force.com/servlet/servlet.FileDownload?file=0152y000000c4GZ" width="125" height="100" rendered="{!Account.At_Risk__c=TRUE}" id="AtRiskFlag" title="At Risk" alt="At Risk" value="Risk Status"/>
+            <apex:image url="https://myob--c.ap18.content.force.com/servlet/servlet.FileDownload?file=0152y000000c4H3" width="95" height="80" rendered="{!NOT(Account.Product_Profile_Count__c=0)}" id="MYOBParnter" title="MYOB Parnter" alt="MYOB Parnter" value="MYOB Parnter"/>
+           &nbsp;
+            <apex:image url="https://myob--c.ap18.content.force.com/servlet/servlet.FileDownload?file=0152y000000Pyzi" width="75" height="85" rendered="{!IF(Account.Product_Profile_Count__c>0 && Account.LP_Status__c='Purple', true, false)}" id="PPStatusPurpleVert" title="PPStatusPurpleVert" alt="PPStatusPurpleVert" value="PP Status Purple Vertical"/>
+            <apex:image url="https://myob--c.ap18.content.force.com/servlet/servlet.FileDownload?file=0152y000000PyzT" width="75" height="85" rendered="{!IF(Account.Product_Profile_Count__c>0 && Account.LP_Status__c='Diamond', true, false)}" id="PPStatusDiamond" title="PPStatusDiamond" alt="PPStatusDiamond" value="PP Status Diamond"/>
+            <apex:image url="https://myob--c.ap18.content.force.com/servlet/servlet.FileDownload?file=0152y000000PyzY" width="75" height="85" rendered="{!IF(Account.Product_Profile_Count__c>0 && Account.LP_Status__c='Silver', true, false)}" id="PPStatusSilver" title="PPStatusSilver" alt="PPStatusSilver" value="PP Status Silver"/>
+            <apex:image url="https://myob--c.ap18.content.force.com/servlet/servlet.FileDownload?file=0152y000000Pyzd" width="75" height="85" rendered="{!IF(Account.Product_Profile_Count__c>0 && Account.LP_Status__c='Gold', true, false)}" id="PPStatusGold" title="PPStatusGold" alt="PPStatusGold" value="PP Status Gold"/>
+
+
+</apex:page>

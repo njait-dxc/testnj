@@ -1,0 +1,13 @@
+<aura:component controller="ConnectorController"
+                implements="flexipage:availableForAllPageTypes,force:hasRecordId,force:lightningQuickAction"
+                access="global">
+    <ltng:require scripts="{!join(',',
+    $Resource.CRMGlue + '/lib/jquery-3.1.1.min.js',
+    $Resource.CRMGlue + '/agent/send.js')}"/>
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <aura:attribute name="GenesysIDFieldName" type="string" access="global" default="CallObject"/>
+    <aura:attribute name="DispositionFieldName" type="string" access="global" default="CallDisposition"/>
+    <aura:attribute name="GenesysID" type="string"/>
+    <aura:attribute name="Disposition" type="string" default=""/>
+    <ui:button label="Mark Done" press="{!c.markDone}"/>
+</aura:component>

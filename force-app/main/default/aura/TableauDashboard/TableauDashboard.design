@@ -1,0 +1,11 @@
+<design:component>
+    <design:attribute name="width" label="Width" description="Enter width of the component"/>
+    <design:attribute name="height" label="Height" description="Enter height of the component"/>
+    <design:attribute name="server" label="Server Name" description="Enter Tableau Server Name"/>
+    <design:attribute name="workbook" label="Workbook Name" description="Enter the Tableau Workbook Name"/>
+    <design:attribute name="sheet" label="Sheet Name" description="Enter Tableau Sheet Name"/>
+    <design:attribute name="nzWorkbook" label="NZ Workbook Name" description="Enter NZ Workbook Name"/>
+    <design:attribute name="nzSheet" label="NZ Sheet Name" description="Enter NZ Sheet Name"/>
+    <design:attribute name="options" label="Options in JSON Format" description="Options in JSON Format"/>
+    <design:attribute name="stickyFilters" label="Enable refresh fix for sticky filters" description="Enable refresh fix for sticky filters"/>
+</design:component>

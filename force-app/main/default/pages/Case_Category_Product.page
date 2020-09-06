@@ -1,0 +1,371 @@
+<apex:page standardController="case" docType="html-5.0">
+    <apex:form rendered="{!($User.UIThemeDisplayed != 'Theme4t') && ($User.UIThemeDisplayed != 'Theme4d')}">
+        <apex:pageBlock id="Block1" Mode="Edit" title="New Case">
+        <font color="red"><b><apex:messages /></b></font>
+        <apex:pageBlockButtons >
+            <apex:commandButton value="Save" onclick="this.onclick=function(){return false;}" action="{!save}"/>
+            <apex:commandButton value="Cancel" action="{!cancel}"/>
+        </apex:pageBlockButtons>
+        
+        <apex:pageBlockSection id="CaseInformation" title="Case Information" collapsible="false" columns="1" >   
+            <apex:pageBlockSection collapsible="false" columns="2">
+                <apex:pageblockSectionItem >
+                    <apex:outputLabel value="Contact Name"/>
+                    <apex:inputField value="{!case.ContactId}" required="true"/>
+                </apex:pageblockSectionItem>
+                <apex:pageblockSectionItem >
+                    <apex:outputLabel value=" "/>
+                </apex:pageblockSectionItem>
+            </apex:pageBlockSection>
+            <apex:pageBlockSection collapsible="false" columns="2">
+                
+                <apex:pageblockSectionItem >
+                    <apex:outputLabel value="Practice / Company Name"/>
+                    <apex:inputField value="{!case.AccountId}" required="true"/>
+                </apex:pageblockSectionItem>
+                <apex:pageblockSectionItem >
+                    <apex:outputLabel value=" "/>
+                </apex:pageblockSectionItem>
+            </apex:pageBlockSection>
+            <apex:actionRegion id="Region1"> 
+             
+                <apex:pageBlockSection collapsible="false" columns="2">
+                    <apex:pageblockSectionItem >
+                        <apex:outputLabel value="Primary Category"/>
+                        <apex:inputField value="{!case.Primary_Category__c}" style="width:200px" required="true" label="Primary Category">
+                            <apex:actionSupport event="onchange" rerender="Block1" Status="Status"/>
+                        </apex:inputfield>
+                    </apex:pageblockSectionItem>
+
+                    <apex:pageblockSectionItem >
+                        <apex:outputLink value="http://myob.com/images/bd/Case Category - Minimum Requirements.pdf" target="_blank" style="align:left">Minimum Requirements for Case Categories</apex:outputLink>
+                    </apex:pageblockSectionItem>
+
+                </apex:pageBlockSection>
+
+                <apex:pageBlockSection collapsible="false" columns="2"> 
+                    <apex:inputField value="{!case.Categ__c}" style="width:200px" rendered="{!if(ISBLANK(case.Primary_Category__c), false, true)}" required="true">
+                        <apex:actionSupport event="onchange" rerender="Block1" Status="Status"/>
+                    </apex:inputfield>
+                    <apex:pageblockSectionItem >
+                        <apex:outputLabel value=" "/>
+                    </apex:pageblockSectionItem>
+                </apex:pageBlockSection>
+                
+                <apex:pageBlockSection collapsible="false" columns="2">
+                    <!--<apex:inputField value="{!case.Sub_Category__c}" rendered="{!if(ISBLANK(case.Primary_Category__c), false, true) && if(ISBLANK(case.Categ__c), false, true)}" style="width:200px" required="true"/>-->
+                    <apex:inputField value="{!case.Sub_Category__c}" rendered="{!if(ISBLANK(case.Primary_Category__c), false, true) }" style="width:200px" required="true"/>
+                    <apex:pageblockSectionItem >
+                        <apex:outputLabel value=" "/>
+                    </apex:pageblockSectionItem>
+                </apex:pageBlockSection>
+                
+                <!--
+                <apex:pageBlockSection collapsible="false" columns="1">
+                    <apex:inputField value="{!case.Sub_Category__c}" rendered="{!(case.Categ__c != "Essentials" && case.Categ__c != "AccountRight") && if(ISBLANK(case.Primary_Category__c), false, true) && if(ISBLANK(case.Categ__c), false, true)}" style="width:200px" required="true"/>
+                </apex:pageBlockSection>
+                
+                <apex:pageBlockSection collapsible="false" columns="1">
+                <apex:inputfield value="{!case.Product__c}" rendered="{!case.Categ__c == "Essentials" || case.Categ__c == "AccountRight"}" style="width:200px" required="true">
+                    <apex:actionSupport event="onchange" rerender="Block1" Status="Status"/>
+                </apex:inputfield>
+                </apex:pageBlockSection>
+                <apex:pageBlockSection collapsible="false" columns="1">
+                <apex:inputfield value="{!case.Sub_Product__c}" rendered="{!(case.Categ__c == "Essentials" || case.Categ__c == "AccountRight") && if(ISBLANK(case.Product__c), false, true)}" style="width:200px" required="true"/>  
+                </apex:pageBlockSection>
+                -->
+            </apex:actionRegion>  
+        </apex:pageBlockSection>
+        
+        <apex:pageBlockSection id="DescriptionInformation" title="Description Information" collapsible="false" columns="1">
+            <apex:pageBlockSection collapsible="false" columns="1">
+                <apex:inputField value="{!case.Subject}" style="width:400px" required="true"/>
+            </apex:pageBlockSection>
+            <apex:pageBlockSection collapsible="false" columns="1">
+                <apex:inputField value="{!case.Description}" style="width:400px;height:300px" required="true"/>
+            </apex:pageBlockSection>
+            <apex:pageBlockSection collapsible="false" columns="1">
+                <apex:inputField value="{!case.Expected_Outcome__c}" style="width:400px;height:300px" required="false"/>
+            </apex:pageBlockSection>
+        </apex:pageBlockSection>
+        </apex:pageBlock>
+    </apex:form>
+    
+    <apex:outputPanel id="form-panel" rendered="{!$User.UIThemeDisplayed == 'Theme4t'}">   
+        <head>
+            <meta charset="utf-8" content="" />
+            <title></title>
+            <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet" />        
+            <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js"></script>
+   
+            <style>
+                select {display:block;width:100%;height:34px;padding:6px 14px;font-size:14px;line-height:1.42857143;color:#000;background-color:#fff;background-image:none;border:1px solid #cfd0d2;border-radius:4px;-webkit-box-shadow:inset 0 1px 1px rgba(0,0,0,.075);box-shadow:inset 0 1px 1px rgba(0,0,0,.075);-webkit-transition:border-color ease-in-out .15s,box-shadow ease-in-out .15s;transition:border-color ease-in-out .15s,box-shadow ease-in-out .15s}
+            </style>   
+        </head>
+        
+        <body>
+            <div class="container">
+                <apex:form >
+                    <h3>New Case</h3>
+                    <apex:pageBlock id="Block1" Mode="Edit" title="">
+                    <div class="form-group">
+                        <div class="form-group">
+                            <apex:pageBlockButtons >
+                                <apex:commandButton value="Save" action="{!save}" styleClass="btn btn-default" style="position: absolute;right: 10px;"/>
+                                <apex:commandButton value="Cancel" action="{!cancel}" styleClass="btn btn-default" style="position: absolute;left: 10px;"  immediate="true" html-formnovalidate="formnovalidate"/>
+                            </apex:pageBlockButtons>
+                        </div>
+                    
+                        <div class="form-group">
+                           <br/>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <font color="red"><b><apex:messages /></b></font>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="form-group">
+                            <label class="field-label">Contact Name</label>
+                        </div>
+                        <div class="form-group">
+                            <apex:outputField value="{!case.ContactId}" styleClass="form-control" label=""/>
+                        </div>
+
+                    </div>
+                    <div class="form-group">
+                         <div class="form-group">
+                            <label class="field-label">Partner Name</label>
+                         </div>
+                         <div class="form-group">
+                            <apex:outputField value="{!case.AccountId}" styleClass="form-control" label=""/>
+                         </div>
+                    </div>
+
+                    <apex:actionRegion id="Region1">
+                        <div class="form-group">
+                            <label class="field-label">Primary Category</label>
+                            <apex:inputField value="{!case.Primary_Category__c}" required="true" label="" id="PrimaryCategory" styleClass="form-control">
+                                <apex:actionSupport event="onchange" rerender="Block1" Status="Status"/>
+                            </apex:inputfield>
+                        </div>
+  
+                        <div class="form-group" style="left:400px; top:275px;"> 
+                            <apex:outputLabel value="Category" rendered="{!if(ISBLANK(case.Primary_Category__c), false, true)}"/>
+                            <apex:inputField value="{!case.Categ__c}" rendered="{!if(ISBLANK(case.Primary_Category__c), false, true)}"  styleClass="form-control" required="true">
+                                <apex:actionSupport event="onchange" rerender="Block1" Status="Status"/>
+                            </apex:inputfield>
+                        </div>
+                        
+                        <div class="form-group"> 
+                            <apex:outputLabel value="Sub Category" rendered="{!if(ISBLANK(case.Primary_Category__c), false, true) && if(ISBLANK(case.Categ__c), false, true)}"/>
+                            <apex:inputField value="{!case.Sub_Category__c}" rendered="{!(case.Categ__c != "Essentials" && case.Categ__c != "AccountRight") && if(ISBLANK(case.Primary_Category__c), false, true) && if(ISBLANK(case.Categ__c), false, true)}"  required="true" style="myform-control"/>
+                        </div>
+                       <!-- 
+                       <div class="form-group"> 
+                            <apex:outputLabel value="Sub Category" rendered="{!(case.Categ__c != "Essentials" && case.Categ__c != "AccountRight") && if(ISBLANK(case.Primary_Category__c), false, true) && if(ISBLANK(case.Categ__c), false, true)}"/>
+                            <apex:inputField value="{!case.Sub_Category__c}" rendered="{!(case.Categ__c != "Essentials" && case.Categ__c != "AccountRight") && if(ISBLANK(case.Primary_Category__c), false, true) && if(ISBLANK(case.Categ__c), false, true)}"  required="true" style="myform-control"/>
+                       </div>
+                        
+                        <div class="form-group"> 
+                            <apex:outputLabel value="Product" rendered="{!case.Categ__c == "Essentials" || case.Categ__c == "AccountRight"}"/>
+                            <apex:inputfield value="{!case.Product__c}" rendered="{!case.Categ__c == "Essentials" || case.Categ__c == "AccountRight"}"  required="true" styleClass="form-control">
+                                <apex:actionSupport event="onchange" rerender="Block1" Status="Status"/>
+                            </apex:inputfield>
+                        </div>
+                        
+                        <div class="form-group"> 
+                            <apex:outputLabel value="Sub Category" rendered="{!(case.Categ__c == "Essentials" || case.Categ__c == "AccountRight") && if(ISBLANK(case.Product__c), false, true)}"/>
+                            <apex:inputfield value="{!case.Sub_Product__c}" rendered="{!(case.Categ__c == "Essentials" || case.Categ__c == "AccountRight") && if(ISBLANK(case.Product__c), false, true)}" required="true" styleClass="form-control"/> 
+                        </div>
+                        -->
+                    </apex:actionRegion>                    
+                    <div class="form-group"> 
+                        <label class="field-label">Subject</label>
+                        <apex:inputField value="{!case.Subject}"  required="true" styleClass="form-control" label=""/>
+                    </div>
+                    <div class="form-group"> 
+                        <label class="field-label">Description</label>
+                        <apex:inputField value="{!case.Description}"  required="true" styleClass="form-control" label="" style="width:100%;height:200px"/>
+                    </div>
+                    <div class="form-group"> 
+                        <label class="field-label">Expected Outcome</label>
+                        <apex:inputField value="{!case.Expected_Outcome__c}"  required="false" styleClass="form-control" label="" style="width:100%;height:200px"/>
+                    </div>
+                                                          
+                    </apex:pageBlock>
+                </apex:form>
+            </div>
+        </body>
+    </apex:outputPanel>
+  
+    
+    <apex:outputPanel id="Lightning" rendered="{!$User.UIThemeDisplayed == 'Theme4d'}">    
+        <apex:includeScript value="/lightning/lightning.out.js" />
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js"></script> 
+        <html xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+            <head>
+                <apex:stylesheet value="{!URLFOR($Resource.SLDS0121, 'assets/styles/salesforce-lightning-design-system-vf.css')}" />
+                <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+                <style>
+                    select {display:block;width:100%;height:34px;padding:6px 14px;font-size:14px;line-height:1.42857143;color:#000;background-color:#fff;background-image:none;border:1px solid #cfd0d2;border-radius:4px;-webkit-box-shadow:inset 0 1px 1px rgba(0,0,0,.075);box-shadow:inset 0 1px 1px rgba(0,0,0,.075);-webkit-transition:border-color ease-in-out .15s,box-shadow ease-in-out .15s;transition:border-color ease-in-out .15s,box-shadow ease-in-out .15s}
+                </style>  
+            </head>
+            
+            <body>
+                <div class="slds">
+                <apex:form >
+                    <!-- PAGE HEADER -->
+                    <div class="slds-page-header" role="banner">
+                    <!-- LAYOUT GRID -->               
+                    <div class="slds-grid">                                       
+                        <!-- GRID COL -->                  
+                        <div class="slds-col">                   
+                          <!-- HEADING AREA -->                   
+                            <!-- MEDIA OBJECT = FIGURE + BODY -->
+                            <div class="slds-media">
+                              <div class="slds-media__figure">
+                                <span class="slds-avatar slds-avatar--large">
+                                  <img src="{!URLFOR($Resource.SLDS0121, 'assets/images/avatar1.jpg')}" alt="" />
+                                </span>
+                              </div>
+                              <div class="slds-media__body">
+                                <p class="slds-text-heading--label">Cases</p>
+                                <h1 class="slds-text-heading--medium">New Case</h1>
+                              </div>
+                            </div>
+                            <!-- / MEDIA OBJECT -->                  
+                          <!-- /HEADING AREA -->                    
+                        </div>                    
+                        <!-- ACTION BUTTONS --> 
+                            <div class="slds-col slds-no-flex slds-align-middle">
+                               <div class="slds-button-group" role="group">
+                                   <apex:commandButton value="Save" action="{!save}" styleClass="slds-button slds-button--neutral"/>
+                                   <apex:commandButton value="Cancel" action="{!cancel}" styleClass="slds-button slds-button--neutral" immediate="true" html-formnovalidate="formnovalidate"/>
+                               </div>
+                            </div>
+                        <!-- / ACTION BUTTONS -->                   
+                      </div>                   
+                      <!-- / LAYOUT GRID -->                  
+                      <!-- PAGE HEADER DETAIL ROW -->                 
+                      <!-- /PAGE HEADER DETAIL ROW -->               
+                    </div>                
+                    <!-- / PAGE HEADER -->
+
+                    <br/>
+                    <br/>
+                    <!-- PRIMARY CONTENT WRAPPER -->
+                                   
+                    <form class="slds-form--stacked">
+                    <div class="slds-form--stacked">
+                        <div class="slds-form-element">
+                            <div class="slds-form-element">
+                                <label class="slds-form-element__labell">Contact Name</label>
+                            </div>
+                            <div class="slds-form-element">
+                                <apex:outputField value="{!case.ContactId}" styleClass="slds-output" label=""/>
+                            </div>
+                            <br/>
+                        </div>
+                        <div class="slds-form-element">
+                             <div class="slds-form-element">
+                                <label class="slds-form-element__label">Partner Name</label>
+                             </div>
+                             <div class="slds-form-element">
+                                <apex:outputField value="{!case.AccountId}" styleClass="slds-output" label=""/>
+                             </div>
+                             <br/>
+                        </div>
+                    
+                        
+
+                        <apex:actionRegion id="Region1">
+                            <div class="slds-form-element">
+                                <label class="field-label">Primary Category</label>
+                            </div>
+                            <div class="slds-form-element">   
+                                <apex:inputField value="{!case.Primary_Category__c}" required="true" label="" id="PrimaryCategory" styleClass="slds-input">
+                                    <apex:actionSupport event="onchange" rerender="Lightning" Status="Status"/>
+                                </apex:inputfield>
+                            </div>
+
+                            <div class="slds-form-element"> 
+                                
+                                <apex:outputLabel value="Category" rendered="{!if(ISBLANK(case.Primary_Category__c), false, true)}"/>
+                            </div>
+                            <div class="slds-form-element"> 
+                                <apex:inputField value="{!case.Categ__c}" rendered="{!if(ISBLANK(case.Primary_Category__c), false, true)}"  styleClass="slds-input" required="true" label="Category">
+                                    <apex:actionSupport event="onchange" rerender="Lightning" Status="Status"/>
+                                </apex:inputfield>
+                            </div>
+
+                           <div class="slds-form-element"> 
+                                <apex:outputLabel value="Sub Category" rendered="{!if(ISBLANK(case.Primary_Category__c), false, true) && if(ISBLANK(case.Categ__c), false, true)}"/>
+                           </div>
+                           <div class="slds-form-element"> 
+                                <apex:inputField value="{!case.Sub_Category__c}" rendered="{!if(ISBLANK(case.Primary_Category__c), false, true) && if(ISBLANK(case.Categ__c), false, true)}"  required="true" style="slds-input"/>
+                           </div>
+
+                            <!--
+                            <apex:actionStatus startText=" Applying change" id="Status">
+                            </apex:actionStatus>
+                            -->
+                            <!--
+                           <div class="slds-form-element"> 
+                                <apex:outputLabel value="Sub Category" rendered="{!(case.Categ__c != "Essentials" && case.Categ__c != "AccountRight") && if(ISBLANK(case.Primary_Category__c), false, true) && if(ISBLANK(case.Categ__c), false, true)}"/>
+                           </div>
+                           <div class="slds-form-element"> 
+                                <apex:inputField value="{!case.Sub_Category__c}" rendered="{!(case.Categ__c != "Essentials" && case.Categ__c != "AccountRight") && if(ISBLANK(case.Primary_Category__c), false, true) && if(ISBLANK(case.Categ__c), false, true)}"  required="true" style="slds-input"/>
+                           </div>
+
+                           
+                            <div class="slds-form-element"> 
+                                <apex:outputLabel value="Product" rendered="{!case.Categ__c == "Essentials" || case.Categ__c == "AccountRight"}"/>
+                            </div>
+                            <div class="slds-form-element"> 
+                                <apex:inputfield value="{!case.Product__c}" rendered="{!case.Categ__c == "Essentials" || case.Categ__c == "AccountRight"}"  required="true" styleClass="slds-input">
+                                    <apex:actionSupport event="onchange" rerender="Lightning" Status="Status"/>
+                                </apex:inputfield>
+                            </div>
+
+                            
+
+                            <div class="slds-form-element"> 
+                                <apex:outputLabel value="Sub Category" rendered="{!(case.Categ__c == "Essentials" || case.Categ__c == "AccountRight") && if(ISBLANK(case.Product__c), false, true)}"/>
+                                <apex:inputfield value="{!case.Sub_Product__c}" rendered="{!(case.Categ__c == "Essentials" || case.Categ__c == "AccountRight") && if(ISBLANK(case.Product__c), false, true)}" required="true" styleClass="slds-input"/> 
+                            </div>
+                            -->
+                        </apex:actionRegion>  
+       
+                        <br/>
+                        <div class="slds-form-element"> 
+                            <label class="slds-form-element__label">Subject</label>
+                        </div>
+                        <div class="slds-form-element"> 
+                            <apex:inputField value="{!case.Subject}"  required="true" styleClass="slds-input" label=""/>
+                        </div>
+                        <br/>
+                        
+                        <div class="slds-form-element"> 
+                            <label class="slds-form-element__label">Description</label>
+                        </div>
+                        <div class="slds-form-element"> 
+                            <apex:inputField value="{!case.Description}"  required="true" styleClass="slds-input" label="" style="width:100%;height:200px"/>
+                        </div>  
+                        
+                        <div class="slds-form-element"> 
+                            <label class="slds-form-element__label">Expected Outcome</label>
+                        </div>
+                        <div class="slds-form-element"> 
+                            <apex:inputField value="{!case.Expected_Outcome__c}"  required="false" styleClass="slds-input" label="" style="width:100%;height:200px"/>
+                        </div>                          
+                    </div>                                                      
+                    </form >                 
+                    <!-- / PRIMARY CONTENT WRAPPER -->
+                 </apex:form>                   
+                </div>
+            </body>
+        </html>
+    </apex:outputPanel>
+</apex:page>

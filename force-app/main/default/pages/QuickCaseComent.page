@@ -1,0 +1,99 @@
+<apex:page standardController="Case" extensions="QuickCasecomment" docType="html-5.0" standardStylesheets="false" showheader="false" sidebar="false">
+         
+<html xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">   
+<head> 
+     <apex:stylesheet value="{!URLFOR($Resource.SLDS0121, 'assets/styles/salesforce-lightning-design-system-vf.css')}" />
+     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js"></script> 
+     
+     
+     <script type='text/javascript' src='/canvas/sdk/js/publisher.js'></script>
+      
+     <style>
+          /* default S1 color styles */
+          .list-view-header, .data-capture-buttons a {
+                background: -webkit-linear-gradient(#2a93d5,#107abb);
+                background: linear-gradient(#2a93d5,#107abb);
+                box-shadow: 0 1px 3px rgba(0,0,0,.2),inset 0 1px 0 rgba(255,255,255,.21);
+                color: white;
+                font-weight: bold;
+          }
+          
+          .textareastyle {
+               font-size : 12pt;
+          }
+          
+          #resultPage, #searchPage {
+              padding-bottom: 50px;
+          }
+      </style>
+</head>  
+<body>    
+      <script>
+      var caseId;
+      var comment,private;
+       $(document).ready(function(){
+          Sfdc.canvas.publisher.publish({name: "publisher.setValidForSubmit", payload:"true"});
+        });
+       function caseComment()
+      {
+       caseId = '<apex:outputText value="{!Case.Id}"/>';   
+       comment = document.getElementById("case_comment").value;
+       publish = document.getElementById("publish").checked;     
+
+       Visualforce.remoting.Manager.invokeAction('{!$RemoteAction.QuickCasecomment.CreateComment}', caseId,comment,publish,
+       function(result, event){
+                      if(event.status){
+                         Sfdc.canvas.publisher.publish({name: "publisher.close", payload:{ refresh:"true"}});  
+                      } else if (event.type === 'exception'){
+                          console.log(result);
+                      } else {
+                                        
+                      }
+              }); 
+      }
+      </script>
+<div class="slds">      
+    <apex:form id="form">
+        <div class="slds-form--stacked">            
+            <div class="slds-form-element">
+                <div class="slds-form-element">
+                    <label class="field-label">Public</label>
+                </div>
+           
+                <div class="slds-form-element">
+                <div class="slds-form-element__control">
+                  <label class="slds-checkbox">
+                    <input type="checkbox" name="options" id="publish" checked="checked"/>
+                    <span class="slds-checkbox--faux"></span>
+                    <span class="slds-form-element__label"></span>
+                  </label>
+                </div>
+              </div>
+            </div>
+            <div class="content">
+                <div class="slds-form-element">
+                    <label class="field-label">Comment</label>
+                </div>
+                <div class="form-control-group">
+                  <div class="form-control form-control-textarea">
+                    <textarea id="case_comment" class="slds-textarea"/>
+                  </div>
+                </div>
+             </div>
+        </div>
+     </apex:form>
+     
+     <script type='text/javascript'>  
+        Sfdc.canvas.publisher.subscribe({name: "publisher.showPanel",
+            onData:function(e) {
+                Sfdc.canvas.publisher.publish({name:"publisher.setValidForSubmit", payload:"true"});
+        }});
+       Sfdc.canvas.publisher.subscribe({name: "publisher.post", onData:function(e) {
+             // This subscribe fires when the user hits 'Submit' in the publisher
+              caseComment();
+        }});                                           
+     </script>
+</div>
+</body>       
+</html>
+</apex:page>

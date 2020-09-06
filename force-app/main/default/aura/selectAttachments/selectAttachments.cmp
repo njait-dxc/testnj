@@ -1,0 +1,103 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,force:lightningQuickAction" 
+                access="global" 
+                controller="SelectAttachmentsController" >
+    
+    <!-- Attribute Definitions -->
+    <aura:attribute name="isOpen"        	  type="boolean"                />
+    <aura:attribute name="fileIds"       	  type="Object[]"               />
+    <aura:attribute name="sNo"           	  type="Integer" default="1"    />
+    <aura:attribute name="isChecked"     	  type="Boolean" default="false"/>
+    <aura:attribute name="selectedFiles" 	  type="object[]"               />
+    <aura:attribute name="recordId"      	  type="Id"                     />
+    <aura:attribute name="hasData"       	  type="Id"      default="true"  />
+    <aura:attribute name="fileName" 	 	  type="String"  default="No File Selected.." />
+    <aura:attribute name="showLoadingSpinner" type="boolean" default="false" />
+    <aura:attribute name="showLoader"         type="boolean" default="false"   />
+    
+    
+    <!-- Handler Definitions -->
+    <aura:handler 	 	name="init" value="{!this}" action="{!c.doInit}"/>
+	<aura:registerEvent name="selectedAttachmentsNotifyEvent" type="c:selectedAttachmentsNotifyEvent"/>
+    
+    <aura:if isTrue="{!v.isOpen}">
+        <!-- Spinner Starts -->
+        <aura:if isTrue="{!v.showLoader}">
+            <div class="demo-only" style="height: 6rem;">
+                <div role="status" class="slds-spinner_brand slds-spinner slds-spinner_small">
+                    <span class="slds-assistive-text">Loading</span>
+                    <div class="slds-spinner__dot-a"></div>
+                    <div class="slds-spinner__dot-b"></div>
+                </div>
+            </div>
+        </aura:if>  
+        <!-- Spinner Ends -->
+        <div style="height: 200px;">
+            <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-2" class="slds-modal slds-fade-in-open slds-modal_medium">
+                <div class="slds-modal__container">
+                    <header class="slds-modal__header">
+                        <div class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close">
+                            <lightning:buttonIcon iconName="utility:close" 
+                                                  onclick="{! c.closeModal }" 
+                                                  variant="bare-inverse"
+                                                  alternativeText="close" />
+                        </div>
+                        <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">Attachments</h2>
+                    </header>
+                    <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                        <aura:if isTrue="{!v.hasData}">
+                        	<table class="slds-table slds-table_cell-buffer slds-table_bordered">
+                                <thead>
+                                    <tr class="slds-line-height_reset">
+                                        <th class="slds-text-title_caps" scope="col">
+                                            <div class="slds-truncate" title="Selected">Selected</div>
+                                        </th>
+                                        <th class="slds-text-title_caps" scope="col">
+                                            <div class="slds-truncate" title="S.No">S.No</div>
+                                        </th>
+                                        <th class="slds-text-title_caps" scope="col">
+                                            <div class="slds-truncate" title="Attachment Name">Attachment Name</div>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <aura:iteration items="{!v.fileIds}" var="f"  indexVar="i">
+                                        <tr class="slds-hint-parent">
+                                            <th data-label="" scope="row">
+                                                <div class="slds-truncate" title="Selected">
+                                                    <lightning:input type="checkbox" label="" value="{!f}" checked="false" onchange="{!c.onCheckboxChange}"/>
+                                                </div>
+                                            </th>
+                                            <th data-label="" scope="row">
+                                                <div class="slds-truncate" title="">{!v.sNo + i}</div>
+                                            </th>
+                                            <td data-label="">
+                                                <div class="slds-truncate" title="Attachment Title"><lightning:formattedText value="{!f.Title}"/></div>
+                                            </td>
+                                        </tr>
+                                    </aura:iteration>  
+                                </tbody>
+                            </table>
+                            <aura:set attribute="else">
+                            	<h1 id="modal-heading-01" class="slds-text-heading_small slds-align_absolute-center">No Attachment Available.</h1>
+                            </aura:set>
+                        </aura:if>
+                        <lightning:input aura:id="fileId" onchange="{!c.handleFilesChange}" type="file" name="file" label="Upload Attachment" multiple="false"/>
+                        <!-- <div class="slds-text-body_small slds-text-color_error">{!v.fileName} </div>  -->
+                        
+                        <!--use aura:if for show-hide the loading spinner image--> 
+                        <aura:if isTrue="{!v.showLoadingSpinner}">
+                            <div class="slds-text-body_small slds-text-color_error">Uploading... 
+                                <img src="/auraFW/resources/aura/images/spinner.gif" class="spinner-img" alt="Loading"/>'
+                            </div>
+                        </aura:if>
+                    </div>
+                    <footer class="slds-modal__footer">
+                        <lightning:button label="Ok" onclick="{!c.onOk}"/>
+                    </footer>
+                </div>
+            </section>
+            <div class="slds-backdrop slds-backdrop_open"></div>
+        </div>
+    </aura:if>
+    
+</aura:component>

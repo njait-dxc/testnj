@@ -1,0 +1,41 @@
+<apex:page standardController="Opportunity" lightningStylesheets="true" extensions="AddRecommendedProductController"> 
+    <apex:form >
+        <apex:outputText >
+          This should be used to look for recommended products based on the products you have already added into your opportunity.
+        </apex:outputText>
+        <br/>
+        <br/>
+        <apex:commandLink action="{!addSelectedRecommendedProduct}" id="addSelected" value="Add Selected" styleClass="btn" style="text-decoration:none;padding:4px;"/> 
+        <br/>
+        <br/>
+        <apex:messages />
+        <apex:outputField value="{!Opportunity.Pricebook2Id}" rendered="false"/>
+        <apex:outputField value="{!Opportunity.CurrencyIsoCode}" rendered="false"/>
+        <apex:pageBlock >
+            <apex:pageMessages />
+            <apex:pageBlockTable value="{!listRecProdtoHandle}" var="oppRecToHandle" >               
+                <apex:column headerValue="Selected"  width="20px">
+                    <apex:inputCheckbox value="{!oppRecToHandle.selected}">
+                      </apex:inputCheckbox>
+                </apex:column>
+                <apex:column headerValue="Initial Purchase"  width="20px">
+                    <apex:inputCheckbox value="{!oppRecToHandle.initialPurchaseFlag}">
+                      </apex:inputCheckbox>
+                </apex:column>                 
+                <apex:column headerValue="Quantity/Number of Users"  width="5%">
+                    <apex:inputText value="{!oppRecToHandle.numNewUser}" style="width: 30px !important;">
+                      </apex:inputText>
+                </apex:column>
+
+                <apex:column headerValue="Recommended Product"  width="150 px">
+                    <apex:outputlabel value="{!oppRecToHandle.recProduct.Product_Name__c}">
+                      </apex:outputlabel>
+                </apex:column>  
+
+                <apex:column headerValue="Recommendation Reason"  width="100 px">
+                    <apex:dynamicComponent componentValue="{!oppRecToHandle.UnescapedComp}" invokeAfterAction="true"/>
+                </apex:column>                                
+            </apex:pageBlockTable>
+        </apex:pageBlock>
+    </apex:form> 
+</apex:page>

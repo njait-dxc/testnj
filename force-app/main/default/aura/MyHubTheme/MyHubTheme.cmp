@@ -1,0 +1,29 @@
+<aura:component implements="forceCommunity:themeLayout">
+    <aura:attribute name="navBar" type="Aura.Component[]"/>
+    <aura:attribute name="profileMenu" type="Aura.Component[]"/>
+    <aura:attribute name="search" type="Aura.Component[]"/>
+    <aura:attribute name="carouselRegion" type="Aura.Component[]" required="false"/>
+    <aura:attribute name="companyLogoPath" type="String" default="{!$Resource.MyHubLogo}"/>
+    <div class="header">
+        <ui:button press="{!c.navigateToHome}" class="logo">
+            <img src="{!v.companyLogoPath}" class="logoImage"/>
+        </ui:button>
+        {!v.profileMenu}
+    </div>
+    <div class="carousel" aura:id="carousel-test">
+        {!v.carouselRegion}
+    </div>
+    <div class="contentv2">
+        {!v.body}
+    </div>
+    <div class="content">
+        {!v.body}
+    </div>
+    <div class="footer">
+        <img src="{!v.companyLogoPath}" class="logo"/>
+        <div class="links">
+            <a href="https://myobo365.sharepoint.com/:f:/s/SalesOperations/EpQ8UqKF7DlEhq-fQU-CpfgB4RRrp7eFVxI3MnSh4cf1ww?e=zDPE9w">Terms
+                and Conditions</a>
+        </div>
+    </div>
+</aura:component>

@@ -1,0 +1,200 @@
+<apex:page controller="DefaultSearchController">
+    <apex:includeLightning />
+  	<script type="text/javascript" src="{!URLFOR($Resource.CRMGlue)}/lib/require.min.js"></script>  
+  	<script type="text/javascript">
+  		var log_prefix = "CRMDefaultSearch: ";
+  		var sfdc;
+  		
+		function refreshPage(objectId, name, ixnId) { 
+	        console.log(log_prefix + "refreshPage: " + objectId + ", " + name + ", " + ixnId);
+	        
+	        sfdc.getFocusedPrimaryTabId(
+	            function (result) {                        
+	          		console.log(log_prefix + "getFocusedPrimaryTabId: " + result.id);
+	          		
+	          		if (result.success) {
+		               	sfdc.closeTab(result.id);
+					}
+					else {
+						console.warn(log_prefix + "could not get getFocusedPrimaryTabId");
+					}
+					
+					var msg = {
+		               		action: "ContactSelected",
+		               		objectId: objectId,
+		               		id: ixnId
+		            };
+		            
+	               	var str = JSON.stringify(msg);
+	               	console.log(log_prefix + "fire event " + str);
+	               	sfdc.fireEvent('CTIEvent', str);
+	            } 
+	        );
+	    }
+	    
+	    function refreshNonContactPage(objectId, name, ixnId) { 
+	        console.log(log_prefix + "refreshNonContactPage: " + objectId + ", " + name + ", " + ixnId);
+	        
+	        sfdc.getFocusedPrimaryTabId(
+	            function (result) {                        
+	          		console.log(log_prefix + "getFocusedPrimaryTabId: " + result.id);
+	          		if (result.success) {
+		               	sfdc.closeTab(result.id);
+					}
+					else {
+						console.warn(log_prefix + "could not get getFocusedPrimaryTabId");
+					}
+					
+	                sfdc.openPrimaryTab(null, '/' + objectId, true);  
+	            } 
+	        );
+	    }
+   	</script>    
+ 	<apex:pageBlock title="Search">    
+  		<apex:form >
+		  	<apex:outputPanel >
+		  		<apex:actionRegion >  
+			        <apex:outputPanel id="top" layout="block" style="margin:5px;padding:10px;padding-top:2px;">
+			          <apex:outputLabel id="txtPhoneNumber" value="Phone Number" style="font-weight:Bold; margin-right:5px;"/>
+			          <apex:inputText value="{!phoneNumber}" />
+			          <apex:outputLabel id="txtName" value="Name" style="font-weight:Bold; margin-left: 10px; margin-right:5px;"/>
+			          <apex:inputText value="{!name}" />
+			          <apex:outputLabel id="txtEmail" value="Email" style="font-weight:Bold; margin-left: 10px; margin-right:5px;"/>
+			          <apex:inputText value="{!email}" />
+			          <span style="padding-left:5px">
+			          	<apex:commandButton id="btnGo" value="Search" action="{!performSearch}" reRender="searchResults"></apex:commandButton>
+			          </span>
+			        </apex:outputPanel>
+
+					<apex:outputPanel id="searchResults" style="margin:5px; height:350px; overflow-Y:auto;" layout="block">
+	                    <apex:pageBlock id="searchResultsC" title="Contacts">  
+							<apex:pageBlockTable value="{!contact_results}" var="c">
+	                        	<apex:column >
+		     						<apex:facet name="header">
+		                            	<apex:outputPanel id="txtColumnPhoneNumber">Phone Number</apex:outputPanel>
+		                          	</apex:facet>
+		                          	<apex:outputLink value="javascript:window.location.href='/{!c.Id}'" onclick="refreshPage('{!c.Id}', '{!c.Name}', '{!ixnId}');">{!c.Phone}</apex:outputLink>
+								</apex:column>
+							    <apex:column >
+							    	<apex:facet name="header">
+							        	<apex:outputPanel id="txtColumnName">Name</apex:outputPanel>
+							        </apex:facet>
+									<apex:outputLink value="javascript:window.location.href='/{!c.Id}'" onclick="refreshPage('{!c.Id}', '{!c.Name}', '{!ixnId}');">{!c.Name}</apex:outputLink>
+							    </apex:column>
+							    <apex:column >
+							    	<apex:facet name="header">
+							        	<apex:outputPanel id="txtAddress">Address</apex:outputPanel>
+							     	</apex:facet>
+									<apex:outputLink value="javascript:window.location.href='/{!c.Id}'" onclick="refreshPage('{!c.Id}', '{!c.Name}', '{!ixnId}');">{!c.MailingStreet}</apex:outputLink>
+							    </apex:column>
+							    <apex:column >
+							     	<apex:facet name="header">
+							        	<apex:outputPanel id="txtColumnEmail">Email</apex:outputPanel>
+							        </apex:facet>
+									<apex:outputLink value="javascript:window.location.href='/{!c.Id}'" onclick="refreshPage('{!c.Id}', '{!c.Name}', '{!ixnId}');">{!c.Email}</apex:outputLink>
+							 	</apex:column>
+							    <apex:column >
+							    	<apex:facet name="header">
+							        	<apex:outputPanel id="txtAccount">Account</apex:outputPanel>
+							        </apex:facet>
+									<apex:outputLink value="javascript:window.location.href='/{!c.Id}'" onclick="refreshPage('{!c.Id}', '{!c.Name}', '{!ixnId}');">{!c.Account.Name}</apex:outputLink>
+			        			</apex:column>
+			      			</apex:pageBlockTable>
+			      		</apex:pageBlock>
+			      		<apex:pageBlock id="searchResultsA"  title="Accounts"> 
+	                      	<apex:pageBlockTable value="{!account_results}" var="a">
+	                      		<apex:column >
+				                    <apex:facet name="header">
+				                    	<apex:outputPanel >Phone</apex:outputPanel>
+				                    </apex:facet>
+									<apex:outputLink value="javascript:window.location.href='/{!a.Id}'" onclick="refreshNonContactPage('{!a.Id}', '{!a.Name}', '{!ixnId}');">{!a.Phone}</apex:outputLink>
+		                        </apex:column>
+	                        	<apex:column >
+	                          		<apex:facet name="header">
+	                            		<apex:outputPanel >Account</apex:outputPanel>
+	                          		</apex:facet>
+									<apex:outputLink value="javascript:window.location.href='/{!a.Id}'" onclick="refreshNonContactPage('{!a.Id}', '{!a.Name}', '{!ixnId}');">{!a.Name}</apex:outputLink>
+	                        	</apex:column>
+	                      	</apex:pageBlockTable>
+	                    </apex:pageBlock>  
+						<apex:pageBlock id="searchResultsL"  title="Leads">
+	                    	<apex:pageBlockTable value="{!lead_results}" var="l">
+	                        	<apex:column >
+				                    <apex:facet name="header">
+				                    	<apex:outputPanel >Phone</apex:outputPanel>
+				                    </apex:facet>
+									<apex:outputLink value="javascript:window.location.href='/{!l.Id}'" onclick="refreshNonContactPage('{!l.Id}', '{!l.Name}', '{!ixnId}');">{!l.Phone}</apex:outputLink>
+		                        </apex:column>
+		                        <apex:column >
+		                          	<apex:facet name="header">
+		                            	<apex:outputPanel >Name</apex:outputPanel>
+		                          	</apex:facet>
+									<apex:outputLink value="javascript:window.location.href='/{!l.Id}'" onclick="refreshNonContactPage('{!l.Id}', '{!l.Name}', '{!ixnId}');">{!l.Name}</apex:outputLink>
+		                        </apex:column>
+		                        <apex:column >
+		                          	<apex:facet name="header">
+		                            	<apex:outputPanel >Email</apex:outputPanel>
+		                          	</apex:facet>
+									<apex:outputLink value="javascript:window.location.href='/{!l.Id}'" onclick="refreshNonContactPage('{!l.Id}', '{!l.Name}', '{!ixnId}');">{!l.Email}</apex:outputLink>
+		                        </apex:column>
+	                  		</apex:pageBlockTable>
+	                    </apex:pageBlock>
+	                </apex:outputPanel>
+            	</apex:actionRegion>
+  			</apex:outputPanel>
+		</apex:form>
+	</apex:pageblock>
+	<script>
+		require.config({
+			baseUrl : '{!URLFOR($Resource.CRMGlue)}',
+		    paths: {
+		        util: 'lib/util',
+		        jquery: 'lib/jquery-3.1.1.min',
+		        'org/cometd': 'lib/cometd-jquery/org/cometd.min',
+		        'jquery.cometd': 'lib/cometd-jquery/jquery/jquery.cometd.min',
+		        moment: 'lib/moment.min',
+		        connector: 'SFDC/connector',
+		        integration: '/support/console/41.0/integration',
+		        interaction: '/support/api/41.0/interaction',
+		        lightning: '/support/api/41.0/lightning/opencti_min',
+		        i18next: 'lib/i18next.min',
+		        jqueryI18next: 'lib/jquery-i18next.min',
+		        i18nextXHRBackend: 'lib/i18next-xhr-backend.min'
+		    },
+		    shim: {
+		        'jquery': {
+		            exports: '$'
+		        },
+		        'integration': {
+		            exports: 'sforce'
+		        },
+		        'interaction': {
+		            exports: 'sforce'
+		        },
+		        'lightning': {
+		            exports: 'sforce'
+		        }
+		    }
+		});
+	            
+		require(['jquery', 'SFDC/lang', 'SFDC/api'], 
+					function($, lang, tsfdc) {
+				
+			console.info(log_prefix + "THEME: {!$User.UIThemeDisplayed}");
+			sfdc = tsfdc;
+			sfdc.initialize("{!$User.UIThemeDisplayed}" === "Theme4d"); // lightning?
+			
+			var lang_text = lang.getText('default'); 
+			$('.mainTitle').text(lang_text.search);
+			$('[id$=txtPhoneNumber]').text(lang_text.phoneNumber);
+			$('[id$=txtName]').text(lang_text.name);
+			$('[id$=txtEmail]').text(lang_text.email);
+			$('[id$=btnGo]').val(lang_text.search);
+			$('[id$=txtColumnPhoneNumber]').text(lang_text.phoneNumber);
+			$('[id$=txtColumnName]').text(lang_text.name);
+			$('[id$=txtAddress]').text(lang_text.address);
+			$('[id$=txtColumnEmail]').text(lang_text.email);
+			$('[id$=txtAccount]').text(lang_text.account);
+        });
+	</script>
+</apex:page>

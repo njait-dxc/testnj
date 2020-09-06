@@ -1,0 +1,62 @@
+<aura:documentation>
+	<aura:description>
+		<h5>
+			<code>PaymentProfile</code> component is used for displaying payment profiles from Billing API in Opportunity layout.
+		</h5>
+		<p>
+			The component will display following fields from API
+			<table>
+				<tr>
+					<td><b>Field Name</b></td>
+					<td><b>Description</b></td>
+				</tr>
+				<tr>
+					<td>Select</td>
+					<td>This column displays a radio button and upon selecting it,
+						the component updates Opportunity Payment Profile Id with the selected Id.
+					</td>
+				</tr>
+				<tr>
+					<td>Payment Method</td>
+					<td>This column displays payment method data we get from API.</td>
+				</tr>
+				<tr>
+					<td>Primary Profile</td>
+					<td>This column displays payment profile data we get from API.</td>
+				</tr>
+				<tr>
+					<td>Payment Schedule</td>
+					<td>This column displays payment schedule data we get from API.</td>
+				</tr>
+				<tr>
+					<td>BSB</td>
+					<td>This column displays BSB data we get from API.</td>
+				</tr>
+				<tr>
+					<td>Bank Name</td>
+					<td>This column displays Bank Name data we get from API.</td>
+				</tr>
+				<tr>
+					<td>Account Number</td>
+					<td>This column displays Account Number data we get from API.</td>
+				</tr>
+				<tr>
+					<td>Type</td>
+					<td>This column displays Credit Card Type data we get from API.</td>
+				</tr>
+				<tr>
+					<td>Name on Card</td>
+					<td>This column displays Credit Card holder's name we get from API.</td>
+				</tr>
+				<tr>
+					<td>Expiry Month and Year</td>
+					<td>This column displays Credit Card expiry month and year.</td>
+				</tr>
+				<tr>
+					<td>Last Four Digits on Card</td>
+					<td>This column displays Credit Card last 4 digit numbers.</td>
+				</tr>
+			</table>
+		</p>
+	</aura:description>
+</aura:documentation>

@@ -1,0 +1,162 @@
+<apex:page lightningStylesheets="true" standardController="Opportunity" extensions="CMOpportunityConsolidatedPageExtension">
+<style> .headerRow .headerStyle{background-color:#638658;color:#FFFFFF;rowspan:3} </style>
+<apex:form >
+<apex:pageblock id="body" mode="view" title="">
+    <div align="center" draggable="false" >
+        <apex:pageBlockSection columns="1" id="header">  
+            <h3>Practice Opportunity Validation outcome and Reminder for <font color="purple">{!Opportunity.Name}</font></h3>
+        </apex:pageBlockSection> 
+        
+        <!--<table width="100%" Class = "">   
+            <apex:repeat value="{!validationMessage}" var="validationMessageRows">                                         
+                <tr>
+                  <td><ul><li><apex:outputText escape="false" value="{!validationMessageRows}"></apex:outputText></li></ul></td>
+                </tr>
+            </apex:repeat>                                       
+        </table>
+        
+        <apex:pageBlockTable value="{!validationMessage}" var="messages" headerClass="headerStyle">
+            <apex:column >     
+                <apex:facet name="header">Validation Details</apex:facet>     
+                <apex:outputText value="{!messages}" escape="false">
+                  <apex:param value="{!messages}"/>
+                </apex:outputText>
+            </apex:column>         
+        </apex:pageBlockTable>
+        <br/>
+        -->
+         <apex:pageBlockTable value="{!mapValidationMessage}" var="messages" headerClass="headerStyle">
+            <apex:column >     
+                <apex:facet name="header">Validation/Reminder Details</apex:facet>     
+                <apex:outputText value="{!messages}" escape="false">
+                  <apex:param value="{!messages}"/>
+                </apex:outputText>
+            </apex:column>
+            <apex:column >     
+                <apex:facet name="header">Outcome</apex:facet>     
+                <apex:outputText value="{!mapValidationMessage[messages]}" escape="false">
+                  <apex:param value="{!mapValidationMessage[messages]}"/>
+                </apex:outputText>
+            </apex:column>                     
+        </apex:pageBlockTable>
+               
+        <br/>
+        <apex:commandButton value="Auto Send" action="{!URLFOR($Action.Opportunity.View,Opportunity.Id)}" onclick="openAutoSendConga()" disabled="{!disableConga}"/>
+        <apex:commandButton value="Manual Send" action="{!URLFOR($Action.Opportunity.View,Opportunity.Id)}" onclick="openManualSendConga()" disabled="{!disableConga}"/>
+
+        <apex:pageBlockSection columns="1" id="tip" >  
+            <h3>Help and Tips</h3>
+        </apex:pageBlockSection>
+            
+        <!--<table width="100%" Class = "">
+            <tr>
+            <td>   
+                <ul>
+                    <li><p>Auto Send button requires very few clicks on Next button to send 'Supply Order', easy and fast!</p></li>
+                </ul>
+            </td>    
+            </tr>
+            <tr>
+            <td>   
+                <ul>
+                    <li>Manual Send button provides enriched features and functionalities like editing the content and layout of 'Supply Order' before sending. </li>
+                </ul>
+            </td>    
+            </tr>                
+        </table> 
+        -->
+      <apex:pageBlockTable value="{!listOppLineItems}" var="QLI" headerClass="headerStyle">
+         <apex:column value="{!QLI.Product2.Name}" headerValue="Name"/>
+
+        <apex:column >     
+            <apex:facet name="header">Quantity<br/>Number of<br/>Users</apex:facet>     
+            <apex:outputText value="{!QLI.Number_of_Users__c}">
+              <apex:param value="{!QLI.Number_of_Users__c}"/>
+            </apex:outputText>
+        </apex:column> 
+         
+         <apex:column value="{!QLI.Product2.Environment_Check_EC__c}" headerValue="EC"/>
+        
+        <apex:column >     
+            <apex:facet name="header">Consulting<br/>Question</apex:facet>     
+            <apex:outputText value="{!QLI.Product2.Consulting_Question__c}">
+              <apex:param value="{!QLI.Product2.Consulting_Question__c}"/>
+            </apex:outputText>
+        </apex:column>          
+         
+        <apex:column >     
+            <apex:facet name="header">Additional<br/>Requirements</apex:facet>     
+            <apex:outputText value="{!QLI.Product2.Additional_Requirements__c}" style="word-wrap:break-word;">
+              <apex:param value="{!QLI.Product2.Additional_Requirements__c}"/>
+            </apex:outputText>
+        </apex:column>          
+         
+        <apex:column >     
+            <apex:facet name="header">User<br/>Recommendation</apex:facet>     
+            <apex:outputText value="{!QLI.Product2.User_Recommendation__c}">
+              <apex:param value="{!QLI.Product2.User_Recommendation__c}"/>
+            </apex:outputText>
+        </apex:column>           
+         
+         <apex:column value="{!QLI.Product2.Scope__c}"/>
+         
+        <apex:column >     
+            <apex:facet name="header">Historic<br/>License</apex:facet>     
+            <apex:outputText value="{!QLI.Product2.Historic_Licence__c}">
+              <apex:param value="{!QLI.Product2.Historic_Licence__c}"/>
+            </apex:outputText>
+        </apex:column>      
+                          
+        <apex:column >     
+            <apex:facet name="header">License<br/>Upgrade</apex:facet>     
+            <apex:outputText value="{!QLI.Product2.Licence_Upgrade__c}">
+              <apex:param value="{!QLI.Product2.Licence_Upgrade__c}"/>
+            </apex:outputText>
+        </apex:column>                   
+        
+        <apex:column >     
+            <apex:facet name="header">Data<br/>Authority</apex:facet>     
+            <apex:outputText value="{!QLI.Product2.Data_Authority__c}">
+              <apex:param value="{!QLI.Product2.Data_Authority__c}"/>
+            </apex:outputText>
+        </apex:column>          
+
+        <apex:column >     
+            <apex:facet name="header">Maintenance<br/>Credit<br/>Comments</apex:facet>     
+            <apex:outputText value="{!QLI.Product2.Maintenance_Credit_Comments__c}">
+              <apex:param value="{!QLI.Product2.Maintenance_Credit_Comments__c}"/>
+            </apex:outputText>
+        </apex:column> 
+
+        <apex:column >     
+            <apex:facet name="header">Consulting<br/>TL Approval</apex:facet>     
+            <apex:outputText value="{!QLI.Product2.Consulting_TL_Approval__c}">
+              <apex:param value="{!QLI.Product2.Consulting_TL_Approval__c}"/>
+            </apex:outputText>
+        </apex:column>          
+
+        <apex:column >     
+            <apex:facet name="header">Product<br/>Fact<br/>Link</apex:facet>     
+            <apex:outputLink value="Link" rendered="{!QLI.Product2.Product_Fact_Link__c!= NULL}">
+              <a href="{!QLI.Product2.Product_Fact_Link__c}" target="_blank">Link</a>
+            </apex:outputLink>
+        </apex:column> 
+
+        <apex:column >     
+            <apex:facet name="header">Services<br/>Sheet<br/>Link</apex:facet>     
+            <apex:outputLink value="Link" rendered="{!QLI.Product2.Services_Sheet_LINK__c != NULL}">
+              <a href="{!QLI.Product2.Services_Sheet_LINK__c}" target="_blank">Link</a>
+            </apex:outputLink>
+        </apex:column>        
+         
+      </apex:pageBlockTable>                   
+
+    </div>
+    
+    <Script Language="JavaScript">
+        function openAutoSendConga() { window.open('{!URLFOR($Action.Opportunity.Auto_Send_New_2,Opportunity.Id)}', '','scrollbars=yes,menubar=no,height=600,width=800,resizable=yes, toolbar=no,location=no,status=yes'); }
+        function openManualSendConga() { window.open('{!URLFOR($Action.Opportunity.Manual_Send_New,Opportunity.Id)}', '','scrollbars=yes,menubar=no,height=600,width=800,resizable=yes, toolbar=no,location=no,status=yes'); }
+    </Script>
+</apex:pageblock>    
+</apex:form>
+</apex:page>

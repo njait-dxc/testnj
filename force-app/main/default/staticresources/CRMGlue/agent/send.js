@@ -1,0 +1,1 @@
+window.sendToWDE=function(a,b){console.log("sendToWDE"),a.CI="ignore",void 0===b&&(b=5050),jQuery.ajax({url:"https://localhost:"+b,data:"/request="+JSON.stringify(a),type:"GET",processData:!1,timeout:5e3,cache:!1,dataType:"jsonp",error:function(a,c,d){console.error("https://localhost:"+b+" "+c+" - "+a.status+" "+d)}})};

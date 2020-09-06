@@ -1,0 +1,72 @@
+<apex:page controller="ItemstoApproveController" sidebar="false" showHeader="false" lightningStylesheets="true">
+    <apex:includeScript value="//code.jquery.com/jquery-2.1.1.min.js"/>
+    <apex:includeScript value="//cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.18.3/js/jquery.tablesorter.js"/>
+    <apex:includeScript value="//cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.18.3/js/jquery.tablesorter.widgets.js"/>
+    <apex:stylesheet value="//cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.18.3/css/theme.jui.css"/>
+    <script>    
+            $(document).ready(function(){
+            $("table").tablesorter({
+                
+                theme : 'jui', 
+                
+                headerTemplate : '{content} {icon}',
+                
+                widgets : ['uitheme', 'zebra'],
+                
+                widgetOptions : {
+                    zebra   : ["even", "odd"],
+                }
+                
+            });
+        });
+    </script>  
+    <apex:form >
+        <div align="center" draggable="false" >
+        <apex:pageBlock >
+            <apex:pageBlockTable value="{!items_to_approve}" var="item_to_approve">
+               <apex:column headerValue="Selected"  width="100 px">
+                    <apex:inputCheckbox value="{!item_to_approve.selected}">
+                      </apex:inputCheckbox>
+                </apex:column>                  
+                <apex:column headerValue="Action" width="160 px" >
+                                    <apex:commandLink target="_top" value="Reassign |" action="{!REASSIGNnavigation}" style="text-decoration:none;color: #015ba7;" styleClass="cactionLink">
+                                                       <apex:param name="myParam" value="{!item_to_approve.approvalid }" />
+                                                                                              
+                                                                    </apex:commandLink>
+
+                    <apex:commandLink target="_top" value=" Approve / Reject" action="{!ApproveRejectnavigation}" style="text-decoration:none;color: #015ba7;"  >
+
+                   <apex:param name="myParam" value="{!item_to_approve.approvalid }" />
+                </apex:commandLink>    
+                </apex:column>
+              
+               <apex:column headerValue="Type"  width="100 px">
+                    <apex:outputText >{!item_to_approve.objtype}
+                      </apex:outputText>
+                </apex:column>
+              
+                <apex:column headerValue="Deal" width="300 px">
+                    <apex:outputLink target="_top" value="/{!item_to_approve.id}">{!item_to_approve.name}
+                      </apex:outputLink>
+                </apex:column>
+                <apex:column headerValue="Case Total & Value">
+                    <apex:outputtext >{!item_to_approve.caseTotalValue}
+                      </apex:outputtext>
+                </apex:column>              
+                <apex:column headerValue="Date Submitted" width="150 px">
+                    <apex:outputtext >{!item_to_approve.DateSubmited }
+                      </apex:outputtext>
+                </apex:column>
+            </apex:pageBlockTable>
+        </apex:pageBlock>
+        <apex:outputLabel >Reject Reason</apex:outputLabel>
+        <br/>    
+        <apex:inputTextarea id="Reject_Reason" value="{!RejectReason}" required="true"/>
+        <br/>
+        <apex:messages />
+        <apex:commandlink action="{!processSelected}" id="RejectSelected" value="Reject Selected" styleClass="btn" style="text-decoration:none;padding:4px;">
+            <apex:param name="RejectButton" value="{!rejectValue}" assignTo="{!paramValue}"/>
+        </apex:commandlink>
+        </div>    
+    </apex:form>
+</apex:page>

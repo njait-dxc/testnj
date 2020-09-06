@@ -1,0 +1,24 @@
+<aura:component implements="flexipage:availableForAllPageTypes" access="global">
+    <lightning:carousel disableAutoRefresh="false" disableAutoScroll="false">
+        <lightning:carouselImage
+                src="https://myob--c.ap7.content.force.com/servlet/servlet.FileDownload?file=0150I00000AwOjr"
+                header="System Support"
+                description="If you need system support, please log a Help Me ticket. Please click on the banner to be directed."
+                alternativeText="If you need system support, please log a Help Me ticket. Please click on the banner to be directed."
+                href="https://helpme.myob.com/hc/en-us/requests/new?ticket_form_id=360000956974">
+        </lightning:carouselImage>
+        <lightning:carouselImage
+                src="https://myob--c.ap7.content.force.com/servlet/servlet.FileDownload?file=0150I00000AwOk6"
+                header="Training"
+                description="If you need Salesforce training, please send request to training team."
+                alternativeText="Third card accessible description.">
+        </lightning:carouselImage>
+        <lightning:carouselImage
+                src="https://myob--c.ap7.content.force.com/servlet/servlet.FileDownload?file=0150I00000AwOkB"
+                header="Salesforce BAU Releases"
+                description="CRM team work to deliver BAU release every three weeks. For detail information, please click above."
+                alternativeText="Third card accessible description."
+                href="https://myobo365.sharepoint.com/:f:/s/CRMTEAM/EujvMC_j14VIkNE69uUFzxoB414xVcYVNRe5UK6YrxBtsA?e=5CotYP">
+        </lightning:carouselImage>
+    </lightning:carousel>
+</aura:component>

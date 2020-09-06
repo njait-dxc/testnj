@@ -1,0 +1,135 @@
+<apex:page standardController="Lead" renderAs="pdf" applyBodyTag="false">
+    <head>
+        <style> 
+            body { font-family: 'Arial Unicode MS'; }
+            .companyName { font: bold 30px; color: red; }  
+            .tdcontent {align:left;width:50%}
+        </style>
+    </head>
+    <body>
+        <center>
+            <apex:image id="theImage" value="{!$Resource.MYOBLogo}" width="150" height="150"/>
+
+            <h1 style="color:purple">MYOB Case Categorization Guidance</h1>
+            <!--
+            <apex:panelGrid columns="1" width="100%">
+                <apex:outputText value="{!lead.Name}" styleClass="companyName"/>
+                <apex:outputText value="{!NOW()}"></apex:outputText>
+            </apex:panelGrid>
+            -->
+            <table width="100%" styleClass = "content">
+                <tr>
+                    <th align="left"><h3 style="color:purple">Can be found by clicking the link below:</h3></th>
+                    <th></th>
+                </tr>
+                <tr>
+                    <td width="50%" align="left">
+                        <apex:outputLabel value="Company: " rendered="{!IF(ISNULL(lead.Company),false, true)}"></apex:outputLabel>
+                        <apex:outputText value="{!lead.Company}" label="Company:" rendered="{!IF(ISNULL(lead.Company),false, true)}"></apex:outputText>
+                    </td>
+                    <td width="50%" align="left">
+                        <apex:outputLabel value="Archie ID: " rendered="{!IF(ISNULL(lead.Archie_ID__c),false, true)}"></apex:outputLabel>
+                        <apex:outputText value="{!lead.Archie_ID__c}" label="Archie ID:" rendered="{!IF(ISNULL(lead.Archie_ID__c),false, true)}"></apex:outputText>
+                    </td>
+                </tr>            
+                <tr>
+                    <td width="50%" align="left">
+                        <apex:outputLabel value="City: " rendered="{!IF(ISNULL(lead.PG_City__c),false, true)}"></apex:outputLabel>
+                        <apex:outputText value="{!lead.PG_City__c}" label="City:" rendered="{!IF(ISNULL(lead.PG_City__c),false, true)}"></apex:outputText>
+                    </td>
+                    <td width="50%" align="left">
+                        <apex:outputLabel value="State/Province: " rendered="{!IF(ISNULL(lead.PG_State_Province__c),false, true)}"></apex:outputLabel>
+                        <apex:outputText value="{!lead.PG_State_Province__c}" label="State/Province:" rendered="{!IF(ISNULL(lead.PG_State_Province__c),false, true)}"></apex:outputText>
+                    </td>
+                </tr>              
+                <tr>
+                    <td width="50%" align="left">
+                        <apex:outputLabel value="Country: " rendered="{!IF(ISNULL(lead.PG_Country__c),false, true)}"></apex:outputLabel>
+                        <apex:outputText value="{!lead.PG_Country__c}" label="Country:" rendered="{!IF(ISNULL(lead.PG_Country__c),false, true)}"></apex:outputText>
+                    </td>
+                    <td width="50%" align="left">
+                        <apex:outputLabel value="Industry: " rendered="{!IF(ISNULL(lead.Industry),false, true)}"></apex:outputLabel>
+                        <apex:outputText value="{!lead.Industry}" label="Industry:" rendered="{!IF(ISNULL(lead.Industry),false, true)}"></apex:outputText>
+                    </td>
+                </tr>             
+                <tr>
+                    <td width="50%" align="left">
+                        <apex:outputLabel value="Years Trading: " rendered="{!IF(ISNULL(lead.Years_Trading__c),false, true)}"></apex:outputLabel>
+                        <apex:outputText value="{0,number,###,###,##0}" label="Years Trading:" rendered="{!IF(ISNULL(lead.Years_Trading__c),false, true)}"><apex:param value="{!lead.Years_Trading__c}"/></apex:outputText>
+                    </td>
+                    <td width="50%" align="left">
+                        <apex:outputLabel value="No. Employee: " rendered="{!IF(ISNULL(lead.NumberOfEmployees),false, true)}"></apex:outputLabel>
+                        <apex:outputText value="{!lead.NumberOfEmployees}" label="No. Employee:" rendered="{!IF(ISNULL(lead.NumberOfEmployees),false, true)}"></apex:outputText>
+                    </td>
+                </tr>             
+                <tr>
+                    <td width="50%" align="left">
+                        <apex:outputLabel value="Turnover: " rendered="{!IF(ISNULL(lead.Turnover__c),false, true)}"></apex:outputLabel>
+                        <apex:outputText value="{0,number,###,###,##0}" label="Turnover:" rendered="{!IF(ISNULL(lead.Turnover__c),false, true)}"><apex:param value="{!lead.Turnover__c}"/></apex:outputText>
+                    </td>
+                    <td width="50%" align="left">
+                        <apex:outputLabel value="No. Locations: " rendered="{!IF(ISNULL(lead.No_Locations__c),false, true)}"></apex:outputLabel>
+                        <apex:outputText value="{0,number,###,###,##0}" label="No. Locations:" rendered="{!IF(ISNULL(lead.No_Locations__c),false, true)}"><apex:param value="{!lead.No_Locations__c}"/></apex:outputText>
+                    </td>
+                </tr>              
+            
+                <tr>
+                    <th align="left"><h3 style="color:purple"><a href="http://myob.com/images/bd/Case Category - Minimum Requirements.docx/" target="_blank">How To Log Cases</a> (Right-Click and Open in new tab)</h3></th>
+                    <th></th>
+                </tr>            
+                <tr>
+                    <td width="50%" align="left">
+                        <apex:outputLabel value="Name: " rendered="{!IF(ISNULL(lead.name),false, true)}"></apex:outputLabel>
+                        <apex:outputText value="{!lead.name}" label="Name:" rendered="{!IF(ISNULL(lead.name),false, true)}"></apex:outputText>
+                    </td>
+                    <td width="50%" align="left">
+                        <apex:outputLabel value="Title: " rendered="{!IF(ISNULL(lead.title),false, true)}"></apex:outputLabel>
+                        <apex:outputText value="{!lead.title}" label="Title:" rendered="{!IF(ISNULL(lead.title),false, true)}"></apex:outputText>
+                    </td>
+                </tr>
+                <tr>
+                    <td width="50%" align="left">
+                        <apex:outputLabel value="Mobile: " rendered="{!IF(ISNULL(lead.MobilePhone),false, true)}"></apex:outputLabel>
+                        <apex:outputText value="{!lead.MobilePhone}" label="Mobile:" rendered="{!IF(ISNULL(lead.MobilePhone),false, true)}"></apex:outputText>
+                    </td>
+                    <td width="50%" align="left">
+                        <apex:outputLabel value="Phone: " rendered="{!IF(ISNULL(lead.Phone),false, true)}"></apex:outputLabel>
+                        <apex:outputText value="{!lead.Phone}" label="Phone:" rendered="{!IF(ISNULL(lead.Phone),false, true)}"></apex:outputText>
+                    </td>
+                </tr>            
+                <tr>
+                    <td width="50%" align="left">
+                        <apex:outputLabel value="Email: " rendered="{!IF(ISNULL(lead.Email),false, true)}"></apex:outputLabel>
+                        <apex:outputText value="{!lead.Email}" label="Email:" rendered="{!IF(ISNULL(lead.Email),false, true)}"></apex:outputText>
+                    </td>
+                </tr>
+            
+                <tr>
+                    <th align="left"><h3 style="color:purple">Thank you</h3></th>
+                    <th></th>
+                </tr>
+                <tr>
+                    <td width="50%" align="left">
+                        <apex:outputLabel value="Decision Maker: " rendered="{!IF(lead.Decision_Maker__c==false,false, true)}"></apex:outputLabel>
+                        <apex:outputText value="{!lead.Decision_Maker__c}" label="Decision Make:" rendered="{!IF(lead.Decision_Maker__c==false,false, true)}"></apex:outputText>
+                    </td>
+                    <td width="50%" align="left">
+                        <apex:outputLabel value="Decision Maker Name: " rendered="{!IF(ISNULL(lead.Decision_Maker_Name__c),false, true)}"></apex:outputLabel>
+                        <apex:outputText value="{!lead.Decision_Maker_Name__c}" label="Decision Maker Name:" rendered="{!IF(ISNULL(lead.Decision_Maker_Name__c),false, true)}"></apex:outputText>
+                    </td>
+                </tr>
+                <tr>
+                    <td width="50%" align="left">
+                        <apex:outputLabel value="Decision Maker Title: " rendered="{!IF(ISNULL(lead.Decision_Maker_Title__c),false, true)}"></apex:outputLabel>
+                        <apex:outputText value="{!lead.Decision_Maker_Title__c}" label="Decision Maker Title:" rendered="{!IF(ISNULL(lead.Decision_Maker_Title__c),false, true)}"></apex:outputText>
+                    </td>
+                </tr>            
+            
+               
+                
+            </table>
+            
+ 
+        </center>
+    </body>
+</apex:page>

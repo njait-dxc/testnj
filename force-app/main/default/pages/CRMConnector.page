@@ -1,0 +1,129 @@
+<apex:page showHeader="false" controller="ConnectorController" sidebar="false">
+  <apex:includeLightning />
+  <div class="login-card">
+  	<div id="version"></div>
+  </div>	
+  <link rel="stylesheet" href="{!URLFOR($Resource.login_css)}"/>
+  <script type="text/javascript" src="{!URLFOR($Resource.CRMGlue, 'lib/require.min.js')}"></script>
+  <script type="text/javascript">
+require.config({
+	baseUrl : '{!URLFOR($Resource.CRMGlue)}',
+    paths: {
+        util: 'lib/util',
+        jquery: 'lib/jquery-3.1.1.min',
+        moment: 'lib/moment.min',
+        connector: 'SFDC/connector',
+        integration: '/support/console/41.0/integration',
+        interaction: '/support/api/41.0/interaction',
+        lightning: '/support/api/41.0/lightning/opencti_min',
+        i18next: 'lib/i18next.min',
+        jqueryI18next: 'lib/jquery-i18next.min',
+        i18nextXHRBackend: 'lib/i18next-xhr-backend.min'
+    },
+    shim: {
+        'jquery': {
+            exports: '$'
+        },
+        'integration': {
+            exports: 'sforce'
+        },
+        'interaction': {
+            exports: 'sforce'
+        },
+        'lightning': {
+            exports: 'sforce'
+        }
+    }
+});
+
+require(['util', 'SFDC/sfdc', 'SFDC/package', 'interaction', 'lightning', 'config', 'SFDC/case', 'SFDC/pop'], 
+		function(util, sfdc, packageInfo, sforce, sforce, config, caseObj, pop) { 
+	var log_prefix = "CRMConnector: ";
+	
+	console.info(log_prefix + "VERSION: " + packageInfo.VERSION);
+	console.info(log_prefix + "BUILD DATE: " + packageInfo.DATE);
+	$('#version').text(packageInfo.NAME + ' v' + packageInfo.VERSION);
+	
+    // work out if it is lightning via the URL "mode" parameter
+	var isLightning = "{!JSENCODE($CurrentPage.parameters.mode)}" === 'Lightning';
+	
+	var parseSettings = function(settings, isLightning) {
+		sfdc.initialize('{!URLFOR($Resource.CRMGlue)}' +'/', settings, isLightning).
+			done(function(i18n) {
+                /*util.getInstance('task.created').subscribe(function (message) {
+                	var ixn = message.ixn; 
+                	console.log(log_prefix + "task.created Case Uuid - " + ixn.userData.IW_CaseUid);
+                }); */
+                
+                /*util.getInstance('task.completed').subscribe(function (message) {
+                	var ixn = message.ixn; 
+                	console.log(log_prefix + "task.completed Case Uuid - " + ixn.userData.IW_CaseUid);
+                });*/
+                
+                //config.TASK_MAP['XXX__c'] = 'YYY'; 
+                //config.TASK_MAP_FIXED['Activity_Type__c'] = 'Omni-Channel Task';
+                
+                /*config.customSearchQuery = function(params, type, searchString, callback) {
+                	// see if multiple accounts are coming back
+                	if (Array.isArray(searchString)) {
+                		ConnectorController.getEncryptedAccounts(searchString, function(s) {
+                			callback("&searchCustomerResult=" + s);
+                		});
+                	}
+                	else {
+                		callback("&" + type + '=' + searchString);
+                	}
+                };*/
+                
+                // remove the '0' prefix on a click to dial
+                /*config.beforeDial = function(result) {
+                	if (result.number.startsWith("0")) {
+                		result.number = result.number.substring(1);
+                	}
+                	console.log("beforeDial: " + result.number);
+                };*/
+                
+                // remove the '0' prefix when WDE dials
+                /*config.overrideVoicePop = function(ixn, params, aniSearch, fieldSearch) {
+                	if (ixn.dnis.startsWith("0"))
+                		ixn.dnis = ixn.dnis.substring(1);
+                		
+                	console.log("overrideVoicePop: " + ixn.dnis);
+                	return true;
+                };*/
+                
+                /*config.customPopURL = function(contactId) {
+                	if (isLightning) {
+                		var contactId = params.contact.Id;
+                		var url = "/lightning/n/Customer_360_App?account=" + contactId;
+                		var rmid = params.ixn.userData.custrmid;
+                		
+                		if (rmid) {
+                			url += "&rmid=" + rmid;
+                		}
+                		 
+                		return url;
+                	}
+                }*/
+			}
+		);
+	};
+	
+	if (isLightning) {
+		console.info(log_prefix + "is lightning");
+		sforce.opencti.getCallCenterSettings({callback: function(response) {
+			console.log(log_prefix + 'Lightning console getCallCenterSettings');
+			parseSettings(response.returnValue, true);
+		}}); 
+	}
+	else {
+		console.info(log_prefix + "is classic console");
+		sforce.interaction.cti.getCallCenterSettings(function(response) {
+			console.log(log_prefix + 'Classic console getCallCenterSettings');
+			var settings = $.parseJSON(response.result, false);
+	    	parseSettings(settings);
+		});
+	}
+});
+</script>
+</apex:page>

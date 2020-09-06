@@ -1,0 +1,29 @@
+({
+    init: function (component, event, helper) {
+        let observer = new MutationObserver(function (mutations) {
+            // Perform a minor fix up on class names to get magnifying glass icon to appear
+            // in omniBox/search component.
+            let searchIconElem = document.querySelector(".search-button-icon");
+            if (searchIconElem) {
+                searchIconElem.className = "forceIconDeprecated selfServiceIcon search-icon";
+                observer.disconnect();
+            }
+        });
+
+        observer.observe(document.body, {childList: true, subtree: true, attributes: false, characterData: false});
+    },
+
+    toggleSearch: function (component, event, helper) {
+        $A.util.toggleClass(component.find('searchContainer'), 'searchVisible');
+        $A.util.toggleClass(component.find('headerSearch'), 'searchVisible');
+    },
+
+    handleRouteChange: function (component, event, helper) {
+        $A.util.removeClass(component.find('searchContainer'), 'searchVisible');
+        $A.util.removeClass(component.find('headerSearch'), 'searchVisible');
+    },
+
+    navigateToHome: function (component, event, helper) {
+        // removed the call to navigateToHome event 
+    }
+})

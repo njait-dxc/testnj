@@ -1,0 +1,55 @@
+<aura:component implements="forceCommunity:themeLayout">
+
+    <aura:attribute name="navBar" type="Aura.Component[]"/>
+    <aura:attribute name="profileMenu" type="Aura.Component[]"/>
+    <aura:attribute name="search" type="Aura.Component[]"/>
+    <aura:attribute name="carouselRegion" type="Aura.Component[]" required="false"/>
+    <aura:attribute name="companyLogoPath" type="String" default="{!$Resource.MYOB_Logo_Latest}"/>
+
+    <aura:handler name="init" value="{!this}" action="{!c.init}"/>
+    <aura:handler event="forceCommunity:routeChange" action="{!c.handleRouteChange}"/>
+
+    <c:ThemeHelper/>
+
+    <div class="header">
+        <ui:button press="{!c.navigateToHome}" class="logo">
+            <img src="{!v.companyLogoPath}" class="logoImage"/>
+        </ui:button>
+        {!v.navBar}
+        <ui:button class="headerSearch-toggle" aura:id="searchToggle" press="{!c.toggleSearch}">
+            <c:svg class="customIcon icon--notification" xlinkHref="{!$Resource.sldsutilitysymbols + '#search'}"/>
+        </ui:button>
+        <c:svg class="customIcon icon--notification" xlinkHref="{!$Resource.sldsutilitysymbols + '#notification'}"/>
+        {!v.profileMenu}
+    </div>
+
+    <div class="headerSearch-container" aura:id="searchContainer">
+        <div class="headerSearch" aura:id="headerSearch">
+            {!v.search}
+            <ui:button class="headerSearch-close" press="{!c.toggleSearch}">
+                <c:svg class="customIcon icon--close" xlinkHref="{!$Resource.sldsutilitysymbols + '#close'}"/>
+            </ui:button>
+        </div>
+        <div class="headerBackground" onclick="{!c.toggleSearch}"></div>
+    </div>
+
+    <div class="carousel" aura:id="carousel-test">
+        {!v.carouselRegion}
+    </div>
+
+    <div class="content">
+        {!v.body}
+    </div>
+
+    <div class="footer">
+        <img src="{!v.companyLogoPath}" class="logo"/>
+
+        <div class="links">
+            Contact Us <a href="https://www.myob.com/au/contact-us" style="margin-left: 0rem;">AU</a> | <a href="https://www.myob.com/nz/contact-us" style="margin-left: 0rem;">NZ</a>
+            <a href="https://www.myob.com/au/support/customer-service/myob-legal-notices">MYOB Legal Notices</a>
+            <a href="https://www.myob.com/au/privacy-policy">Privacy Policy</a>
+            <a href="https://www.myob.com/au/about/security/security-commitment">Security</a>
+            
+        </div>      
+    </div>
+</aura:component>

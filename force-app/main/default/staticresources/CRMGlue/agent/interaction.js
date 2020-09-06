@@ -1,0 +1,1 @@
+define(["agent/comms"],function(a){var b="agent/interaction: ";return{attachData:function(c){console.log(b+"attachData"),a.send(c)},markDone:function(c){console.log(b+"markDone"),a.send(c)},releaseCall:function(c){console.log(b+"releaseCall"),a.send(c)},userEvent:function(c){console.log(b+"userEvent"),a.send(c)}}});

@@ -1,0 +1,279 @@
+<apex:page standardController="Opportunity_Scoping_Question__c" extensions="CMScopingQuestionExtension">
+    <apex:form >
+        <apex:pageblock id="body" mode="edit" title="">
+            <font color="red"><b><apex:messages /></b></font>
+            
+            <apex:pageBlockButtons >
+                <apex:commandButton value="Save" action="{!saveAndRedirect}"/>
+                <apex:actionStatus startText="(Saving...)" stopText="" onStop="CloseWindow();" id="closer"/>
+                <apex:commandButton value="Cancel" action="{!cancelAndRedirect}"/>
+                
+            </apex:pageBlockButtons>
+            
+           <apex:pageBlockSection columns="1" id="header">      
+                 <!-- <font color="red"><b>To create a scoping request case, please tick the Scoping Required checkbox on opportunity.</b></font><br/>   -->  
+                <apex:inputField value="{!Opportunity_Scoping_Question__c.Type__c}" required="false" label="Scoping Type" style="width:450px" >
+                    <apex:actionSupport event="onchange" rerender="body" Status="Status"/>
+                </apex:inputfield>
+            </apex:pageBlockSection> 
+ 
+            <apex:pageBlockSection columns="1" id="OtherScopeType" rendered="{!Opportunity_Scoping_Question__c.Type__c=='SCOPE FOR - Other Scope Type' || Opportunity_Scoping_Question__c.Type__c=='Unsure' }">            
+                <apex:inputField value="{!Opportunity_Scoping_Question__c.Why_does_the_client_need_this_scope__c}" required="false" label="Why does the client need this scope" style="width:600px" />
+                <br/>
+                <apex:inputField value="{!Opportunity_Scoping_Question__c.What_is_the_expected_Outcome__c}" required="false" label="What is the expected Outcome" style="width:600px"/>
+                <br/>
+                <apex:inputField value="{!Opportunity_Scoping_Question__c.MYOB_TAX_TYPE_BEING_USED__c}" required="false" label="MYOB TAX TYPE BEING USED" style="width:200px"/>
+                <br/>
+                <apex:inputField value="{!Opportunity_Scoping_Question__c.MYOB_Integration_BEING_USED__c}" required="false" label="MYOB Integration BEING USED" style="width:200px"/>
+                <br/>
+                <apex:inputField value="{!Opportunity_Scoping_Question__c.Which_MYOB_GL_Type_is_being_Used__c}" required="false" label="Which MYOB GL Type is being Used" style="width:200px"/>
+                <br/>
+                <apex:inputField value="{!Opportunity_Scoping_Question__c.Training_Staff_Admin_Number__c}" required="false" label="Training Staff Admin - Number" style="width:50px"/>
+                <br/>
+                <apex:inputField value="{!Opportunity_Scoping_Question__c.Training_Staff_General_User_Number__c}" required="false" label="Training Staff General User - Number" style="width:50px"/>
+            </apex:pageBlockSection> 
+            
+            <apex:pageBlockSection columns="1" id="ChangesToPracticeManagerData" rendered="{!Opportunity_Scoping_Question__c.Type__c=='SCOPE FOR - Changes to Practice Manager Data' || Opportunity_Scoping_Question__c.Type__c=='Unsure'}">            
+                <apex:inputField value="{!Opportunity_Scoping_Question__c.Change_Company_across_Clients_Script__c}" required="false" label="Change Company across Clients - Script" style="width:60px" />
+                <br/>
+                <apex:inputField value="{!Opportunity_Scoping_Question__c.Change_Company_across_Client_Assignments__c}" required="false" label="Change Company across Client Assignments - Script" style="width:60px"/>
+                <br/>
+                <apex:inputField value="{!Opportunity_Scoping_Question__c.Import_Jobs_from_Spreadsheet__c}" required="false" label="Import Jobs from Spreadsheet - Job Name, Client Assignment, $$ Budget, Allocated Employee, Due Date" style="width:60px"/>
+                <br/>
+                <apex:inputField value="{!Opportunity_Scoping_Question__c.Import_Additional_Client_Data_Script__c}" required="false" label="Import Additional Client Data (Extras etc)  from Spreadsheet - Script" style="width:60px"/>
+                <br/>
+                <apex:inputField value="{!Opportunity_Scoping_Question__c.How_many_Extrafields_will_be_updated__c}" required="false" label="How many Extrafields will be updated" style="width:60px"/>
+            </apex:pageBlockSection>           
+  
+             
+            <apex:pageBlockSection columns="1" id="ChangeofPracticeOwnershipDatabaseSeparation" rendered="{!Opportunity_Scoping_Question__c.Type__c=='SCOPE FOR - Change of Practice Ownership Database Separation' ||  Opportunity_Scoping_Question__c.Type__c=='Unsure'}">            
+                <apex:inputField value="{!Opportunity_Scoping_Question__c.Is_it_due_to_change_of_ownership__c}" required="false" label="Is it due to change of ownership" style="width:60px"/>
+                <br/>
+                <apex:inputField value="{!Opportunity_Scoping_Question__c.PM_DATABASE__c}" required="false" label="PM Database" style="width:400px"/>
+                <br/>
+                <apex:inputField value="{!Opportunity_Scoping_Question__c.Bill_out_existing_WIP_on_Compan__c}" required="false" label="Bill out existing WIP on Company" style="width:400px"/>
+                <br/>
+                <apex:inputField value="{!Opportunity_Scoping_Question__c.Add_NEW_WIP_to_Existing_Company__c}" required="false" label="Add NEW WIP to Existing Company" style="width:60px"/>
+                <br/>
+                <apex:inputField value="{!Opportunity_Scoping_Question__c.Add_New_WIP_to_New_Company__c}" required="false" label="Add New WIP to New Company" style="width:60px"/>
+                <br/>
+                <apex:inputField value="{!Opportunity_Scoping_Question__c.Transfer_All_Old_WIP_to_New_Company__c}" required="false" label="Transfer All Old WIP to New Company" style="width:60px"/>
+                <br/>
+                <apex:inputField value="{!Opportunity_Scoping_Question__c.Continue_to_receive_Client_Payments__c}" required="false" label="Continue to receive Client Payments on existing Company" style="width:60px"/>
+                <br/>
+                <apex:inputField value="{!Opportunity_Scoping_Question__c.New_Code_Request__c}" required="false" label="New Client Code Request" style="width:60px"/>
+            </apex:pageBlockSection>  
+            
+            <apex:pageBlockSection columns="1" id="DatabaseEnvironmentPracticeMerger" rendered="{!Opportunity_Scoping_Question__c.Type__c=='SCOPE FOR - Database, Environment or Practice Merger' ||  Opportunity_Scoping_Question__c.Type__c=='Unsure'}">            
+                <!--<apex:inputField value="{!Opportunity_Scoping_Question__c.Why_does_the_client_need_the_scope__c}" required="false" label="Why does the client need the scope?" style="width:600px"/>
+                <br/>
+                <apex:inputField value="{!Opportunity_Scoping_Question__c.What_is_the_expected_Outcome__c}" required="false" label="What is the expected outcome?" style="width:600px"/>
+                <br/>-->
+                <apex:inputField value="{!Opportunity_Scoping_Question__c.Who_is_the_main_practice__c}" required="false" label="Who is the main practice? Practice Name, Contact Name, Number, Email" style="width:600px"/>
+                <br/>
+                <apex:inputField value="{!Opportunity_Scoping_Question__c.Main_Practice_IT_Providers_Details__c}" required="false" label="Main Practice - IT Providers Details?" style="width:600px"/>
+                <br/>
+                <apex:inputField value="{!Opportunity_Scoping_Question__c.Who_is_the_merging_practice__c}" required="false" label="Who is the merging practice? Practice Name, Contact Name, Number, Email" style="width:600px"/>
+                <br/>
+                <apex:inputField value="{!Opportunity_Scoping_Question__c.Merging_Practice_IT_Providers_Details__c}" required="false" label="Merging Practice - IT Providers Details?" style="width:600px"/>
+                <br/>
+                <apex:inputField value="{!Opportunity_Scoping_Question__c.Is_the_Merging_client_a_MYOB_client__c}" required="false" label="Is the Merging client a MYOB client?" style="width:60px"/>
+                <br/>
+                <apex:inputField value="{!Opportunity_Scoping_Question__c.If_Yes_Above_Client_ID__c}" required="false" label="If Yes Above - Client ID?" style="width:200px"/>
+                <br/>
+                <apex:inputField value="{!Opportunity_Scoping_Question__c.Which_Product_Suite_is_merging_client__c}" required="false" label="Which Product Suite is the merging client using?" style="width:200px"/>
+                <br/>
+                <apex:inputField value="{!Opportunity_Scoping_Question__c.Which_products_does_merging_client_have__c}" required="false" label="Which products does the merging client have?" style="width:200px"/>
+                <br/>
+                <apex:inputField value="{!Opportunity_Scoping_Question__c.What_Integration_is_being_used__c}" required="false" label="What Integration is being used?" style="width:200px"/>
+                <br/>
+                <apex:inputField value="{!Opportunity_Scoping_Question__c.Are_all_the_clients_attached_to_separate__c}" required="false" label="Are all the clients attached to separate Partner Codes?" style="width:60px"/>
+                <br/>
+                <apex:inputField value="{!Opportunity_Scoping_Question__c.Are_the_clientcodes_similar__c}" required="false" label="Are the clientcodes similar?" style="width:60px"/>
+                <br/>
+                <!--<apex:inputField value="{!Opportunity_Scoping_Question__c.Will_the_client_like_MYOB_to_check_for_d__c}" required="false" label="Will the client like MYOB to check for duplicate clientcodes?" style="width:60px"/>
+                <br/>
+                <apex:inputField value="{!Opportunity_Scoping_Question__c.Will_the_client_require_assistance_on_ed__c}" required="false" label="Will the client require assistance on editing clientcodes?" style="width:60px"/>
+                <br/>-->
+                <apex:inputField value="{!Opportunity_Scoping_Question__c.What_GL_Type_is_being_used__c}" required="false" label="What GL does the Merging client use?" style="width:200px"/>
+                <br/>
+                <!--<apex:inputField value="{!Opportunity_Scoping_Question__c.How_many_Live_Ledgers_does_the_merging_c__c}" required="false" label="How many Live Ledgers does the merging client have? (This is number field)" style="width:200px"/>
+                <br/>-->
+                <apex:inputField value="{!Opportunity_Scoping_Question__c.What_Tax_Type_is_being_used__c}" required="false" label="What Tax does the Merging client?" style="width:200px"/>
+                <br/>
+                <apex:inputField value="{!Opportunity_Scoping_Question__c.How_many_tax_returns_by_Partner__c}" required="false" label="How many tax returns by Partner? (This is number field)" style="width:200px"/>
+                <br/> 
+                <apex:inputField value="{!Opportunity_Scoping_Question__c.How_many_Tax_Returns_per_year_on_average__c}" required="false" label="How many Tax Returns per year on average? (This is number field)" style="width:200px"/>
+                <br/>
+                <apex:inputField value="{!Opportunity_Scoping_Question__c.For_MYOB_AE_newMer__c}" required="false" label="For MYOB (AE/newAO) to MYOB (AE/ newAO) Mergers - How many years of Tax Returns does the practice wish to MERGE in?" style="width:200px"/>
+                <br/>
+                <apex:inputField value="{!Opportunity_Scoping_Question__c.Current_2_prior_years_Includes_yearMer__c}" required="false" label="Current + 2 prior years (Includes year 0, 1, 2)" style="width:60px"/>
+                <br/>
+                <apex:inputField value="{!Opportunity_Scoping_Question__c.If_above_tickbox_is_ticked_then_how_Merg__c}" required="false" label="If above tickbox is ticked then how many additional years (e.g. year 3, 4, 5)" style="width:200px"/>
+                <br/>               
+                <apex:inputField value="{!Opportunity_Scoping_Question__c.What_tax_monitoring_method_is_being_used__c}" required="false" label="What tax monitoring method is being used?" style="width:200px"/>
+                <br/>
+                <apex:inputField value="{!Opportunity_Scoping_Question__c.Is_WIP_and_Debt_required__c}" required="false" label="Is WIP and Debt required?" style="width:60px"/>
+                <br/>
+                <apex:inputField value="{!Opportunity_Scoping_Question__c.Is_Jobs_and_Assignments_required__c}" required="false" label="Is Jobs and Assignments required?" style="width:60px"/>
+                <br/>
+                <apex:inputField value="{!Opportunity_Scoping_Question__c.Will_invoice_templates_need_to_be_edited__c}" required="false" label="Will invoice templates need to be edited by MYOB?" style="width:60px"/>
+                <br/>
+                <!--<apex:inputField value="{!Opportunity_Scoping_Question__c.How_many_Portals_does_the_merging_client__c}" required="false" label="How many Portals does the merging client have? (This is number field)" style="width:200px"/>
+                <br/>  -->              
+                <apex:inputField value="{!Opportunity_Scoping_Question__c.Will_documents_need_to_be_moved_and_how__c}" required="false" label="Will documents need to be moved and how many documents? (This is number field)" style="width:200px"/>
+                <br/> 
+                <apex:inputField value="{!Opportunity_Scoping_Question__c.Will_Corporate_Compliance_need_to_be_mov__c}" required="false" label="Will Corporate Compliance be moving? (no Merger Available)" style="width:60px"/>
+                <br/> 
+                <apex:inputField value="{!Opportunity_Scoping_Question__c.Will_an_archived_backup_be_required__c}" required="false" label="Will an archived backup be required?" style="width:200px"/>
+                <br/> 
+                <apex:inputField value="{!Opportunity_Scoping_Question__c.How_many_staff_require_General_training__c}" required="false" label="How many staff require General training? (This is number field)" style="width:200px"/>
+                <br/> 
+                <apex:inputField value="{!Opportunity_Scoping_Question__c.How_many_staff_require_Admin_training__c}" required="false" label="How many staff require Admin training? (This is number field)" style="width:200px"/>
+                <br/>
+                <!--Rohit 01/06/2020 Addded new field for SOE970--> 
+                <!--<apex:inputField value="{!Opportunity_Scoping_Question__c.How_many_Tax_Returns_per_year_on_average__c}" required="false" label="How many Tax Returns per year on average? (This is number field)" style="width:200px"/>
+                <br/>-->
+                <apex:inputField value="{!Opportunity_Scoping_Question__c.Does_practice_have_more_than_1_legal_en__c}" required="false" label="Does practice have more than: 1 legal entity?" style="width:200px"/>
+                <br/>
+                <apex:inputField value="{!Opportunity_Scoping_Question__c.Does_practice_have_more_than_4_service__c}" required="false" label="Does practice have more than: 4 service lines?" style="width:200px"/>
+                <br/>
+                <apex:inputField value="{!Opportunity_Scoping_Question__c.Does_practice_have_more_than_50_timeshe__c}" required="false" label="Does practice have more than: 50 timesheet codes?" style="width:200px"/>
+                <br/>
+                <apex:inputField value="{!Opportunity_Scoping_Question__c.Does_practice_have_more_than_10_staff__c}" required="false" label="Does practice have more than: 10 staff?" style="width:200px"/>
+                <br/>
+                <apex:inputField value="{!Opportunity_Scoping_Question__c.Does_practice_have_more_than_2_levels_o__c}" required="false" label="Does practice have more than: 2 levels of reporting on its service lines?" style="width:200px"/>
+                <br/>
+                <apex:inputField value="{!Opportunity_Scoping_Question__c.Does_practice_have_more_than_More_than__c}" required="false" label=" Does practice have more than: 4 categories of staff with different access levels?" style="width:200px"/>
+                <br/>
+                <!--<apex:inputField value="{!Opportunity_Scoping_Question__c.For_MYOB_AE_newMer__c}" required="false" label="For MYOB (AE/newAO) to MYOB (AE/ newAO) Mergers - How many years of Tax Returns does the practice wish to MERGE in?" style="width:200px"/>
+                <br/>
+                <apex:inputField value="{!Opportunity_Scoping_Question__c.Current_2_prior_years_Includes_yearMer__c}" required="false" label="Current + 2 prior years (Includes year 0, 1, 2)" style="width:60px"/>
+                <br/>
+                <apex:inputField value="{!Opportunity_Scoping_Question__c.If_above_tickbox_is_ticked_then_how_Merg__c}" required="false" label="If above tickbox is ticked then how many additional years (e.g. year 3, 4, 5)" style="width:200px"/>
+                <br/>-->
+                <!--EndSOE-970-->                                                                                                                                                                                      
+            </apex:pageBlockSection>      
+            
+            <apex:pageBlockSection columns="1" id="DatabaseEnvironmentPracticeSplit" rendered="{!Opportunity_Scoping_Question__c.Type__c=='SCOPE FOR - Database, Environment or Practice Split' ||  Opportunity_Scoping_Question__c.Type__c=='Unsure'}">            
+               <!-- <apex:inputField value="{!Opportunity_Scoping_Question__c.Why_does_the_client_need_the_scope__c}" required="false" label="Why does the client need the scope?" style="width:600px"/>
+                <br/>
+                <apex:inputField value="{!Opportunity_Scoping_Question__c.What_is_the_expected_Outcome__c}" required="false" label="What is the expected outcome?" style="width:600px"/>
+                <br/> -->
+                <apex:inputField value="{!Opportunity_Scoping_Question__c.Departing_Splitting_Partner_s_details__c}" required="false" label="Departing / Splitting Partner(s) details – Name(s), Contact No(s), Email(s)?" style="width:600px"/>
+                <br/>
+                <apex:inputField value="{!Opportunity_Scoping_Question__c.Departing_Partner_s_External_Interna__c}" required="false" label="Departing Partner(s)  - External/Internal IT Contact Details?" style="width:600px"/>
+                <br/>
+                <apex:inputField value="{!Opportunity_Scoping_Question__c.Remaining_Partner_s_details_Name_s__c}" required="false" label="Remaining Partner(s) details – Name(s), Contact No(s), Email(s)?" style="width:600px"/>
+                <br/>
+                <apex:inputField value="{!Opportunity_Scoping_Question__c.Remaining_Partner_s_External_Interna__c}" required="false" label="Remaining Partner(s)  - External/Internal IT Contact Details?" style="width:600px"/>
+                <br/>
+                
+                <!--<apex:inputField value="{!Opportunity_Scoping_Question__c.Who_is_the_main_practice__c}" required="false" label="Who is/are the Departing/Splitting Partners?" style="width:600px"/>
+                <br/>                
+                <apex:inputField value="{!Opportunity_Scoping_Question__c.Who_is_the_new_Practice__c}" required="false" label="Who is/are the Remaining Practice Partners?" style="width:600px"/>               
+                <br/>-->
+                <!--<apex:inputField value="{!Opportunity_Scoping_Question__c.Will_a_single_or_double_split_be_require__c}" required="false" label="Will a single or double split be required?" style="width:200px"/> --> 
+                <apex:inputField value="{!Opportunity_Scoping_Question__c.Single_Split_Only_departing_Party_ge__c}" required="false" label="Single Split (Only departing Party gets clean Databases. Original remains AS IS.)?" style="width:60px"/>
+                <br/>
+                <apex:inputField value="{!Opportunity_Scoping_Question__c.Double_Split_Each_Party_Gets_a_Clean_D__c}" required="false" label="Double Split (Each Party Gets a Clean Database)?" style="width:60px"/>
+                <br/>
+                <apex:inputField value="{!Opportunity_Scoping_Question__c.Split_by_Server_Migration_Both_Parties__c}" required="false" label="Split by Server Migration – Both Parties get an AS IS Copy of the Database?" style="width:60px"/>
+                <br/>
+                <apex:inputField value="{!Opportunity_Scoping_Question__c.Is_this_an_Amicable_Split__c}" required="false" label="Is this an Amicable Split?" style="width:200px"/>
+                <br/>
+                
+                <apex:inputField value="{!Opportunity_Scoping_Question__c.Which_Product_Suite_is_the_new_Practice__c}" required="false" label="Which Product Suite is the new Practice going to be using?" style="width:200px"/>               
+                <br/>
+                <apex:inputField value="{!Opportunity_Scoping_Question__c.Which_products_will_the_new_Practice_use__c}" required="false" label="Which products will the new Practice use??" style="width:200px"/>               
+                <br/>
+                <apex:inputField value="{!Opportunity_Scoping_Question__c.What_Integration_is_being_used__c}" required="false" label="What Integration is being used?" style="width:200px"/>
+                <br/>                
+                <apex:inputField value="{!Opportunity_Scoping_Question__c.Are_all_the_clients_attached_to_separate__c}" required="false" label="Are all the clients attached to separate Partner Codes?" style="width:60px"/>
+                <br/>
+                <!--<apex:inputField value="{!Opportunity_Scoping_Question__c.How_many_Live_Ledgers_does_the_Main_Prac__c}" required="false" label="How many Live Ledgers does the Main Practice have? (This is number field)" style="width:200px"/>
+                <br/>-->
+                <apex:inputField value="{!Opportunity_Scoping_Question__c.What_GL_Type_is_being_used__c}" required="false" label="What GL Type is being used?" style="width:200px"/> 
+                <br/>
+                <!--
+                <apex:inputField value="{!Opportunity_Scoping_Question__c.How_many_Live_Ledgers_does_the_Main_Prac__c}" required="false" label="How many Live Ledgers does the Main Practice have? (This is number field)" style="width:200px"/>
+                <br/>
+                -->
+                
+                <apex:inputField value="{!Opportunity_Scoping_Question__c.What_Tax_Type_is_being_used__c}" required="false" label="What Tax Type is being used?" style="width:200px"/>
+                <br/>                
+                <apex:inputField value="{!Opportunity_Scoping_Question__c.How_many_tax_returns_by_Partner__c}" required="false" label="How many tax returns by Partner? (This is number field)" style="width:200px"/>
+                <br/> 
+                <apex:inputField value="{!Opportunity_Scoping_Question__c.How_many_Tax_Returns_per_year_on_average__c}" required="false" label="How many Tax Returns per year on average? (This is number field)" style="width:200px"/>
+                <br/>   
+                <apex:inputField value="{!Opportunity_Scoping_Question__c.For_MYOB_AE_newAO_to_MYOB_AE_newAO__c}" required="false" label="For MYOB (AE/newAO) to MYOB (AE/ newAO) Splits- How many years of Tax Returns does the departing practice wish to split out?" style="width:200px"/>
+                <br/>
+                <apex:inputField value="{!Opportunity_Scoping_Question__c.Current_2_prior_years_Includes_year_0__c}" required="false" label="Current + 2 prior years (Includes year 0, 1, 2)" style="width:60px"/>
+                <br/>
+                <apex:inputField value="{!Opportunity_Scoping_Question__c.If_above_tickbox_is_ticked_then_how_many__c}" required="false" label="If above tickbox is ticked then how many additional years (e.g. year 3, 4, 5)" style="width:200px"/>
+                <br/>               
+                <apex:inputField value="{!Opportunity_Scoping_Question__c.Is_WIP_and_Debt_required__c}" required="false" label="Is WIP and Debt required?" style="width:60px"/>
+                <br/>
+                <apex:inputField value="{!Opportunity_Scoping_Question__c.Is_Jobs_and_Assignments_required__c}" required="false" label="Is Jobs and Assignments required?" style="width:60px"/>
+                <br/>
+                <apex:inputField value="{!Opportunity_Scoping_Question__c.Will_invoice_templates_need_to_be_edited__c}" required="false" label="Will invoice templates need to be edited by MYOB?" style="width:60px"/>
+                <br/>
+                <apex:inputField value="{!Opportunity_Scoping_Question__c.Will_an_archived_backup_be_required__c}" required="false" label="Will an archived backup be required?" style="width:200px"/>
+                <br/>                
+                <!--<apex:inputField value="{!Opportunity_Scoping_Question__c.How_many_Portals_does_the_main_Practice__c}" required="false" label="How many Portals does the main Practice have? (This is number field)" style="width:200px"/>
+                <br/>-->               
+                <apex:inputField value="{!Opportunity_Scoping_Question__c.Will_documents_need_to_be_moved_and_how__c}" required="false" label="Will documents need to be moved and how many documents? (This is number field)" style="width:200px"/>
+                <br/> 
+                <apex:inputField value="{!Opportunity_Scoping_Question__c.Will_Corporate_Compliance_need_to_be_mov__c}" required="false" label="Will Corporate Compliance need to be moved?" style="width:60px"/>
+                <br/> 
+                <!--<apex:inputField value="{!Opportunity_Scoping_Question__c.Will_an_archived_backup_be_required__c}" required="false" label="Will an archived backup be required?" style="width:200px"/>
+                <br/> -->
+                <apex:inputField value="{!Opportunity_Scoping_Question__c.How_many_staff_require_General_training__c}" required="false" label="How many staff require General training? (This is number field)" style="width:200px"/>
+                <br/> 
+                <apex:inputField value="{!Opportunity_Scoping_Question__c.How_many_staff_require_Admin_training__c}" required="false" label="How many staff require Admin training? (This is number field)" style="width:200px"/>
+                <br/>
+                <!--RohitSOE-974 Added new field-->
+                <!--<apex:inputField value="{!Opportunity_Scoping_Question__c.What_is_the_contact_details_for_the_depa__c}" required="false" label="What is the contact details for the departing Partners?" style="width:200px"/>
+                <br/>
+                <apex:inputField value="{!Opportunity_Scoping_Question__c.What_is_the_contact_details_for_the_rema__c}" required="false" label="What is the contact details for the remaining partners?" style="width:200px"/>
+                <br/>-->
+                <!--<apex:inputField value="{!Opportunity_Scoping_Question__c.Is_this_an_Amicable_Split__c}" required="false" label="Is this an Amicable Split?" style="width:200px"/>
+                <br/>-->
+                <!--<apex:inputField value="{!Opportunity_Scoping_Question__c.Is_a_Full_AS_IS_Copy__c}" required="false" label="Is a Full AS IS Copy of the Databases acceptable for Both Parties?" style="width:200px"/>
+                <br/>-->
+                <apex:inputField value="{!Opportunity_Scoping_Question__c.Will_they_be_Splitting_their_Portals_Led__c}" required="false" label="Will they be Splitting their Portals/Ledgers/Banklink/Online Assets items?" style="width:200px"/>
+                <br/>
+                <!--<apex:inputField value="{!Opportunity_Scoping_Question__c.How_many_Tax_Returns_per_year_on_average__c}" required="false" label="How many Tax Returns per year on average? (This is number field)" style="width:200px"/>
+                <br/>-->
+                <apex:inputField value="{!Opportunity_Scoping_Question__c.WILL_the_splitting_practice_have_more_th__c}" required="false" label="WILL the splitting practice have more than: 1 legal entity?" style="width:200px"/>
+                <br/>
+                <apex:inputField value="{!Opportunity_Scoping_Question__c.WILL_the_splitting_practice_have_more_4__c}" required="false" label="WILL the splitting practice have more than: 4 service lines? " style="width:200px"/>
+                <br/>
+                <apex:inputField value="{!Opportunity_Scoping_Question__c.WILL_the_splitting_practice_have_more_50__c}" required="false" label="WILL the splitting practice have more than: 50 timesheet codes?" style="width:200px"/>
+                <br/>
+                <apex:inputField value="{!Opportunity_Scoping_Question__c.WILL_the_splitting_practice_have_more_10__c}" required="false" label="WILL the splitting practice have more than: 10 staff?" style="width:200px"/>
+                <br/>
+                <apex:inputField value="{!Opportunity_Scoping_Question__c.WILL_the_splitting_practice_have_more_2__c}" required="false" label="WILL the splitting practice have more than: 2 levels of reporting on its service lines?" style="width:200px"/>
+                <br/>
+                <apex:inputField value="{!Opportunity_Scoping_Question__c.WILL_the_splitting_practice_have_more_4c__c}" required="false" label="WILL the splitting practice have more than: 4 categories of staff with different access levels?" style="width:200px"/>
+                <br/>
+                <!--<apex:inputField value="{!Opportunity_Scoping_Question__c.For_MYOB_AE_newAO_to_MYOB_AE_newAO__c}" required="false" label="For MYOB (AE/newAO) to MYOB (AE/ newAO) Splits- How many years of Tax Returns does the departing practice wish to split out?" style="width:200px"/>
+                <br/>
+                <apex:inputField value="{!Opportunity_Scoping_Question__c.Current_2_prior_years_Includes_year_0__c}" required="false" label="Current + 2 prior years (Includes year 0, 1, 2)" style="width:60px"/>
+                <br/>
+                <apex:inputField value="{!Opportunity_Scoping_Question__c.If_above_tickbox_is_ticked_then_how_many__c}" required="false" label="If above tickbox is ticked then how many additional years (e.g. year 3, 4, 5)" style="width:200px"/>
+                <br/>-->
+                
+                <!-- End SOE-974-->                              
+            </apex:pageBlockSection> 
+            <!-- Rohit 20/01/2020 Added for SFDC-1093 -->  
+            <apex:pageBlockSection columns="1" id="SiteDownTechServices" rendered="{!Opportunity_Scoping_Question__c.Type__c=='SCOPE FOR - Site Down/Tech Services' || Opportunity_Scoping_Question__c.Type__c=='Unsure'}">            
+                <apex:inputField value="{!Opportunity_Scoping_Question__c.How_Long_Has_the_Site_Been_Down__c}" required="false" label="How Long Has the Site Been Down? - Days" style="width:60px"/>
+                <br/>
+                <apex:inputField value="{!Opportunity_Scoping_Question__c.Why_Has_the_Site_Come_to_be_Down__c}" required="false" label="Why Has the Site Come to be Down?" style="width:600px"/>
+                <br/>
+            </apex:pageBlockSection>                              
+        </apex:pageblock>
+        
+    </apex:form>
+</apex:page>

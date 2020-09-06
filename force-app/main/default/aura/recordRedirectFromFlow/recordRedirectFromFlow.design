@@ -1,0 +1,7 @@
+<!--
+ - Created by Ankit.Bhardwaj on 17/04/2020.
+ -->
+
+<design:component>
+    <design:attribute name="recordId" label="Id of the New Record" />
+</design:component>

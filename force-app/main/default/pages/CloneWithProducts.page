@@ -1,0 +1,5 @@
+<apex:page standardController="Opportunity" extensions="CloneWithProductExtension">
+    <flow:interview name="Flow_Clone_Opportunity_With_Products" interview="{!flowInterview}" finishLocation="{!FinishLocation}" buttonLocation="top">
+        <apex:param name="InOppId" value="{!Opportunity.Id}"/>
+    </flow:interview>
+</apex:page>

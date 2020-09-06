@@ -1,0 +1,161 @@
+<apex:page standardController="Opportunity_Product_Question__c" extensions="CMConsultingQuestionExtension" lightningStylesheets="true">
+    <apex:form >
+        <apex:pageblock id="body" mode="edit" title="">
+            <font color="red"><b><apex:messages /></b></font>
+            <apex:pageBlockButtons >
+                <apex:commandButton value="Save" action="{!saveAndRedirect}"/>
+                <apex:commandButton value="Cancel" action="{!cancelAndRedirect}"/>
+                
+            </apex:pageBlockButtons>
+            
+            <apex:pageBlockSection columns="1" id="header">            
+                <apex:inputField value="{!Opportunity_Product_Question__c.Type__c}" required="false" label="Product Type" style="width:450px" >
+                    <apex:actionSupport event="onchange" rerender="body" Status="Status"/>
+                </apex:inputfield>
+            </apex:pageBlockSection>
+ 
+            <apex:pageBlockSection columns="1" id="ClientAccountingPlusType" rendered="{!Opportunity_Product_Question__c.Type__c=='CONSULTING QUESTION FOR - Client Accounting Plus'}">            
+                <apex:inputField value="{!Opportunity_Product_Question__c.CAP_Currently_Use__c}" required="false" label="If implementing Workpapers, what does the client currently use for Workpapers?" style="width:400px" />
+                <br/>
+                <!--<apex:inputField value="{!Opportunity_Product_Question__c.CAP_Reason__c}" required="false" label="What was the compelling reason for the client to implement Client Accounting Plus?" style="width:400px"/>
+                <br/>-->
+                <apex:inputField value="{!Opportunity_Product_Question__c.CAP_Ledger__c}" required="false" label="What ledgers is the client using? E.g. MAS/Accounts/AO Classic GL/Essentials/MYOB Ledger/AccountRight" style="width:400px"/>
+                <br/>
+                <apex:inputField value="{!Opportunity_Product_Question__c.CAP_Ledger_To_Use__c}" required="false" label="What ledgers is the client going to be using? E.g. MAS/Accounts/AO Classic GL/Essentials/MYOB Ledger/AccountRight" style="width:400px"/>
+                <br/>                
+                <apex:inputField value="{!Opportunity_Product_Question__c.CAP_Training__c}" required="false" label="Does the client require training in AE / AO Ledger or Common Ledger or both?" style="width:400px"/>
+                
+                <br/>  
+                <apex:inputField value="{!Opportunity_Product_Question__c.CAP_Ledger_Chart__c}" required="false" label="For Ledger implementations: Is the practice using a Non-Standard Chart in AO/AE?" style="width:400px"/>
+                
+                <br/>   
+<apex:inputField value="{!Opportunity_Product_Question__c.EC_Ledger__c}" required="false" label="For Ledger implementations: Is the practice using Essentials if yes which chart?" style="width:400px"/>
+                
+                <br/>   
+<apex:inputField value="{!Opportunity_Product_Question__c.Ledger_ET__c}" required="false" label="For Ledger implementations: Has the client had Essentials training from CSC?" style="width:400px"/>
+                
+                <br/>   
+<apex:inputField value="{!Opportunity_Product_Question__c.Ledger_ET_Date__c}" required="false" label="if Yes – please specify date" style="width:400px"/>
+                
+                <br/>   
+
+                ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------             
+
+                <apex:inputField value="{!Opportunity_Product_Question__c.CAP_Ledger_Departmental_Account__c}" required="false" label="For Ledger implementations:  Is the practice using Departmental/Divisional accounts?  (Please refer bullet points below for info)" style="width:400px"/>                
+                <apex:outputLabel ><br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; * if the client owns several rental properties and wants to show income and expense for each one separately <br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;* operates more than one branch and wants to report on the performance of each one separately <br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;* has more than one type of business</apex:outputLabel>             
+
+                <br/>
+                <br/>                 
+                <apex:inputField value="{!Opportunity_Product_Question__c.CAP_Ledger_Farming_Account__c}" required="false" label="For Ledger implementations: Does the practice process Farming Accounts?" style="width:400px"/>
+                
+                <br/>                  
+                <apex:inputField value="{!Opportunity_Product_Question__c.CAP_Sold_Specialized_Service__c}" required="false" label="If yes to any of the 2 questions above, have you sold additional consulting time – Specialised Service ½ day (all 2 options included in the half day)?" style="width:400px"/>
+                ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+                <br/>                
+                <apex:inputField value="{!Opportunity_Product_Question__c.CAP_Framework_Upgrade_Service__c}" required="false" label="For CA/Workpapers/Ledger implementations: If they are not on Framework have you sold the Framework upgrade service?" style="width:400px"/>
+                
+                <br/>                
+                <apex:inputField value="{!Opportunity_Product_Question__c.CAP_NZ_Tax_Manager__c}" required="false" label="For NZ only – For Ledger implementations: - Is the practice using Tax Manager?  This is a pre- requisite for the IR10 integration workpaper to populate the Tax Returns/Tax preparation." style="width:400px"/>             
+                <br/>
+                <apex:inputField value="{!Opportunity_Product_Question__c.CAP_Travel_Required__c}" required="false" label="If travel is required, please add this to the order" style="width:50px"/>
+                <br/>
+                <apex:inputField value="{!Opportunity_Product_Question__c.CAP_Latest_Version__c}" required="false" label="Ensure client knows to be on latest version of software" style="width:50px"/>
+                <br/>
+                <apex:inputField value="{!Opportunity_Product_Question__c.CAP_EC_Required__c}" required="false" label="EC required if they have no other framework products" style="width:50px"/>
+                <br/>
+                <apex:inputField value="{!Opportunity_Product_Question__c.CAP_More_Than_10__c}" required="false" label="Training for more than 10 users - sell additional time" style="width:50px"/>
+            </apex:pageBlockSection> 
+            
+            <apex:pageBlockSection columns="1" id="DocumentManagerType" rendered="{!Opportunity_Product_Question__c.Type__c=='CONSULTING QUESTION FOR - Document Manager'}">            
+                <apex:inputField value="{!Opportunity_Product_Question__c.DM_Currently_Use__c}" required="false" label="Is the client currently using a document management system? If so, please advise vendor." style="width:400px"/>
+                <br/>
+                <apex:inputField value="{!Opportunity_Product_Question__c.DM_Reason__c}" required="false" label="What was the compelling reason for the client to implement MYOB Document Manager?" style="width:400px"/>
+                <br/>
+                <apex:inputField value="{!Opportunity_Product_Question__c.DM_Store__c}" required="false" label="How does the client currently store their documents? e.g. Client Name; Client ID or Client Code" style="width:400px"/>
+                <br/>         
+                <apex:inputField value="{!Opportunity_Product_Question__c.DM_License__c}" required="false" label="DM licences for AE must match business users and have to be more than or equal to the Tax, Client Accounting, CC (AU Only)  users" style="width:60px"/>
+                <br/>
+                <apex:inputField value="{!Opportunity_Product_Question__c.DM_Mail_Merge__c}" required="false" label="If currently using PM and using mail merge, this will change as will creating documents in the client documents tab" style="width:60px"/>
+                <br/>
+                <apex:inputField value="{!Opportunity_Product_Question__c.DM_Upgrade_From_AO_Classic__c}" required="false" label="NZ only - upgrading from AO Classic - must convert Tax Manager and or PM first." style="width:60px"/>
+                <br/>
+                ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+                <apex:inputField value="{!Opportunity_Product_Question__c.DM_Fitness__c}" required="false" label="NZ ONLY: Does the client want Business Fitness Content Imported?" style="width:400px"/>
+                <br/>    
+                <apex:inputField value="{!Opportunity_Product_Question__c.DM_Fitness_Import__c}" required="false" label="NZ Only - Business Fitness Content Import - ensure the client has a BF DVD and/or create the file structure in Windows Explorer ready for importing" style="width:60px"/>
+                <br/>
+                <apex:inputField value="{!Opportunity_Product_Question__c.DM_Fitness_Manual__c}" required="false" label="NZ Only - Business Fitness - Advise the client of the ongoing manual process they have to perform to update Business Fitness Content. Refer KB 35822" style="width:60px"/>
+                <br/>
+                ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+                <apex:inputField value="{!Opportunity_Product_Question__c.DM_Efficiency__c}" required="false" label="DM and PDF manager provide addiitonal efficiencies when used together. It is ideal to sell both if not already using" style="width:60px"/>
+                <br/>
+                <apex:inputField value="{!Opportunity_Product_Question__c.DM_Rapid__c}" required="false" label="If client name is used currently and it’s a Rapid Implementation, add the service Document Manager Rapid - Basic Document Migration" style="width:60px"/>
+                <br/>
+                <apex:inputField value="{!Opportunity_Product_Question__c.DM_Travel__c}" required="false" label="It travel is required, please add this to the order" style="width:60px"/>
+                <br/>
+                <apex:inputField value="{!Opportunity_Product_Question__c.DM_Downtime__c}" required="false" label="Please discuss downtime for client during install" style="width:60px"/>
+                <br/>
+                <apex:inputField value="{!Opportunity_Product_Question__c.DM_Latest_Version__c}" required="false" label="Ensure client knows to be on latest version of software" style="width:60px"/>
+                <br/>
+                <apex:inputField value="{!Opportunity_Product_Question__c.DM_EC_Required__c}" required="false" label="EC required" style="width:60px"/>
+                <br/>
+                <apex:inputField value="{!Opportunity_Product_Question__c.DM_Training__c}" required="false" label="Training for more than 10 users - sell additional time" style="width:60px"/>             
+            </apex:pageBlockSection>     
+            
+            <apex:pageBlockSection columns="1" id="PracticeManagerType" rendered="{!Opportunity_Product_Question__c.Type__c=='CONSULTING QUESTION FOR - Practice Manager'}">            
+                <!--<apex:inputField value="{!Opportunity_Product_Question__c.PM_Sametime__c}" required="false" label="If implementing mulitple products, do they want to implement at the same time or staggered?" style="width:400px"/>
+                <br/>
+                <apex:inputField value="{!Opportunity_Product_Question__c.PM_Scheduler__c}" required="false" label="Schedulers do not have ESP - please provide additional information we should be aware of " style="width:400px"/>-->
+                <apex:inputField value="{!Opportunity_Product_Question__c.PM_Upgrading__c}" required="false" label="If upgrading from PTC and have CC integrated, add 2 hours adhoc for changing integration" style="width:60px" rendered="{!optyCurr='AUD'}"/> 
+                <br/>
+                <apex:inputField value="{!Opportunity_Product_Question__c.PM_Travel__c}" required="false" label="If travel is required, please add this to the opportunity" style="width:60px"/>
+                <br/>
+                <apex:inputField value="{!Opportunity_Product_Question__c.PM_Downtime__c}" required="false" label="Please discuss downtime for client during install" style="width:60px"/>
+                <br/>
+                <apex:inputField value="{!Opportunity_Product_Question__c.PM_Latest_Version__c}" required="false" label="Ensure client knows to be on latest version of software" style="width:60px"/>
+                <br/>
+                <apex:inputField value="{!Opportunity_Product_Question__c.PM_EC_Required__c}" required="false" label="EC Required" style="width:60px"/>
+                <br/>
+                <apex:inputField value="{!Opportunity_Product_Question__c.PM_Training__c}" required="false" label="Training for more than 10 users - sell additional time" style="width:60px"/>
+                <br/>
+                       
+            </apex:pageBlockSection>              
+                        
+            <apex:pageBlockSection columns="1" id="AdHocType" rendered="{!Opportunity_Product_Question__c.Type__c=='CONSULTING QUESTION FOR - AdHoc'}">            
+                <apex:inputField value="{!Opportunity_Product_Question__c.AH_Product__c}" required="false" label="Please specify what Products/what the Adhoc Consulting is for" style="width:400px" />
+                <br/>
+                <apex:inputField value="{!Opportunity_Product_Question__c.AH_Scheduler__c}" required="false" label="Schedulers do not have ESP - please provide additional information we should be aware of" style="width:400px"/>
+            </apex:pageBlockSection> 
+            
+            <apex:pageBlockSection columns="1" id="AETMType" rendered="{!Opportunity_Product_Question__c.Type__c=='CONSULTING QUESTION FOR - AE Tax Manager Upgrades'}">            
+                <apex:inputField value="{!Opportunity_Product_Question__c.AH_Product__c}" required="false" label="How many returns does the practice have?" style="width:400px"/>
+                <br/>    
+                <apex:inputField value="{!Opportunity_Product_Question__c.DM_Travel__c}" required="false" label="It travel is required, please add this to the order" style="width:60px"/>
+                <br/>
+                <apex:inputField value="{!Opportunity_Product_Question__c.DM_Downtime__c}" required="false" label="Please discuss downtime for client during install" style="width:60px"/>
+                <br/>
+                <!--<apex:inputField value="{!Opportunity_Product_Question__c.DM_Latest_Version__c}" required="false" label="Ensure client knows to be on latest version of software" style="width:60px"/>
+                <br/>-->
+                <apex:inputField value="{!Opportunity_Product_Question__c.DM_EC_Required__c}" required="false" label="EC required" style="width:60px"/>
+                <br/>
+                <apex:inputField value="{!Opportunity_Product_Question__c.DM_Training__c}" required="false" label="Training for more than 10 users - sell additional time" style="width:60px"/>                 
+            </apex:pageBlockSection>             
+
+            <apex:pageBlockSection columns="1" id="BulkMigration" rendered="{!Opportunity_Product_Question__c.Type__c=='CONSULTING QUESTION FOR - Bulk Migration'}">            
+                <apex:inputField value="{!Opportunity_Product_Question__c.BM_Ledger_Implementation__c}" required="true" label="Has the client completed their Ledger implementation (Training & Post Imp)?"/>
+                <br/>
+                <apex:inputField value="{!Opportunity_Product_Question__c.BM_Open_Ledger_Case__c}" required="true" label="Are there any Open Ledger Success Cases for this client?" rendered="{!optyCurr='AUD'}"/>
+                <br/>
+                <apex:inputField value="{!Opportunity_Product_Question__c.BM_250_Ledger_to_Migrate__c}" required="true" label="Client has in excess of 250 ledgers to be migrated?"/>
+                <br/>
+                <apex:inputField value="{!Opportunity_Product_Question__c.BM_Converted_Ledger_Online__c}" required="true" label="Has the client converted at least 20 ledgers online for a range of entity types within their practice?"/>
+                <br/>
+                <apex:inputField value="{!Opportunity_Product_Question__c.BM_Client_Comfortable_With_CA_Solution__c}" required="true" label="Is client comfortable with CA solution as-is? Specifically means they are not relying on any future features/releases."/>
+                <br/>
+                <apex:outputLabel value="If no to any of the above questions, please attach Consulting TL approval."></apex:outputLabel>
+            </apex:pageBlockSection>   
+            
+        </apex:pageblock>
+        
+    </apex:form>
+</apex:page>

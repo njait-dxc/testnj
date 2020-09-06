@@ -1,0 +1,20 @@
+<apex:page standardController="Event"
+    action="{!
+        IF(
+           ($Profile.Name == 'System Administrator' || $Profile.Name =='~ System Administrator' ),
+           NULL,
+           URLFOR(
+                $Action.Event.Delete,
+                Event.Id,
+                [retURL='/008'],
+                TRUE
+                 )
+                 )}" >
+             
+    <apex:pageMessage severity="ERROR" 
+        strength="3" 
+        title="Event Delete" 
+        summary="You are not allowed to delete Event records.">
+    </apex:pageMessage>
+
+</apex:page>

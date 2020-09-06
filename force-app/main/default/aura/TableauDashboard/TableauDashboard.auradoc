@@ -1,0 +1,26 @@
+<aura:documentation>
+    <aura:description>
+        <h5>
+            <code>c:TableauDashboard</code> component is used for embedding Tableau dashboard in Salesforce lightning pages
+            and communities.
+        </h5>
+        <p>On adding this component to a page in Community or Lightning Experience using App Builder or Community Builder,
+            the component displays several fields for the admin to enter. Need to fill those fields correctly for the component
+            to display dashboard correctly.
+        </p>
+        <p>
+            Sample field values for each attributes are given below:<br/>
+            Width : 1000px<br/>
+            Height : 700px<br/>
+            Server : https://tableau.myob.com/t/certified<br/>
+            Workbook Name : AUDirectSales<br/>
+            Sheet Name : Leaderboard<br/>
+            NZ Workbook Name : NZDirectSales<br/>
+            NZ Sheet Name : Leaderboard<br/>
+            Options in JSON Format : {"hideTabs":"true"}<br/>
+            If you want to include any field values from the record where the component is displayed, then you can add
+            the merge fields like below example :<br/>
+            {"Client ID": "{{Account.Client_ID__c}}","hideTabs":"true"}
+        </p>
+    </aura:description>
+</aura:documentation>

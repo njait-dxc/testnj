@@ -1,0 +1,5 @@
+<design:component>
+	<design:attribute name="navigateToId" label="Salesforce Record Id" description="Salesforce Record Id upon flow finishing" />
+	<design:attribute name="navigateToURL" label="URL" description="Navigate to URL upon flow finishing" /> 
+    <design:attribute name="navigateToExternalURL" label="External URL" description="Navigate to external URL upon flow finishing"/> 
+</design:component>

@@ -1,0 +1,76 @@
+<aura:component
+        implements="flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,force:lightningQuickAction"
+        access="global" controller="SMEProductSelector">
+
+    <!--declare aura attributes-->
+    <aura:attribute name="recordId" type="Id"/>
+    <aura:attribute name="wrapperList" type="Object[]" description="store the list"/>
+    <aura:attribute name="showSaveCancelBtn" type="boolean" default="false"
+                    description="flag for rendered save and cancel buttons in aura:if "/>
+    <!--<aura:attribute name="loaded" type="Boolean" default="false" />-->
+
+    <!-- Init handler which is call initRecords js function on component Load -->
+    <aura:handler name="init" value="{!this}" action="{!c.initRecords}"/>
+
+    <lightning:layout class="slds-page-header slds-page-header--object-home">
+        <lightning:layoutItem>
+            <lightning:icon iconName="standard:product" alternativeText="Products"/>
+        </lightning:layoutItem>
+        <lightning:layoutItem padding="horizontal-small">
+            <div class="page-section page-header">
+                <h1 class="slds-text-heading--label">Products</h1>
+            </div>
+        </lightning:layoutItem>
+    </lightning:layout>
+    <lightning:layout>
+        <div style="width:100%">
+            <!-- Data Table -->
+            <table class="slds-table slds-table_bordered slds-table_cell-buffer">
+                <thead>
+                <tr class="slds-text-title--caps">
+                    <!--<th scope="col" style="width: 1%;"><div class="slds-truncate" title="Id">S.No</div></th> -->
+                    <th scope="col">
+                        <div class="slds-truncate" title="Product">Product</div>
+                    </th>
+                    <th scope="col">
+                        <div class="slds-truncate" title="Quantity">Qty</div>
+                    </th>
+                    <th scope="col">
+                        <div class="slds-truncate" title="Promo Code">Promo Code</div>
+                    </th>
+                    <th scope="col">
+                        <div class="slds-truncate" title="Promo Terms">Promo Terms</div>
+                    </th>
+                    <th scope="col">
+                        <div class="slds-truncate" title="Net Price Ex. GST">Sale Price(Ex. GST)</div>
+                    </th>
+                    <th scope="col">
+                        <div class="slds-truncate" title="Net Price Inc. GST">Sale Price(Inc. GST)</div>
+                    </th>
+                    <th scope="col">
+                        <div class="slds-truncate" title="Total Net Price">Total(Inc. GST)</div>
+                    </th>
+                </tr>
+                </thead>
+
+                <tbody>
+                <aura:iteration items="{!v.wrapperList}" var="prod" indexVar="sNo">
+                    <!-- Child Lightning Component -->
+                    <c:SMEProductSelectorInlineEditComponent singleRec="{!prod}"
+                                                             showSaveCancelBtn="{!v.showSaveCancelBtn}"
+                                                             sNo="{!sNo + 1}"/>
+                </aura:iteration>
+                </tbody>
+            </table>
+
+            <!-- use aura:if for show/hide buttons -->
+            <aura:if isTrue="{!v.showSaveCancelBtn}">
+                <!-- button for save and cancel Record after Inline Edit-->
+                <lightning:buttonGroup class="slds-m-around_medium slds-align_absolute-center">
+                    <lightning:button label="Cancel" onclick="{!c.cancel}"/>
+                    <lightning:button label="Save" onclick="{!c.save}" variant="brand"/>
+                </lightning:buttonGroup>
+            </aura:if>
+        </div>
+    </lightning:layout>
+</aura:component>

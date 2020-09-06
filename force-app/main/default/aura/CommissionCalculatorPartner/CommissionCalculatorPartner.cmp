@@ -1,0 +1,82 @@
+<aura:component implements="forceCommunity:availableForAllPageTypes" access="global" controller="CommissionCalculatorHandler">
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <aura:attribute name="WorkType" type="String"/>
+    <aura:attribute name="SubChannel" type="String"/>
+    <aura:attribute name="OTE" type="Integer"/>
+    <aura:attribute name="UnitTargetOTE" type="Integer"/>
+    <aura:attribute name="UnitOTEPercentage" type="Integer"/>
+    <aura:attribute name="PLOTE" type="Integer"/>
+    <aura:attribute name="NetRevenuePercentage" type="Integer"/>
+    <aura:attribute name="UniqueTargetOTE" type="Integer"/>
+    <aura:attribute name="UniqueTargetOTEPercentage" type="Integer"/>
+    <aura:attribute name="UnitTarget" type="Integer"/>
+    <aura:attribute name="UnitActual" type="Integer"/>
+    <aura:attribute name="UnitTargetAcutalPercentage" type="Integer"/>
+    <aura:attribute name="UniqueRefTarget" type="Integer"/>
+    <aura:attribute name="UniqueRefActual" type="Integer"/>
+    <aura:attribute name="UniqueRefTargetAcutalPercentage" type="Integer"/>
+    <aura:attribute name="DIYTarget" type="Integer"/>
+    <aura:attribute name="DIYActual" type="Integer"/>
+    <aura:attribute name="DIYTargetAcutalPercentage" type="Integer"/>
+    <aura:attribute name="NetBookingTarget" type="Integer"/>
+    <aura:attribute name="NetBookingActual" type="Integer"/>
+    <aura:attribute name="NetBookingTargetAcutalPercentage" type="Integer"/>
+    <aura:attribute name="PLTarget" type="Integer"/>
+    <aura:attribute name="PLActual" type="Integer"/>
+    <aura:attribute name="PLTargetAcutalPercentage" type="Integer"/>
+    <aura:attribute name="NetRevenueActual" type="Integer"/>
+    <aura:attribute name="CommissionUnit" type="Integer"/>
+    <aura:attribute name="CommissionUnique" type="Integer"/>
+    <aura:attribute name="CommissionPL" type="Integer"/>
+    <aura:attribute name="CommissionRevenue" type="Integer"/>
+    <aura:attribute name="CommissionEarning" type="Integer"/>
+    <aura:attribute name="Multiplier" type="Integer"/>
+    <div class="c-container">
+        <div class="slds-box">
+            <lightning:layout multipleRows="false" horizontalAlign="center" verticalAlign="start">
+                <lightning:layoutItem padding="around-small" size="3" smallDeviceSize="6" mediumDeviceSize="3">
+                    <ui:inputNumber label="OTE" value="{!v.OTE}" class="NormalClass" format="$#,###"/>
+                </lightning:layoutItem>
+            </lightning:layout>
+            <lightning:layout multipleRows="false" horizontalAlign="center" verticalAlign="start">
+                <lightning:layoutItem padding="around-small" size="3" smallDeviceSize="6" mediumDeviceSize="3">
+                    <ui:inputCurrency label="Unit Target" value="{!v.UnitTarget}" class="NormalClass" format="#,###"/>
+                </lightning:layoutItem>
+                <lightning:layoutItem padding="around-small" size="3" smallDeviceSize="6" mediumDeviceSize="3">
+                    <ui:inputCurrency label="Unit Actual" value="{!v.UnitActual}" class="NormalClass" format="#,###"/>
+                </lightning:layoutItem>
+                <lightning:layoutItem padding="around-small" size="3" smallDeviceSize="6" mediumDeviceSize="3">
+                    <ui:inputNumber label="% to Target" value="{!v.UnitActual/v.UnitTarget}"
+                                    class="{!if((v.UnitActual/v.UnitTarget) lt 0.8, 'ResultClassRed', if((v.UnitActual/v.UnitTarget) ge 1, 'ResultClassGreen', if(and((v.UnitActual/v.UnitTarget) ge 0.8 , (v.UnitActual/v.UnitTarget) lt 1),'ResultClassYellow', 'ResultClassWhite')))}"
+                                    format=".%"/>
+                </lightning:layoutItem>
+            </lightning:layout>
+            <lightning:layout multipleRows="false" horizontalAlign="center" verticalAlign="start">
+                <lightning:layoutItem padding="around-small" size="3" smallDeviceSize="6" mediumDeviceSize="3">
+                    <ui:inputNumber label="Multiplier %" value="{!v.Multiplier}" class="NormalClass" format=".%"/>
+                </lightning:layoutItem>
+            </lightning:layout>
+
+        </div>
+        <br/>
+        <div class="slds-align_absolute-center" style="height: 5rem;">
+            <ui:button press="{!c.calculate}" label="Calculate"/>
+        </div>
+        <br/>
+        <div class="slds-box">
+            <lightning:layout multipleRows="false" horizontalAlign="center" verticalAlign="start">
+                <lightning:layoutItem padding="around-small" size="3" smallDeviceSize="6" mediumDeviceSize="3">
+                    <ui:inputCurrency label="Commission" value="{!v.CommissionEarning}" class="ResultClass"
+                                      format="$#,###"/>
+                </lightning:layoutItem>
+            </lightning:layout>
+        </div>
+        <br/>
+        <div class="slds-box">
+            <lightning:layout multipleRows="false" horizontalAlign="center" verticalAlign="start">
+                <ui:outputText aura:id="nameOutput"
+                               value="*This calculator is to provide indicative commission payouts. Final payouts will be provided by the Sales Operations Team."/>
+            </lightning:layout>
+        </div>
+    </div>
+</aura:component>

@@ -1,0 +1,58 @@
+<apex:page standardController="Product_License__c" lightningStylesheets="true" extensions="ProductLicenseExtension">
+    <apex:form >
+        <apex:pageBlock >
+            <apex:pageBlockButtons >
+                <apex:commandButton action="{!Save}" value="Save"/>
+                <apex:commandButton action="{!Cancel}" value="Cancel"/>            
+            </apex:pageBlockButtons>
+
+            <apex:outputPanel id="LicenseReduction" rendered="{!CaseCategory='License Reduction'}">
+                <!--<apex:pageBlockSection >
+                    <apex:pageBlockSectionItem >
+                           <apex:outputLabel value="Group"/>
+                           <apex:inputField value="{!Product_License__c.Group__c}" />                         
+                    </apex:pageBlockSectionItem>
+                    <apex:pageBlockSectionItem >
+                           <apex:outputLabel value="Module"/>
+                           <apex:inputField value="{!Product_License__c.Module__c}"/>                          
+                    </apex:pageBlockSectionItem>                    
+                </apex:pageBlockSection>
+                <apex:pageBlockSection >
+                    <apex:pageBlockSectionItem >
+                           <apex:outputLabel value="Quantity"/>
+                           <apex:inputField value="{!Product_License__c.Quantity__c}" />                         
+                    </apex:pageBlockSectionItem>
+                    <apex:pageBlockSectionItem >
+                           <apex:outputLabel value="AMV Reduction"/>
+                           <apex:inputField value="{!Product_License__c.AMV_Reduction__c}"/>                          
+                    </apex:pageBlockSectionItem>                    
+                </apex:pageBlockSection>-->
+                <apex:pageBlockSection >
+                   <apex:pageBlockSectionItem >
+                       <apex:outputLabel value="Quote Number" />
+                       <apex:inputField value="{!Product_License__c.Agreement_Numbers__c}" required="true"/>
+                   </apex:pageBlockSectionItem>
+                </apex:pageBlockSection>   
+            </apex:outputPanel>
+            <apex:outputPanel id="ProductCancellation" rendered="{!CaseCategory='Cancellations'}">
+               <apex:pageBlockSection >
+                   <apex:pageBlockSectionItem >
+                       <apex:outputLabel value="Product" />
+                       <apex:inputField value="{!Product_License__c.Product__c}"/>
+                   </apex:pageBlockSectionItem>
+                   <apex:pageBlockSectionItem >
+                       <apex:outputLabel value="Quantity" />
+                       <apex:inputField value="{!Product_License__c.Quantity__c}"/>
+                   </apex:pageBlockSectionItem>
+                                      
+                   <apex:pageBlockSectionItem >
+                       <apex:outputLabel value="Quote Number" />
+                       <apex:inputField value="{!Product_License__c.Agreement_Numbers__c}"/>
+                   </apex:pageBlockSectionItem>
+                   
+               </apex:pageBlockSection>
+                
+            </apex:outputPanel>    
+        </apex:pageBlock>    
+    </apex:form>
+</apex:page>

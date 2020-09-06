@@ -1,0 +1,6 @@
+<design:component>
+    <design:attribute name="GenesysIDFieldName" label="Genesys ID Field Name" placeholder="CallObject"
+                      description="The record's field name containing the Genesys ID" required="true"/>
+    <design:attribute name="DispositionFieldName" label="Disposition Field Name" placeholder="CallDisposition"
+                      description="The record's field name containing call disposition"/>
+</design:component>

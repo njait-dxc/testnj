@@ -1,0 +1,17 @@
+[
+	{
+		"id": "1-DZVXCLM",
+		"contact": {
+			"id": "1-W5CCT3"
+		},
+		"payment_schedule": "Quarterly",
+		"payment_method": "Direct Debit",
+		"status": "Inactive",
+		"primary_profile": false,
+		"direct_debit": {
+			"bank_name": "ANZ",
+			"bsb": "013260",
+			"account_number": "9876543210"
+		}
+	}
+]

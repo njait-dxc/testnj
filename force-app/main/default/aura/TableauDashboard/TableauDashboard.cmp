@@ -1,0 +1,17 @@
+<aura:component controller="TableauDashboardCtrl"
+                implements="force:hasRecordId,forceCommunity:availableForAllPageTypes,flexipage:availableForAllPageTypes,lightning:isUrlAddressable"
+                access="global">
+    <aura:attribute name="width" type="String" description="Specify width for the component"/>
+    <aura:attribute name="height" type="String" description="Specify height for the component"/>
+    <aura:attribute name="server" type="String" description="Specify Tableau domain URL"/>
+    <aura:attribute name="workbook" type="String" description="Specify the name of tableau Workbook"/>
+    <aura:attribute name="sheet" type="String" description="Specify the name of tableau workbook view"/>
+    <aura:attribute name="options" type="String"
+                    description="Enter the set of options for filtering the dashboard in JSON format"/>
+    <aura:attribute name="nzWorkbook" type="String" description="Specify the workbook name for NZ dashboard"/>
+    <aura:attribute name="nzSheet" type="String" description="Specify the name of view of NZ workbook"/>
+    <aura:attribute name="stickyFilters" type="Boolean" description="Enable refresh fix for sticky filters"/>
+    <aura:handler name="init" value="{!this}" action="{!c.initialise}"/>
+    <ltng:require scripts="{!$Resource.Tableau}" afterScriptsLoaded="{!c.afterScriptsLoaded}"/>
+    <div id="{!globalId + '_tableau'}"></div>
+</aura:component>

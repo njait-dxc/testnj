@@ -1,0 +1,1 @@
+<aura:event type="APPLICATION" description="This event is for reloading table of attached the files" />

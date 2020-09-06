@@ -1,0 +1,5 @@
+<apex:page standardController="Opportunity" extensions="CMCreateECCaseExtension">
+    <flow:interview name="Flow_Client_Manager_EC_Case_Process_New" interview="{!flowInterview}" finishLocation="{!FinishLocation}" buttonLocation="top">
+        <apex:param name="inOptyId" value="{!Opportunity.Id}"/>
+    </flow:interview>>
+</apex:page>

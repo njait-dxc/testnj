@@ -1,0 +1,72 @@
+<apex:page standardController="Opportunity_Scoping_Question__c">
+    <apex:form > 
+        <apex:pageblock id="body" mode="detail" title="">
+            <font color="red"><b><apex:messages /></b></font>
+            <apex:pageBlockButtons >
+                <apex:commandButton value="Edit" action="{!Edit}"/>
+                <apex:commandButton value="Cancel" action="{!cancel}"/>
+            </apex:pageBlockButtons>
+            
+            <apex:pageBlockSection columns="1" id="header">            
+                <apex:inputField value="{!Opportunity_Scoping_Question__c.Type__c}" required="true" label="Scoping Type">
+                    <apex:actionSupport event="onchange" rerender="body" Status="Status"/>
+                </apex:inputfield>
+            </apex:pageBlockSection>
+ 
+            <apex:pageBlockSection columns="1" id="OtherScopeType" rendered="{!Opportunity_Scoping_Question__c.Type__c=='SCOPE FOR - Other Scope Type' || Opportunity_Scoping_Question__c.Type__c=='Unsure' }">            
+                <apex:inputField value="{!Opportunity_Scoping_Question__c.Why_does_the_client_need_this_scope__c}" required="false" label="Why does the client need this scope" style="width:400px" />
+                <br/>
+                <apex:inputField value="{!Opportunity_Scoping_Question__c.What_is_the_expected_Outcome__c}" required="false" label="What is the expected Outcome" style="width:400px"/>
+                <br/>
+                <apex:inputField value="{!Opportunity_Scoping_Question__c.MYOB_TAX_TYPE_BEING_USED__c}" required="false" label="MYOB TAX TYPE BEING USED" style="width:130px"/>
+                <br/>
+                <apex:inputField value="{!Opportunity_Scoping_Question__c.MYOB_Integration_BEING_USED__c}" required="false" label="MYOB Integration BEING USED" style="width:130px"/>
+                <br/>
+                <apex:inputField value="{!Opportunity_Scoping_Question__c.Which_MYOB_GL_Type_is_being_Used__c}" required="false" label="Which MYOB GL Type is being Used" style="width:130px"/>
+                <br/>
+                <apex:inputField value="{!Opportunity_Scoping_Question__c.Training_Staff_Admin_Number__c}" required="false" label="Training Staff Admin - Number" style="width:400px"/>
+                <br/>
+                <apex:inputField value="{!Opportunity_Scoping_Question__c.Training_Staff_General_User_Number__c}" required="false" label="Training Staff General User - Number" style="width:400px"/>
+            </apex:pageBlockSection> 
+            
+            <apex:pageBlockSection columns="1" id="ChangesToPracticeManagerData" rendered="{!Opportunity_Scoping_Question__c.Type__c=='SCOPE FOR - Changes to Practice Manager Data' || Opportunity_Scoping_Question__c.Type__c=='Unsure'}">            
+                <apex:inputField value="{!Opportunity_Scoping_Question__c.Change_Company_across_Clients_Script__c}" required="false" label="Change Company across Clients - Script" style="width:400px" />
+                <br/>
+                <apex:inputField value="{!Opportunity_Scoping_Question__c.Change_Company_across_Client_Assignments__c}" required="false" label="Change Company across Client Assignments - Script" style="width:400px"/>
+                <br/>
+                <apex:inputField value="{!Opportunity_Scoping_Question__c.Import_Jobs_from_Spreadsheet__c}" required="false" label="Import Jobs from Spreadsheet - Job Name, Client Assignment, $$ Budget, Allocated Employee, Due Date" style="width:400px"/>
+                <br/>
+                <apex:inputField value="{!Opportunity_Scoping_Question__c.Import_Additional_Client_Data_Script__c}" required="false" label="Import Additional Client Data (Extras etc)  from Spreadsheet - Script" style="width:400px"/>
+                <br/>
+                <apex:inputField value="{!Opportunity_Scoping_Question__c.How_many_Extrafields_will_be_updated__c}" required="false" label="How many Extrafields will be updated" style="width:400px"/>
+            </apex:pageBlockSection>           
+  
+             
+            <apex:pageBlockSection columns="1" id="ChangeofPracticeOwnershipDatabaseSeparation" rendered="{!Opportunity_Scoping_Question__c.Type__c=='SCOPE FOR - Change of Practice Ownership Database Separation' ||  Opportunity_Scoping_Question__c.Type__c=='Unsure'}">            
+                <apex:inputField value="{!Opportunity_Scoping_Question__c.Is_it_due_to_change_of_ownership__c}" required="false" label="Is it due to change of ownership" style="width:400px"/>
+                <br/>
+                <apex:inputField value="{!Opportunity_Scoping_Question__c.PM_DATABASE__c}" required="false" label="PM Database" style="width:400px"/>
+                <br/>
+                <apex:inputField value="{!Opportunity_Scoping_Question__c.Bill_out_existing_WIP_on_Compan__c}" required="false" label="Bill out existing WIP on Company" style="width:400px"/>
+                <br/>
+                <apex:inputField value="{!Opportunity_Scoping_Question__c.Add_NEW_WIP_to_Existing_Company__c}" required="false" label="Add NEW WIP to Existing Company" style="width:400px"/>
+                <br/>
+                <apex:inputField value="{!Opportunity_Scoping_Question__c.Add_New_WIP_to_New_Company__c}" required="false" label="Add New WIP to New Company" style="width:400px"/>
+                <br/>
+                <apex:inputField value="{!Opportunity_Scoping_Question__c.Transfer_All_Old_WIP_to_New_Company__c}" required="false" label="Transfer All Old WIP to New Company" style="width:400px"/>
+                <br/>
+                <apex:inputField value="{!Opportunity_Scoping_Question__c.Continue_to_receive_Client_Payments__c}" required="false" label="Continue to receive Client Payments on existing Company" style="width:400px"/>
+                <br/>
+                <apex:inputField value="{!Opportunity_Scoping_Question__c.New_Code_Request__c}" required="false" label="New Archie Code(s)" style="width:400px"/>
+            </apex:pageBlockSection>  
+            <!-- Rohit 20/01/2020 Added for SFDC-1093 -->  
+            <apex:pageBlockSection columns="1" id="SiteDownTechServices" rendered="{!Opportunity_Scoping_Question__c.Type__c=='SCOPE FOR - Site Down/Tech Services' || Opportunity_Scoping_Question__c.Type__c=='Unsure'}">            
+                <apex:inputField value="{!Opportunity_Scoping_Question__c.How_Long_Has_the_Site_Been_Down__c}" required="false" label="How Long Has the Site Been Down? - Days" style="width:60px" />
+                <br/>
+                <apex:inputField value="{!Opportunity_Scoping_Question__c.Why_Has_the_Site_Come_to_be_Down__c}" required="false" label="Why_Has_the_Site_Come_to_be_Down__c" style="width:600px"/>
+                <br/>
+            </apex:pageBlockSection>            
+        </apex:pageblock>
+      
+    </apex:form>
+</apex:page>

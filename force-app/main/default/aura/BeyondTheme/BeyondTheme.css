@@ -1,0 +1,420 @@
+/* HEADER */
+
+.THIS.header {
+    height: 64px;
+    background-color: #ffffff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 4;
+    border-bottom: 4px solid #8241AA;
+    position: fixed;
+    width: 100%;
+    transition: top 0.2s ease-in-out;
+    top: 0;
+}
+
+.THIS.header .logo {
+    z-index: 2;
+    background: transparent;
+    border: none;
+    min-width: 140px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.THIS.header button:focus {
+    outline: none;
+    box-shadow: none;
+}
+
+.THIS.header .logo .logoImage {
+    height: 35px;
+}
+
+.THIS.header .forceCommunityNavigationMenu {
+    background: none;
+    border: none;
+    margin-left: 1rem;
+    position: relative;
+    top: 3px;
+    min-width: 720px;
+}
+
+.THIS.header .forceCommunityNavigationMenu .navigationMenu {
+    max-width: 720px;
+}
+
+.THIS.header .forceCommunityNavigationMenu .menuItemLink {
+    font-size: 13px;
+    font-family: sans-serif;
+    font-weight: 50;
+    color: #000;
+    margin: 8px;
+    padding: 0 0 3px 0;
+    border-bottom: transparent 3px solid;
+}
+
+.THIS.header .forceCommunityNavigationMenu .toggleNav {
+    position: relative;
+    left: -10px;
+}
+
+.THIS.header .forceCommunityNavigationMenu .toggleNav:active,
+.THIS.header .forceCommunityNavigationMenu .toggleNav:focus,
+.THIS.header .forceCommunityNavigationMenu .toggleNav:hover {
+    border-bottom: #8241AA 2px solid;
+}
+
+.THIS.header .forceCommunityNavigationMenu .menuItemLink:hover,
+.THIS.header .forceCommunityNavigationMenu .menuItemLink:focus,
+.THIS.header .forceCommunityNavigationMenu .menuItemLink.triggerLink:hover,
+.THIS.header .forceCommunityNavigationMenu .menuItemLink.triggerLink:focus,
+.THIS.header .forceCommunityNavigationMenu .menuItem.current .menuItemLink,
+.THIS.header .forceCommunityNavigationMenu .menuItem.current .menuItemLink.triggerLink {
+    color: #000000;
+    background-color: transparent;
+    text-decoration: none;
+    border-bottom: #8241AA 2px solid;
+    padding-bottom: 3px;
+    position: relative;
+}
+
+.THIS.header .selfServiceProfileMenu {
+    position: relative;
+    top: 3px;
+}
+
+.THIS.header .selfServiceProfileMenu.loginWrapper {
+    top: 0;
+}
+
+.THIS.header .selfServiceProfileMenu .login .linkLabel {
+    display: inline-block;
+    color: #000;
+}
+
+.THIS.header .headerSearch-toggle {
+    background-color: #8241AA;
+    margin-left: 1rem;
+    border-radius: 20px;
+    border: none;
+}
+
+.THIS.header .selfServiceProfileMenuTrigger a {
+    color: #000;
+}
+
+.THIS.header .selfServiceProfileMenuTrigger a:hover,
+.THIS.header .selfServiceProfileMenuTrigger a:focus,
+.THIS.header .selfServiceProfileMenuTrigger a:active {
+    color: #000 !important;
+    display: inline-block;
+}
+
+.THIS.header .customIcon {
+    width: 20px;
+    height: 20px;
+    fill: #fff;
+}
+
+.THIS.header .customIcon.icon--search {
+    left: -11px;
+}
+
+/* FLOATING SEARCH CONTAINER */
+
+.THIS.headerSearch-container {
+    display: block;
+    position: fixed;
+    top: 64px;
+    overflow: hidden;
+    height: 50px;
+    width: 100%;
+    text-align: center;
+    z-index: 3;
+    pointer-events: none;
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.2) 0%, rgba(0, 0, 0, 0) 100%);
+    transition: all 0.5s ease-in-out;
+    opacity: 0;
+}
+
+.THIS.headerSearch-container.searchVisible {
+    height: 100vh;
+    pointer-events: all;
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.2) 0%, rgba(0, 0, 0, 0) 100%);
+    opacity: 100;
+    transition: all 0.5s ease-in-out;
+}
+
+.THIS.headerSearch-container button:focus {
+    outline: none;
+    box-shadow: none;
+}
+
+.THIS.headerSearch-container .headerSearch-close {
+    margin-left: 0;
+    border: none;
+    background-color: transparent;
+    width: 30px;
+    position: absolute;
+    top: 7px;
+}
+
+.THIS.headerSearch-container .icon--close {
+    fill: #fff;
+    display: inline;
+    width: 25px;
+    height: 25px;
+}
+
+.THIS.headerSearch-container .headerBackground {
+    height: 200vh;
+    width: 200vh;
+    position: absolute;
+    top: 0;
+}
+
+.THIS.headerSearch-container .headerSearch {
+    top: -55px;
+    position: relative;
+    transition: all 0.5s ease-in-out;
+    display: inline-block;
+    width: 50%;
+}
+
+.THIS.headerSearch-container .headerSearch div[data-region-name="search"] {
+    width: 90%;
+    display: inherit;
+}
+
+.THIS.headerSearch-container .headerSearch .zero-state-panel {
+    display: none !important;
+}
+
+.THIS.headerSearch-container .headerSearch.searchVisible {
+    top: -1px;
+}
+
+.THIS.headerSearch-container .search-wrapper {
+    padding: 0;
+}
+
+.THIS.headerSearch-container .big-search-container {
+    height: 50px;
+}
+
+.THIS.headerSearch-container .search-button {
+    color: #000;
+}
+
+.THIS.headerSearch-container .search-button .label {
+    display: inline;
+    margin-right: 5px;
+}
+
+.THIS.headerSearch-container .search-button .search-icon {
+    position: relative;
+    top: 1px;
+}
+
+.THIS.headerSearch-container .no-assigned-image .default-bg-overlay {
+    background: none;
+}
+
+/* CONTENT */
+
+.THIS.content {
+    margin: 0 auto;
+    max-width: 1250px;
+    min-height: 82vh;
+    position: relative;
+    top: 64px;
+}
+
+.THIS.content .runtime_sales_pipelineboardPipelineView .container .pipelineColumn {
+    min-width: 170px;
+}
+
+/* FOOTER */
+
+.THIS.footer {
+    height: 50px;
+    overflow: hidden;
+    background-color: #ffffff;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 2rem;
+    margin-top: 3rem;
+    border-top: 4px solid #8241AA;
+    position: relative;
+    top: 64px;
+}
+
+.THIS.footer .links {
+    position: relative;
+    top: -2px;
+}
+
+.THIS.footer .links > a {
+    margin-left: 1rem;
+    color: #000000;
+    font-size: 13px;
+}
+
+.THIS.footer .links > a:hover {
+    text-decoration: underline;
+}
+
+.THIS.footer .logo {
+    height: 25px;
+}
+
+.THIS.content div[data-region-name="footer"] {
+    margin: 0 -166px;
+}
+
+/* TABLETS */
+@media only screen and (max-width: 1450px) {
+    .THIS.content div[data-region-name="footer"] {
+        margin: 0 auto;
+    }
+}
+
+@media only screen and (max-width: 1024px) {
+    .THIS.header .selfServiceProfileMenu .selfServiceProfileMenuTrigger,
+    .THIS.header .selfServiceProfileMenu .login {
+        position: relative;
+        top: -40px;
+    }
+
+    .THIS.header .forceCommunityNavigationMenu {
+        min-width: 300px;
+    }
+
+    .THIS.content div[data-region-name="footer"] {
+        margin: 0 auto;
+    }
+}
+
+/* LARGE MOBILE */
+
+@media only screen and (max-width: 765px) {
+    .THIS.header .forceCommunityNavigationMenu {
+        position: absolute;
+        left: 0;
+        top: 8px;
+        min-width: none;
+    }
+
+    .THIS.header .forceCommunityNavigationMenu .navigationMenuNode {
+        border-bottom: none;
+        margin: 0;
+        padding: 0;
+    }
+
+    .THIS.header .forceCommunityNavigationMenu .menuItemLink {
+        border-bottom: 1px solid #e2e2e2;
+        margin: 0;
+        padding: 10px;
+        transition: none;
+    }
+
+    .THIS.header .forceCommunityNavigationMenu .menuItemLink:hover,
+    .THIS.header .forceCommunityNavigationMenu .menuItemLink:focus,
+    .THIS.header .forceCommunityNavigationMenu .menuItemLink.triggerLink:hover,
+    .THIS.header .forceCommunityNavigationMenu .menuItemLink.triggerLink:focus,
+    .THIS.header .forceCommunityNavigationMenu .menuItem.current .menuItemLink,
+    .THIS.header .forceCommunityNavigationMenu .menuItem.current .menuItemLink.triggerLink {
+        color: #000;
+        background-color: #3DCD58;
+        border-bottom: 1px solid #e2e2e2;
+        text-decoration: none;
+        padding-bottom: 10px;
+        position: relative;
+    }
+
+    .THIS.header .selfServiceProfileMenu .selfServiceProfileMenuTrigger,
+    .THIS.header .selfServiceProfileMenu .login {
+        position: relative;
+        top: -40px;
+    }
+
+    .THIS.headerSearch-container {
+        background: linear-gradient(to bottom, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0) 100%);
+    }
+
+    .THIS.headerSearch-container .headerSearch {
+        width: 100%;
+    }
+
+    .THIS.headerSearch-container .headerSearch.searchVisible {
+        top: 20px;
+    }
+
+    .THIS.headerSearch-container .body-search {
+        height: 50px;
+        width: 75%;
+    }
+
+    .THIS.headerSearch-container .headerSearch-close {
+        display: none;
+    }
+
+    .THIS.footer {
+        display: block;
+        text-align: center;
+        padding: 10px 0;
+        height: 74px;
+        top: 40px;
+    }
+
+    .THIS.footer .logo {
+        height: 25px;
+    }
+
+    .THIS.footer .links {
+        margin-top: 4px;
+    }
+
+    .THIS.headerSearch-container .headerSearch div[data-region-name="search"] {
+        width: 75%;
+        display: inherit;
+    }
+}
+
+/* SMALL MOBILE */
+
+@media only screen and (max-width: 765px) {
+    .THIS.header .logo {
+        left: 14px;
+        position: relative;
+    }
+
+    .THIS.headerSearch-container .headerSearch.searchVisible {
+        top: 19px;
+    }
+}
+
+@media only screen and (max-width: 645px) {
+    .THIS.headerSearch-container .headerSearch.searchVisible {
+        top: 15px;
+    }
+}
+
+/* LAYOUT AND COMPONENT SPECIFIC OVERRIDES */
+
+.THIS .siteforceSldsTwoCol84Layout .forceContentFilesHomeDesktop {
+    top: -20px;
+    position: relative;
+}
+
+.THIS .siteforceSldsTwoCol84Layout .forceCommunityRecommendations .rec-cardHeader {
+    text-align: center;
+}
+
+.THIS .siteforceSldsTwoCol84Layout .forceCommunityRecommendations {
+    margin-left: 2rem;
+}

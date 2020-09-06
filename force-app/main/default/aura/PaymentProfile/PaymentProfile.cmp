@@ -1,0 +1,115 @@
+<!--
+  @File Name          : PaymentProfile.cmp
+  @Description        : 
+  @Author             : ChangeMeIn@UserSettingsUnder.SFDoc
+  @Group              : 
+  @Last Modified By   : ChangeMeIn@UserSettingsUnder.SFDoc
+  @Last Modified On   : 12/19/2019, 2:31:23 PM
+  @Modification Log   : 
+  Ver       Date            Author      		    Modification
+  1.0    12/19/2019   ChangeMeIn@UserSettingsUnder.SFDoc     Initial Version
+-->
+<aura:component controller="PaymentProfileCtrl" implements="force:hasRecordId,flexipage:availableForAllPageTypes" access="global" >
+    <aura:attribute name="paymentProfiles" type="List" description="Attribute to get list of payment profiles from API."/>
+    <aura:attribute name="showPaymentProfiles" type="Boolean" description="Attribute to show/hide the table based on data we get from API."/>
+    <aura:attribute name="showSpinner" type="Boolean" description="Attribute to toggle visibility of spinner component."/>
+    <aura:handler name="init" value="{!this}" action="{!c.loadData}"/>
+
+    <lightning:card title="Payment Profile" iconName="standard:client">
+        <aura:if isTrue="{!v.showSpinner}">
+            <div class="spinnerHolder">
+                <lightning:spinner alternativeText="Loading" size="medium" />
+            </div>
+        </aura:if>
+        <aura:if isTrue="{!v.showPaymentProfiles == true}">
+            <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_col-bordered" width="100%">
+                <thead>
+                <tr class="slds-line-height_reset">
+                    <th scope="col">
+                        <div class="slds-truncate" title="Select">Select</div>
+                    </th>
+                    <th scope="col">
+                        <div class="slds-truncate" title="Payment Method">Payment Method</div>
+                    </th>
+                    <th scope="col">
+                        <div class="slds-truncate" title="Primary Profile">Primary Profile</div>
+                    </th>
+                    <th scope="col">
+                        <div class="slds-truncate" title="Payment Schedule">Payment Schedule</div>
+                    </th>
+                    <th scope="col">
+                        <div class="slds-truncate" title="BSB">BSB</div>
+                    </th>
+                    <th scope="col">
+                        <div class="slds-truncate" title="Bank Name">Bank Name</div>
+                    </th>
+                    <th scope="col">
+                        <div class="slds-truncate" title="Account Number">Account Number</div>
+                    </th>
+                    <th scope="col">
+                        <div class="slds-truncate" title="Type">Type</div>
+                    </th>
+                    <th scope="col">
+                        <div class="slds-truncate" title="Name on Card">Name on Card</div>
+                    </th>
+                    <th scope="col">
+                        <div class="slds-truncate" title="Expiry Month and Year">Expiry Month and Year</div>
+                    </th>
+                    <th scope="col">
+                        <div class="slds-truncate" title="Last Four Digits on Card">Last Four Digits on Card</div>
+                    </th>
+                    <th scope="col">
+                        <div class="slds-truncate" title="Comment">Comment</div>
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+                <aura:iteration items="{!v.paymentProfiles}" var="profile">
+                    <tr class="slds-hint-parent">
+                        <td data-label="Select">
+                            <ui:inputRadio text="{!profile.paymentProfile.id}" value="{!profile.selected}" change="{!c.onSelectChange}" />
+                        </td>
+                        <td data-label="Payment Method">
+                            {!profile.paymentProfile.payment_method}
+                        </td>
+                        <td data-label="Primary Profile">
+                            <ui:outputCheckbox value="{!profile.paymentProfile.primary_profile}"/>
+                        </td>
+                        <td data-label="Payment Schedule">
+                            {!profile.paymentProfile.payment_schedule}
+                        </td>
+                        <td data-label="BSB">
+                            {!profile.paymentProfile.direct_debit.bsb}
+                        </td>
+                        <td data-label="Bank Name">
+                            {!profile.paymentProfile.direct_debit.bank_name}
+                        </td>
+                        <td data-label="Account Number">
+                            {!profile.paymentProfile.direct_debit.account_number}
+                        </td>
+                        <td data-label="Type">
+                            {!profile.paymentProfile.credit_card.type}
+                        </td>
+                        <td data-label="Name on Card">
+                            {!profile.paymentProfile.credit_card.name_on_card}
+                        </td>
+                        <td data-label="Expiry Month and Year">
+                            {!profile.paymentProfile.credit_card.expiry_month} &nbsp; {!profile.paymentProfile.credit_card.expiry_year}
+                        </td>
+                        <td data-label="Last Four Digits on Card">
+                            {!profile.paymentProfile.credit_card.last_four_digits}
+                        </td>
+                        <td data-label="Comments">
+                            {!profile.paymentProfile.comments}
+                        </td>
+                    </tr>
+                </aura:iteration>
+                </tbody>
+            </table>
+            <aura:set attribute="else">
+                <p><b>No payment profiles found.</b></p>
+            </aura:set>
+        </aura:if>
+    </lightning:card>
+
+</aura:component>

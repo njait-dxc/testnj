@@ -1,0 +1,961 @@
+<aura:component implements="forceCommunity:availableForAllPageTypes" access="global" controller="CommissionCalculatorHandler">
+	<aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+
+	<aura:attribute name="WorkType" type="String"/>
+	<aura:attribute name="SubChannel" type="String"/>
+
+	<aura:attribute name="OTE" type="Integer"/>
+	<aura:attribute name="UnitTargetOTE" type="Integer"/>
+	<aura:attribute name="UnitOTEPercentage" type="Integer"/>
+	<aura:attribute name="PLOTE" type="Integer"/>
+	<aura:attribute name="NetRevenuePercentage" type="Integer"/>
+
+	<aura:attribute name="UniqueTargetOTE" type="Integer"/>
+	<aura:attribute name="UniqueTargetOTEPercentage" type="Integer"/>
+
+	<aura:attribute name="UnitTarget" type="Integer"/>
+	<aura:attribute name="UnitActual" type="Integer"/>
+	<aura:attribute name="UnitTargetAcutalPercentage" type="Integer"/>
+
+	<aura:attribute name="UniqueRefTarget" type="Integer"/>
+	<aura:attribute name="UniqueRefActual" type="Integer"/>
+	<aura:attribute name="UniqueRefTargetAcutalPercentage" type="Integer"/>
+
+	<aura:attribute name="DIYTarget" type="Integer"/>
+	<aura:attribute name="DIYActual" type="Integer"/>
+	<aura:attribute name="DIYTargetAcutalPercentage" type="Integer"/>
+
+	<aura:attribute name="NetBookingTarget" type="Integer"/>
+	<aura:attribute name="NetBookingActual" type="Integer"/>
+	<aura:attribute name="NetBookingTargetAcutalPercentage" type="Integer"/>
+
+	<aura:attribute name="PLTarget" type="Integer"/>
+	<aura:attribute name="PLActual" type="Integer"/>
+	<aura:attribute name="PLTargetAcutalPercentage" type="Integer"/>
+
+	<aura:attribute name="NetRevenueActual" type="Integer"/>
+
+	<aura:attribute name="CommissionUnit" type="Integer"/>
+	<aura:attribute name="CommissionUnitBoost" type="Integer"/>
+	<aura:attribute name="CommissionUnitTotal" type="Integer"/>
+
+	<aura:attribute name="CommissionUnique" type="Integer"/>
+	<aura:attribute name="CommissionUniqueRefBoost" type="Integer"/>
+	<aura:attribute name="CommissionUniqueRefTotal" type="Integer"/>
+
+	<aura:attribute name="CommissionRevenue" type="Integer"/>
+	<aura:attribute name="CommissionEarning" type="Integer"/>
+
+	<aura:attribute name="BookingOTEPercentage" type="Integer"/>
+	<aura:attribute name="PLOTEPercentage" type="Integer"/>
+	<aura:attribute name="MaintenanceTarget" type="Integer"/>
+	<aura:attribute name="MaintenanceActual" type="Integer"/>
+
+	<aura:attribute name="CommissionBooking" type="Integer"/>
+	<aura:attribute name="CommissionBookingBoost" type="Integer"/>
+	<aura:attribute name="CommissionBookingTotal" type="Integer"/>
+
+	<aura:attribute name="CommissionPL" type="Integer"/>
+	<aura:attribute name="CommissionPLBoost" type="Integer"/>
+	<aura:attribute name="CommissionPLTotal" type="Integer"/>
+
+	<aura:attribute name="OnlineFlowOTEPercentage" type="Integer"/>
+	<aura:attribute name="OnlineFlowTarget" type="Integer"/>
+	<aura:attribute name="OnlineFlowActual" type="Integer"/>
+	<aura:attribute name="AcceleratorTarget" type="Integer"/>
+	<aura:attribute name="AcceleratorActual" type="Integer"/>
+	<aura:attribute name="Boost" type="Integer"/>
+	<aura:attribute name="UnitOTE" type="Integer"/>
+
+	<aura:attribute name="CommissionOnlineFlow" type="Integer"/>
+	<aura:attribute name="CommissionOnlineFlowTotal" type="Integer"/>
+	<aura:attribute name="CommissionOnlineFlowBoost" type="Integer"/>
+	<aura:attribute name="Multiplier" type="Integer"/>
+	<aura:attribute name="BoostMark" type="String"/>
+	<aura:attribute name="Component1OTEPercentage" type="Integer"/>
+	<aura:attribute name="Component2OTEPercentage" type="Integer"/>
+	<aura:attribute name="Component3OTEPercentage" type="Integer"/>
+	<aura:attribute name="Component4OTEPercentage" type="Integer"/>
+
+	<aura:attribute name="Component1Target" type="Integer"/>
+	<aura:attribute name="Component1Actual" type="Integer"/>
+	<aura:attribute name="Component2Target" type="Integer"/>
+	<aura:attribute name="Component2Actual" type="Integer"/>
+	<aura:attribute name="Component3Target" type="Integer"/>
+	<aura:attribute name="Component3Actual" type="Integer"/>
+	<aura:attribute name="Component4Target" type="Integer"/>
+	<aura:attribute name="Component4Actual" type="Integer"/>
+	<aura:attribute name="Comp1Commission" type="Integer"/>
+	<aura:attribute name="Comp2Commission" type="Integer"/>
+	<aura:attribute name="Comp3Commission" type="Integer"/>
+	<aura:attribute name="Comp4Commission" type="Integer"/>
+
+	<div class="c-container">
+
+		<div class="slds-box">
+			<aura:if isTrue="{!v.WorkType=='TM'}">
+				<lightning:layout multipleRows="false" horizontalAlign="center" verticalAlign="start">
+					<lightning:layoutItem padding="around-small" size="3" smallDeviceSize="6" mediumDeviceSize="3">
+						<ui:inputNumber label="OTE" value="{!v.OTE}" class="NormalClass" format="{!if(v.OTE == 0, '', '$#,###')}"/>
+					</lightning:layoutItem>
+				</lightning:layout>
+				<lightning:layout multipleRows="false" horizontalAlign="center" verticalAlign="start">
+
+					<lightning:layout multipleRows="true" horizontalAlign="center" verticalAlign="start">
+						<div class="slds-box">
+							<div class="slds-text-align_center">COMPONENT 1</div>
+							<div class="slds-p-horizontal--small slds-size--1-of-1">
+								<lightning:layoutItem padding="around-small"  size="6" smallDeviceSize="8" mediumDeviceSize="12">
+									<ui:inputNumber label="OTE %" value="{!v.Component1OTEPercentage}" class="NormalClass" format="0%" />
+								</lightning:layoutItem>
+							</div>
+							<div class="slds-p-horizontal--small slds-size--1-of-1" >
+								<lightning:layoutItem padding="around-small" size="6" smallDeviceSize="8" mediumDeviceSize="12">
+									<ui:inputNumber label="OTE" value="{!v.OTE * (v.Component1OTEPercentage)}" class="NormalClass" format="$#,###"/>
+								</lightning:layoutItem>
+							</div>
+							<div class="slds-p-horizontal--small slds-size--1-of-1" >
+								<lightning:layoutItem padding="around-small" size="6" smallDeviceSize="8" mediumDeviceSize="12">
+									<ui:inputCurrency label="Target" value="{!v.Component1Target}" class="NormalClass" format="#,###"/>
+
+								</lightning:layoutItem>
+							</div>
+
+							<div class="slds-p-horizontal--small slds-size--1-of-1" >
+								<lightning:layoutItem padding="around-small" size="6" smallDeviceSize="8" mediumDeviceSize="12">
+									<ui:inputCurrency label="Actual" value="{!v.Component1Actual}" class="NormalClass" format="#,###"/>
+
+								</lightning:layoutItem>
+							</div>
+							<div class="slds-p-horizontal--small slds-size--1-of-1" >
+								<lightning:layoutItem padding="around-small" size="6" smallDeviceSize="8" mediumDeviceSize="12">
+									<ui:inputNumber label="% to Target" value="{!v.Component1Actual/v.Component1Target}" class="{!if((v.Component1Actual/v.Component1Target) lt 0.8, 'ResultClassRed', if((v.Component1Actual/v.Component1Target) ge 1, 'ResultClassGreen', if(and((v.Component1Actual/v.Component1Target) ge 0.8 , (v.Component1Actual/v.Component1Target) lt 1),'ResultClassYellow', 'ResultClassWhite')))}" format=".%"/>
+
+								</lightning:layoutItem>
+							</div>
+							<div class="slds-p-horizontal--small slds-size--1-of-1" >
+								<lightning:layoutItem padding="around-small" size="6" smallDeviceSize="8" mediumDeviceSize="12">
+									<ui:inputCurrency label="Total Comms" value="{!v.Comp1Commission}" class="ResultClass" format="{!if(v.Comp1Commission ==0, '', '$#,###.##')}"/>
+
+								</lightning:layoutItem>
+							</div>
+						</div>
+					</lightning:layout>
+
+					<lightning:layout multipleRows="true" horizontalAlign="center" verticalAlign="start">
+						<div class="slds-box">
+							<div class="slds-text-align_center">COMPONENT 2</div>
+							<div class="slds-p-horizontal--small slds-size--1-of-1" >
+								<lightning:layoutItem padding="around-small" size="6" smallDeviceSize="8" mediumDeviceSize="12">
+									<ui:inputNumber label="OTE %" value="{!v.Component2OTEPercentage}" class="NormalClass" format="0%" />
+								</lightning:layoutItem>
+							</div>
+							<div class="slds-p-horizontal--small slds-size--1-of-1" >
+								<lightning:layoutItem padding="around-small" size="6" smallDeviceSize="8" mediumDeviceSize="12">
+									<ui:inputNumber label="OTE" value="{!v.OTE * (v.Component2OTEPercentage)}" class="NormalClass" format="$#,###"/>
+								</lightning:layoutItem>
+							</div>
+							<div class="slds-p-horizontal--small slds-size--1-of-1" >
+								<lightning:layoutItem padding="around-small" size="6" smallDeviceSize="8" mediumDeviceSize="12">
+									<ui:inputCurrency label="Target" value="{!v.Component2Target}" class="NormalClass" format="#,###"/>
+
+								</lightning:layoutItem>
+							</div>
+							<div class="slds-p-horizontal--small slds-size--1-of-1" >
+								<lightning:layoutItem padding="around-small" size="6" smallDeviceSize="8" mediumDeviceSize="12">
+									<ui:inputCurrency label="Actual" value="{!v.Component2Actual}" class="NormalClass" format="#,###"/>
+
+								</lightning:layoutItem>
+							</div>
+							<div class="slds-p-horizontal--small slds-size--1-of-1" >
+								<lightning:layoutItem padding="around-small" size="6" smallDeviceSize="8" mediumDeviceSize="12">
+									<ui:inputNumber label="% to Target" value="{!v.Component2Actual/v.Component2Target}" class="{!if((v.Component2Actual/v.Component2Target) lt 0.8, 'ResultClassRed', if((v.Component2Actual/v.Component2Target) ge 1, 'ResultClassGreen', if(and((v.Component2Actual/v.Component2Target) ge 0.8 , (v.Component2Actual/v.Component2Target) lt 1),'ResultClassYellow', 'ResultClassWhite')))}" format=".%"/>
+
+								</lightning:layoutItem>
+							</div>
+
+							<div class="slds-p-horizontal--small slds-size--1-of-1" >
+								<lightning:layoutItem padding="around-small" size="6" smallDeviceSize="8" mediumDeviceSize="12">
+									<ui:inputCurrency label="Total Comms" value="{!v.Comp2Commission}" class="ResultClass" format="{!if(v.Comp2Commission ==0, '', '$#,###.##')}"/>
+
+								</lightning:layoutItem>
+							</div></div>
+					</lightning:layout>
+					<lightning:layout multipleRows="true" horizontalAlign="center" verticalAlign="start">
+						<div class="slds-box">
+							<div class="slds-text-align_center">COMPONENT 3</div>
+							<div class="slds-p-horizontal--small slds-size--1-of-1" >
+								<lightning:layoutItem padding="around-small" size="6" smallDeviceSize="8" mediumDeviceSize="12">
+									<ui:inputNumber label="OTE %" value="{!v.Component3OTEPercentage}" class="NormalClass" format="0%" />
+
+								</lightning:layoutItem>
+							</div>
+							<div class="slds-p-horizontal--small slds-size--1-of-1" >
+								<lightning:layoutItem padding="around-small" size="6" smallDeviceSize="8" mediumDeviceSize="12">
+									<ui:inputNumber label="OTE" value="{!v.OTE * (v.Component3OTEPercentage)}" class="NormalClass" format="$#,###"/>
+
+								</lightning:layoutItem>
+							</div>
+							<div class="slds-p-horizontal--small slds-size--1-of-1" >
+								<lightning:layoutItem padding="around-small" size="6" smallDeviceSize="8" mediumDeviceSize="12">
+									<ui:inputCurrency label="Target" value="{!v.Component3Target}" class="NormalClass" format="#,###"/>
+
+								</lightning:layoutItem>
+							</div>
+							<div class="slds-p-horizontal--small slds-size--1-of-1" >
+								<lightning:layoutItem padding="around-small" size="6" smallDeviceSize="8" mediumDeviceSize="12">
+									<ui:inputCurrency label="Actual" value="{!v.Component3Actual}" class="NormalClass" format="#,###"/>
+
+								</lightning:layoutItem>
+							</div>
+							<div class="slds-p-horizontal--small slds-size--1-of-1" >
+								<lightning:layoutItem padding="around-small" size="6" smallDeviceSize="8" mediumDeviceSize="12">
+									<ui:inputNumber label="% to Target" value="{!v.Component3Actual/v.Component3Target}" class="{!if((v.Component3Actual/v.Component3Target) lt 0.8, 'ResultClassRed', if((v.Component3Actual/v.Component3Target) ge 1, 'ResultClassGreen', if(and((v.Component3Actual/v.Component3Target) ge 0.8 , (v.Component3Actual/v.Component3Target) lt 1),'ResultClassYellow', 'ResultClassWhite')))}" format=".%"/>
+
+								</lightning:layoutItem>
+							</div>
+							<div class="slds-p-horizontal--small slds-size--1-of-1" >
+								<lightning:layoutItem padding="around-small" size="6" smallDeviceSize="8" mediumDeviceSize="12">
+									<ui:inputCurrency label="Total Comms" value="{!v.Comp3Commission}" class="ResultClass" format="{!if(v.Comp3Commission ==0, '', '$#,###.##')}"/>
+
+								</lightning:layoutItem>
+							</div></div>
+					</lightning:layout>
+					<lightning:layout multipleRows="true" horizontalAlign="center" verticalAlign="start">
+						<div class="slds-box">
+							<div class="slds-text-align_center">COMPONENT 4</div>
+							<div class="slds-p-horizontal--small slds-size--1-of-1" >
+								<lightning:layoutItem padding="around-small" size="6" smallDeviceSize="8" mediumDeviceSize="12">
+									<ui:inputNumber label="OTE %" value="{!v.Component4OTEPercentage}" class="NormalClass" format="0%" />
+
+								</lightning:layoutItem>
+							</div>
+							<div class="slds-p-horizontal--small slds-size--1-of-1" >
+								<lightning:layoutItem padding="around-small" size="6" smallDeviceSize="8" mediumDeviceSize="12">
+									<ui:inputNumber label="OTE" value="{!v.OTE * (v.Component4OTEPercentage)}" class="NormalClass" format="$#,###"/>
+
+								</lightning:layoutItem>
+							</div>
+							<div class="slds-p-horizontal--small slds-size--1-of-1" >
+								<lightning:layoutItem padding="around-small" size="6" smallDeviceSize="8" mediumDeviceSize="12">
+									<ui:inputCurrency label="Target" value="{!v.Component4Target}" class="NormalClass" format="#,###"/>
+
+								</lightning:layoutItem>
+							</div>
+							<div class="slds-p-horizontal--small slds-size--1-of-1" >
+								<lightning:layoutItem padding="around-small" size="6" smallDeviceSize="8" mediumDeviceSize="12">
+									<ui:inputCurrency label="Actual" value="{!v.Component4Actual}" class="NormalClass" format="#,###"/>
+
+								</lightning:layoutItem>
+							</div>
+							<div class="slds-p-horizontal--small slds-size--1-of-1" >
+								<lightning:layoutItem padding="around-small" size="6" smallDeviceSize="8" mediumDeviceSize="12">
+									<ui:inputNumber label="% to Target" value="{!v.Component4Actual/v.Component4Target}" class="{!if((v.Component4Actual/v.Component4Target) lt 0.8, 'ResultClassRed', if((v.Component4Actual/v.Component4Target) ge 1, 'ResultClassGreen', if(and((v.Component4Actual/v.Component4Target) ge 0.8 , (v.Component4Actual/v.Component4Target) lt 1),'ResultClassYellow', 'ResultClassWhite')))}" format=".%"/>
+
+								</lightning:layoutItem>
+							</div>
+							<div class="slds-p-horizontal--small slds-size--1-of-1" >
+								<lightning:layoutItem padding="around-small" size="6" smallDeviceSize="8" mediumDeviceSize="12">
+									<ui:inputCurrency label="Total Comms" value="{!v.Comp4Commission}" class="ResultClass" format="{!if(v.Comp4Commission ==0, '', '$#,###.##')}"/>
+
+								</lightning:layoutItem>
+							</div></div>
+					</lightning:layout>
+				</lightning:layout>
+
+				<!--         <lightning:layout multipleRows="false" horizontalAlign="center" verticalAlign="start">
+
+						 <lightning:layoutItem padding="around-small"  size="3" smallDeviceSize="6" mediumDeviceSize="3">
+							 <ui:inputNumber label="Component 1 OTE %" value="{!v.Component1OTEPercentage}" class="NormalClass" format="0%" />
+					  </lightning:layoutItem>
+
+					  <lightning:layoutItem padding="around-small" size="3" smallDeviceSize="6" mediumDeviceSize="3">
+							 <ui:inputNumber label="Component 3 OTE %" value="{!v.Component3OTEPercentage}" class="NormalClass" format="0%" />
+						 </lightning:layoutItem>
+					  <lightning:layoutItem padding="around-small" size="3" smallDeviceSize="6" mediumDeviceSize="3">
+							 <ui:inputNumber label="Component 4 OTE %" value="{!v.Component4OTEPercentage}" class="NormalClass" format="0%" />
+						 </lightning:layoutItem>
+
+					 </lightning:layout>
+					 <lightning:layout multipleRows="false" horizontalAlign="center" verticalAlign="start">
+			 <lightning:layoutItem padding="around-small" size="3" smallDeviceSize="6" mediumDeviceSize="3">
+							 <ui:inputNumber label="Component 1 OTE" value="{!v.OTE * (v.Component1OTEPercentage)}" class="NormalClass" format="$#,###"/>
+						 </lightning:layoutItem>
+
+										 <lightning:layoutItem padding="around-small" size="3" smallDeviceSize="6" mediumDeviceSize="3">
+							 <ui:inputNumber label="Component 3 OTE" value="{!v.OTE * (v.Component3OTEPercentage)}" class="NormalClass" format="$#,###"/>
+						 </lightning:layoutItem>
+										 <lightning:layoutItem padding="around-small" size="3" smallDeviceSize="6" mediumDeviceSize="3">
+							 <ui:inputNumber label="Component 4 OTE" value="{!v.OTE * (v.Component4OTEPercentage)}" class="NormalClass" format="$#,###"/>
+						 </lightning:layoutItem>
+					 </lightning:layout>        -->
+			</aura:if>
+			<aura:if isTrue="{!v.WorkType=='PM'}">
+				<lightning:layout multipleRows="false" horizontalAlign="center" verticalAlign="start">
+					<lightning:layoutItem padding="around-small" size="3" smallDeviceSize="6" mediumDeviceSize="3">
+						<ui:inputNumber label="OTE" value="{!v.OTE}" class="NormalClass" format="{!if(v.OTE == 0, '', '$#,###')}"/>
+					</lightning:layoutItem>
+				</lightning:layout>
+
+				<lightning:layout multipleRows="false" horizontalAlign="center" verticalAlign="start">
+					<lightning:layoutItem padding="around-small" size="3" smallDeviceSize="6" mediumDeviceSize="3">
+						<ui:inputNumber label="Unit OTE %" value="{!v.UnitOTEPercentage}" class="NormalClass" format="0%"/>
+					</lightning:layoutItem>
+					<lightning:layoutItem padding="around-small" size="3" smallDeviceSize="6" mediumDeviceSize="3">
+						<ui:inputNumber label="Unit Target OTE" value="{!v.OTE * v.UnitOTEPercentage}" class="NormalClass" format="$#,###"/>
+					</lightning:layoutItem>
+
+				</lightning:layout>
+
+				<lightning:layout multipleRows="false" horizontalAlign="center" verticalAlign="start">
+					<lightning:layoutItem padding="around-small" size="3" smallDeviceSize="6" mediumDeviceSize="3">
+						<ui:inputNumber label="Unique Ref OTE %" value="{!v.UniqueTargetOTEPercentage}" class="NormalClass" format="0%" />
+					</lightning:layoutItem>
+					<lightning:layoutItem padding="around-small" size="3" smallDeviceSize="6" mediumDeviceSize="3">
+						<ui:inputNumber label="Unique Ref OTE" value="{!v.OTE * v.UniqueTargetOTEPercentage}" class="NormalClass" format="$#,###"/>
+					</lightning:layoutItem>
+
+				</lightning:layout>
+			</aura:if>
+			<aura:if isTrue="{!v.WorkType=='CM'}">
+				<lightning:layout multipleRows="false" horizontalAlign="center" verticalAlign="start">
+					<lightning:layoutItem padding="around-small" size="3" smallDeviceSize="6" mediumDeviceSize="3">
+						<ui:inputNumber label="OTE" value="{!v.OTE}" class="NormalClass" format="{!if(v.OTE == 0, '', '$#,###')}"/>
+					</lightning:layoutItem>
+				</lightning:layout>
+				<lightning:layout multipleRows="false" horizontalAlign="center" verticalAlign="start">
+					<lightning:layoutItem padding="around-small" size="3" smallDeviceSize="6" mediumDeviceSize="3">
+						<ui:inputNumber label="Booking OTE %" value="{!v.BookingOTEPercentage}" class="NormalClass" format="0%" />
+					</lightning:layoutItem>
+					<lightning:layoutItem padding="around-small" size="3" smallDeviceSize="6" mediumDeviceSize="3">
+						<ui:inputNumber label="Booking OTE" value="{!v.OTE * v.BookingOTEPercentage}" class="NormalClass" format="$#,###"/>
+					</lightning:layoutItem>
+				</lightning:layout>
+				<lightning:layout multipleRows="false" horizontalAlign="center" verticalAlign="start">
+					<lightning:layoutItem padding="around-small" size="3" smallDeviceSize="6" mediumDeviceSize="3">
+						<ui:inputNumber label="PL OTE %" value="{!v.PLOTEPercentage}" class="NormalClass" format="0%" />
+					</lightning:layoutItem>
+					<lightning:layoutItem padding="around-small" size="3" smallDeviceSize="6" mediumDeviceSize="3">
+						<ui:inputNumber label="PL OTE" value="{!v.OTE * v.PLOTEPercentage}" class="NormalClass" format="$#,###"/>
+					</lightning:layoutItem>
+				</lightning:layout>
+			</aura:if>
+			<aura:if isTrue="{!v.WorkType=='CPM'}">
+				<lightning:layout multipleRows="false" horizontalAlign="center" verticalAlign="start">
+					<lightning:layoutItem padding="around-small" size="3" smallDeviceSize="6" mediumDeviceSize="3">
+						<ui:inputNumber label="OTE" value="{!v.OTE}" class="NormalClass" format="{!if(v.OTE == 0, '', '$#,###')}"/>
+					</lightning:layoutItem>
+				</lightning:layout>
+				<lightning:layout multipleRows="false" horizontalAlign="center" verticalAlign="start">
+					<lightning:layoutItem padding="around-small" size="3" smallDeviceSize="6" mediumDeviceSize="3">
+						<ui:inputNumber label="OTE %" value="{!v.BookingOTEPercentage}" class="NormalClass" format="0%" />
+					</lightning:layoutItem>
+					<lightning:layoutItem padding="around-small" size="3" smallDeviceSize="6" mediumDeviceSize="3">
+						<ui:inputNumber label="OTE" value="{!v.OTE * v.BookingOTEPercentage}" class="NormalClass" format="$#,###"/>
+					</lightning:layoutItem>
+				</lightning:layout>
+				<lightning:layout multipleRows="false" horizontalAlign="center" verticalAlign="start">
+					<lightning:layoutItem padding="around-small" size="3" smallDeviceSize="6" mediumDeviceSize="3">
+						<ui:inputNumber label="OTE %" value="{!v.PLOTEPercentage}" class="NormalClass" format="0%" />
+					</lightning:layoutItem>
+					<lightning:layoutItem padding="around-small" size="3" smallDeviceSize="6" mediumDeviceSize="3">
+						<ui:inputNumber label="OTE" value="{!v.OTE * v.PLOTEPercentage}" class="NormalClass" format="$#,###"/>
+					</lightning:layoutItem>
+				</lightning:layout>
+				<lightning:layout multipleRows="false" horizontalAlign="center" verticalAlign="start">
+					<lightning:layoutItem padding="around-small" size="3" smallDeviceSize="6" mediumDeviceSize="3">
+						<ui:inputNumber label="OTE %" value="{!v.OnlineFlowOTEPercentage}" class="NormalClass" format="0%" />
+					</lightning:layoutItem>
+					<lightning:layoutItem padding="around-small" size="3" smallDeviceSize="6" mediumDeviceSize="3">
+						<ui:inputNumber label="OTE" value="{!v.OTE * v.OnlineFlowOTEPercentage}" class="NormalClass" format="$#,###"/>
+					</lightning:layoutItem>
+				</lightning:layout>
+			</aura:if>
+			<aura:if isTrue="{!v.WorkType=='CS'}">
+				<lightning:layout multipleRows="false" horizontalAlign="center" verticalAlign="start">
+					<lightning:layoutItem padding="around-small" size="3" smallDeviceSize="6" mediumDeviceSize="3">
+						<ui:inputNumber label="Total OTE" value="{!v.OTE}" class="NormalClass" format="{!if(v.OTE == 0, '', '$#,###')}"/>
+					</lightning:layoutItem>
+				</lightning:layout>
+				<lightning:layout multipleRows="false" horizontalAlign="center" verticalAlign="start">
+					<lightning:layoutItem padding="around-small" size="3" smallDeviceSize="6" mediumDeviceSize="3">
+						<ui:inputNumber label="Unit %" value="{!v.UnitOTEPercentage}" class="NormalClass" format="0%"/>
+					</lightning:layoutItem>
+					<lightning:layoutItem padding="around-small" size="3" smallDeviceSize="6" mediumDeviceSize="3">
+						<ui:inputNumber label="Unit OTE" value="{!v.OTE * v.UnitOTEPercentage}" class="NormalClass" format="$#,###"/>
+					</lightning:layoutItem>
+
+				</lightning:layout>
+			</aura:if>
+			<aura:if isTrue="{!v.WorkType=='PC'}">
+				<lightning:layout multipleRows="false" horizontalAlign="center" verticalAlign="start">
+					<lightning:layoutItem padding="around-small" size="3" smallDeviceSize="6" mediumDeviceSize="3">
+						<ui:inputNumber label="OTE" value="{!v.OTE}" class="NormalClass" format="{!if(v.OTE == 0, '', '$#,###')}"/>
+					</lightning:layoutItem>
+				</lightning:layout>
+
+				<lightning:layout multipleRows="false" horizontalAlign="center" verticalAlign="start">
+					<lightning:layoutItem padding="around-small" size="3" smallDeviceSize="6" mediumDeviceSize="3">
+						<ui:inputNumber label="Unique Ref OTE %" value="{!v.UniqueTargetOTEPercentage}" class="NormalClass" format="0%" />
+					</lightning:layoutItem>
+					<lightning:layoutItem padding="around-small" size="3" smallDeviceSize="6" mediumDeviceSize="3">
+						<ui:inputNumber label="Unique Ref OTE" value="{!v.OTE * v.UniqueTargetOTEPercentage}" class="NormalClass" format="$#,###"/>
+					</lightning:layoutItem>
+				</lightning:layout>
+			</aura:if>
+
+			<aura:if isTrue="{!v.WorkType=='DS'}">
+				<lightning:layout multipleRows="false" horizontalAlign="center" verticalAlign="start">
+					<lightning:layoutItem padding="around-small" size="3" smallDeviceSize="6" mediumDeviceSize="3">
+						<ui:inputNumber label="OTE" value="{!v.OTE}" class="NormalClass" format="{!if(v.OTE == 0, '', '$#,###')}"/>
+					</lightning:layoutItem>
+				</lightning:layout>
+			</aura:if>
+		</div>
+		<br/>
+		<aura:renderIf isTrue="{!v.WorkType!='TM'}">
+
+			<div class="slds-box">
+				<!--      <aura:if isTrue="{!v.WorkType=='TM'}">
+						  <lightning:layout multipleRows="false" horizontalAlign="center" verticalAlign="start">
+						  <lightning:layoutItem padding="around-small" size="3" smallDeviceSize="6" mediumDeviceSize="3">
+							  <ui:inputCurrency label="Target" value="{!v.Component1Target}" class="NormalClass" format="#,###"/>
+						  </lightning:layoutItem>
+						  <lightning:layoutItem padding="around-small" size="3" smallDeviceSize="6" mediumDeviceSize="3">
+							  <ui:inputCurrency label="Target" value="{!v.Component2Target}" class="NormalClass" format="#,###"/>
+						  </lightning:layoutItem>
+						  <lightning:layoutItem padding="around-small" size="3" smallDeviceSize="6" mediumDeviceSize="3">
+							  <ui:inputCurrency label="Target" value="{!v.Component3Target}" class="NormalClass" format="#,###"/>
+						  </lightning:layoutItem>
+						  <lightning:layoutItem padding="around-small" size="3" smallDeviceSize="6" mediumDeviceSize="3">
+							  <ui:inputCurrency label="Target" value="{!v.Component4Target}" class="NormalClass" format="#,###"/>
+						  </lightning:layoutItem>
+					  </lightning:layout>
+					  <lightning:layout multipleRows="false" horizontalAlign="center" verticalAlign="start">
+						  <lightning:layoutItem padding="around-small" size="3" smallDeviceSize="6" mediumDeviceSize="3">
+							  <ui:inputCurrency label="Actual" value="{!v.Component1Actual}" class="NormalClass" format="#,###"/>
+						  </lightning:layoutItem>
+						  <lightning:layoutItem padding="around-small" size="3" smallDeviceSize="6" mediumDeviceSize="3">
+							  <ui:inputCurrency label="Actual" value="{!v.Component2Actual}" class="NormalClass" format="#,###"/>
+						  </lightning:layoutItem>
+						  <lightning:layoutItem padding="around-small" size="3" smallDeviceSize="6" mediumDeviceSize="3">
+							  <ui:inputCurrency label="Actual" value="{!v.Component3Actual}" class="NormalClass" format="#,###"/>
+						  </lightning:layoutItem>
+						  <lightning:layoutItem padding="around-small" size="3" smallDeviceSize="6" mediumDeviceSize="3">
+							  <ui:inputCurrency label="Actual" value="{!v.Component4Actual}" class="NormalClass" format="#,###"/>
+						  </lightning:layoutItem>
+					  </lightning:layout>
+					   <lightning:layout multipleRows="false" horizontalAlign="center" verticalAlign="start">
+						  <lightning:layoutItem padding="around-small" size="3" smallDeviceSize="6" mediumDeviceSize="3">
+							  <ui:inputNumber label="% to Target" value="{!v.Component1Actual/v.Component1Target}" class="{!if((v.Component1Actual/v.Component1Target) lt 0.8, 'ResultClassRed', if((v.Component1Actual/v.Component1Target) ge 1, 'ResultClassGreen', if(and((v.Component1Actual/v.Component1Target) ge 0.8 , (v.Component1Actual/v.Component1Target) lt 1),'ResultClassYellow', 'ResultClassWhite')))}" format=".%"/>
+						  </lightning:layoutItem>
+						  <lightning:layoutItem padding="around-small" size="3" smallDeviceSize="6" mediumDeviceSize="3">
+							  <ui:inputNumber label="% to Target" value="{!v.Component2Actual/v.Component2Target}" class="{!if((v.Component2Actual/v.Component2Target) lt 0.8, 'ResultClassRed', if((v.Component2Actual/v.Component2Target) ge 1, 'ResultClassGreen', if(and((v.Component2Actual/v.Component2Target) ge 0.8 , (v.Component2Actual/v.Component2Target) lt 1),'ResultClassYellow', 'ResultClassWhite')))}" format=".%"/>
+						  </lightning:layoutItem>
+						  <lightning:layoutItem padding="around-small" size="3" smallDeviceSize="6" mediumDeviceSize="3">
+							  <ui:inputNumber label="% to Target" value="{!v.Component3Actual/v.Component3Target}" class="{!if((v.Component3Actual/v.Component3Target) lt 0.8, 'ResultClassRed', if((v.Component3Actual/v.Component3Target) ge 1, 'ResultClassGreen', if(and((v.Component3Actual/v.Component3Target) ge 0.8 , (v.Component3Actual/v.Component3Target) lt 1),'ResultClassYellow', 'ResultClassWhite')))}" format=".%"/>
+						  </lightning:layoutItem>
+						  <lightning:layoutItem padding="around-small" size="3" smallDeviceSize="6" mediumDeviceSize="3">
+							  <ui:inputNumber label="% to Target" value="{!v.Component4Actual/v.Component4Target}" class="{!if((v.Component4Actual/v.Component4Target) lt 0.8, 'ResultClassRed', if((v.Component4Actual/v.Component4Target) ge 1, 'ResultClassGreen', if(and((v.Component4Actual/v.Component4Target) ge 0.8 , (v.Component4Actual/v.Component4Target) lt 1),'ResultClassYellow', 'ResultClassWhite')))}" format=".%"/>
+						  </lightning:layoutItem>
+					  </lightning:layout>
+					  <lightning:layout multipleRows="false" horizontalAlign="center" verticalAlign="start">
+						  <lightning:layoutItem padding="around-small" size="3" smallDeviceSize="6" mediumDeviceSize="3">
+							  <ui:inputCurrency label="Total Comms" value="{!v.Comp1Commission}" class="ResultClass" format="{!if(v.Comp1Commission ==0, '', '$#,###.##')}"/>
+						  </lightning:layoutItem>
+						  <lightning:layoutItem padding="around-small" size="3" smallDeviceSize="6" mediumDeviceSize="3">
+							  <ui:inputCurrency label="Total Comms" value="{!v.Comp2Commission}" class="ResultClass" format="{!if(v.Comp2Commission ==0, '', '$#,###.##')}"/>
+						  </lightning:layoutItem>
+						  <lightning:layoutItem padding="around-small" size="3" smallDeviceSize="6" mediumDeviceSize="3">
+							  <ui:inputCurrency label="Total Comms" value="{!v.Comp3Commission}" class="ResultClass" format="{!if(v.Comp3Commission ==0, '', '$#,###.##')}"/>
+						  </lightning:layoutItem>
+						   <lightning:layoutItem padding="around-small" size="3" smallDeviceSize="6" mediumDeviceSize="3">
+							  <ui:inputCurrency label="Total Comms" value="{!v.Comp4Commission}" class="ResultClass" format="{!if(v.Comp4Commission ==0, '', '$#,###.##')}"/>
+						  </lightning:layoutItem>
+					  </lightning:layout>
+					   <lightning:layout multipleRows="false" horizontalAlign="center" verticalAlign="start">
+						  <lightning:layoutItem padding="around-small" size="3" smallDeviceSize="6" mediumDeviceSize="3">
+							  <ui:inputCurrency label="Component 1 Target" value="{!v.Component1Target}" class="NormalClass" format="#,###"/>
+						  </lightning:layoutItem>
+						  <lightning:layoutItem padding="around-small" size="3" smallDeviceSize="6" mediumDeviceSize="3">
+							  <ui:inputCurrency label="Component 1 Actual" value="{!v.Component1Actual}" class="NormalClass" format="#,###"/>
+						  </lightning:layoutItem>
+						  <lightning:layoutItem padding="around-small" size="3" smallDeviceSize="6" mediumDeviceSize="3">
+							  <ui:inputNumber label="% to Target" value="{!v.Component1Actual/v.Component1Target}" class="{!if((v.Component1Actual/v.Component1Target) lt 0.8, 'ResultClassRed', if((v.Component1Actual/v.Component1Target) ge 1, 'ResultClassGreen', if(and((v.Component1Actual/v.Component1Target) ge 0.8 , (v.Component1Actual/v.Component1Target) lt 1),'ResultClassYellow', 'ResultClassWhite')))}" format=".%"/>
+						  </lightning:layoutItem>
+						  <lightning:layoutItem padding="around-small" size="3" smallDeviceSize="6" mediumDeviceSize="3">
+							  <ui:inputCurrency label="Total Comms" value="{!v.Comp1Commission}" class="ResultClass" format="{!if(v.Comp1Commission ==0, '', '$#,###')}"/>
+						  </lightning:layoutItem>
+					  </lightning:layout>
+					  <lightning:layout multipleRows="false" horizontalAlign="center" verticalAlign="start">
+						  <lightning:layoutItem padding="around-small" size="3" smallDeviceSize="6" mediumDeviceSize="3">
+							  <ui:inputCurrency label="Component 2 Target" value="{!v.Component2Target}" class="NormalClass" format="#,###"/>
+						  </lightning:layoutItem>
+						  <lightning:layoutItem padding="around-small" size="3" smallDeviceSize="6" mediumDeviceSize="3">
+							  <ui:inputCurrency label="Component 2 Actual" value="{!v.Component2Actual}" class="NormalClass" format="#,###"/>
+						  </lightning:layoutItem>
+						  <lightning:layoutItem padding="around-small" size="3" smallDeviceSize="6" mediumDeviceSize="3">
+							  <ui:inputNumber label="% to Target" value="{!v.Component2Actual/v.Component2Target}" class="{!if((v.Component2Actual/v.Component2Target) lt 0.8, 'ResultClassRed', if((v.Component2Actual/v.Component2Target) ge 1, 'ResultClassGreen', if(and((v.Component2Actual/v.Component2Target) ge 0.8 , (v.Component2Actual/v.Component2Target) lt 1),'ResultClassYellow', 'ResultClassWhite')))}" format=".%"/>
+						  </lightning:layoutItem>
+						  <lightning:layoutItem padding="around-small" size="3" smallDeviceSize="6" mediumDeviceSize="3">
+							  <ui:inputCurrency label="Total Comms" value="{!v.Comp2Commission}" class="ResultClass" format="{!if(v.Comp2Commission ==0, '', '$#,###')}"/>
+						  </lightning:layoutItem>
+					  </lightning:layout>
+					  <lightning:layout multipleRows="false" horizontalAlign="center" verticalAlign="start">
+						  <lightning:layoutItem padding="around-small" size="3" smallDeviceSize="6" mediumDeviceSize="3">
+							  <ui:inputCurrency label="Component 3 Target" value="{!v.Component3Target}" class="NormalClass" format="#,###"/>
+						  </lightning:layoutItem>
+						  <lightning:layoutItem padding="around-small" size="3" smallDeviceSize="6" mediumDeviceSize="3">
+							  <ui:inputCurrency label="Component 3 Actual" value="{!v.Component3Actual}" class="NormalClass" format="#,###"/>
+						  </lightning:layoutItem>
+						  <lightning:layoutItem padding="around-small" size="3" smallDeviceSize="6" mediumDeviceSize="3">
+							  <ui:inputNumber label="% to Target" value="{!v.Component3Actual/v.Component3Target}" class="{!if((v.Component3Actual/v.Component3Target) lt 0.8, 'ResultClassRed', if((v.Component3Actual/v.Component3Target) ge 1, 'ResultClassGreen', if(and((v.Component3Actual/v.Component3Target) ge 0.8 , (v.Component3Actual/v.Component3Target) lt 1),'ResultClassYellow', 'ResultClassWhite')))}" format=".%"/>
+						  </lightning:layoutItem>
+						  <lightning:layoutItem padding="around-small" size="3" smallDeviceSize="6" mediumDeviceSize="3">
+							  <ui:inputCurrency label="Total Comms" value="{!v.Comp3Commission}" class="ResultClass" format="{!if(v.Comp3Commission ==0, '', '$#,###')}"/>
+						  </lightning:layoutItem>
+					  </lightning:layout>
+					  <lightning:layout multipleRows="false" horizontalAlign="center" verticalAlign="start">
+						  <lightning:layoutItem padding="around-small" size="3" smallDeviceSize="6" mediumDeviceSize="3">
+							  <ui:inputCurrency label="Component 4 Target" value="{!v.Component4Target}" class="NormalClass" format="#,###"/>
+						  </lightning:layoutItem>
+						  <lightning:layoutItem padding="around-small" size="3" smallDeviceSize="6" mediumDeviceSize="3">
+							  <ui:inputCurrency label="Component 4 Actual" value="{!v.Component4Actual}" class="NormalClass" format="#,###"/>
+						  </lightning:layoutItem>
+						  <lightning:layoutItem padding="around-small" size="3" smallDeviceSize="6" mediumDeviceSize="3">
+							  <ui:inputNumber label="% to Target" value="{!v.Component4Actual/v.Component4Target}" class="{!if((v.Component4Actual/v.Component4Target) lt 0.8, 'ResultClassRed', if((v.Component4Actual/v.Component4Target) ge 1, 'ResultClassGreen', if(and((v.Component4Actual/v.Component4Target) ge 0.8 , (v.Component4Actual/v.Component4Target) lt 1),'ResultClassYellow', 'ResultClassWhite')))}" format=".%"/>
+						  </lightning:layoutItem>
+						   <lightning:layoutItem padding="around-small" size="3" smallDeviceSize="6" mediumDeviceSize="3">
+							  <ui:inputCurrency label="Total Comms" value="{!v.Comp4Commission}" class="ResultClass" format="{!if(v.Comp4Commission ==0, '', '$#,###')}"/>
+						  </lightning:layoutItem>
+					  </lightning:layout>
+					  </aura:if> -->
+				<aura:if isTrue="{!v.WorkType=='PM'}">
+					<lightning:layout multipleRows="false" horizontalAlign="center" verticalAlign="start">
+						<lightning:layoutItem padding="around-small" size="3" smallDeviceSize="6" mediumDeviceSize="3">
+							<ui:inputCurrency label="Unit Target" value="{!v.UnitTarget}" class="NormalClass" format="#,###"/>
+						</lightning:layoutItem>
+						<lightning:layoutItem padding="around-small" size="3" smallDeviceSize="6" mediumDeviceSize="3">
+							<ui:inputCurrency label="Unit Actual" value="{!v.UnitActual}" class="NormalClass" format="#,###"/>
+						</lightning:layoutItem>
+						<lightning:layoutItem padding="around-small" size="3" smallDeviceSize="6" mediumDeviceSize="3">
+							<ui:inputNumber label="% to Target" value="{!v.UnitActual/v.UnitTarget}" class="{!if((v.UnitActual/v.UnitTarget) lt 0.8, 'ResultClassRed', if((v.UnitActual/v.UnitTarget) ge 1, 'ResultClassGreen', if(and((v.UnitActual/v.UnitTarget) ge 0.8 , (v.UnitActual/v.UnitTarget) lt 1),'ResultClassYellow', 'ResultClassWhite')))}" format=".%"/>
+						</lightning:layoutItem>
+					</lightning:layout>
+
+					<lightning:layout multipleRows="false" horizontalAlign="center" verticalAlign="start">
+						<lightning:layoutItem padding="around-small" size="3" smallDeviceSize="6" mediumDeviceSize="3">
+							<ui:inputCurrency label="Unique Ref Target" value="{!v.UniqueRefTarget}" class="NormalClass" format="#,###"/>
+						</lightning:layoutItem>
+						<lightning:layoutItem padding="around-small" size="3" smallDeviceSize="6" mediumDeviceSize="3">
+							<ui:inputCurrency label="Unique Ref Actual" value="{!v.UniqueRefActual}" class="NormalClass" format="#,###"/>
+						</lightning:layoutItem>
+						<lightning:layoutItem padding="around-small" size="3" smallDeviceSize="6" mediumDeviceSize="3">
+							<ui:inputNumber label="% to Target" value="{!v.UniqueRefActual/v.UniqueRefTarget}" class="{!if((v.UniqueRefActual/v.UniqueRefTarget) lt 0.8, 'ResultClassRed', if((v.UniqueRefActual/v.UniqueRefTarget) ge 1, 'ResultClassGreen', if(and((v.UniqueRefActual/v.UniqueRefTarget) ge 0.8 , (v.UniqueRefActual/v.UniqueRefTarget) lt 1),'ResultClassYellow', 'ResultClassWhite')))}" format=".%"/>
+						</lightning:layoutItem>
+					</lightning:layout>
+
+					<lightning:layout multipleRows="false" horizontalAlign="center" verticalAlign="start">
+						<lightning:layoutItem padding="around-small" size="3" smallDeviceSize="6" mediumDeviceSize="3">
+							<ui:inputCurrency label="DIY Target" value="{!v.DIYTarget}" class="NormalClass" format="#,###"/>
+						</lightning:layoutItem>
+						<lightning:layoutItem padding="around-small" size="3" smallDeviceSize="6" mediumDeviceSize="3">
+							<ui:inputCurrency label="DIY Actual" value="{!v.DIYActual}" class="NormalClass" format="#,###"/>
+						</lightning:layoutItem>
+						<lightning:layoutItem padding="around-small" size="3" smallDeviceSize="6" mediumDeviceSize="3">
+							<ui:inputNumber label="% to Target" value="{!v.DIYActual/v.DIYTarget}" class="{!if((v.DIYActual/v.DIYTarget) lt 0.8, 'ResultClassRed', if((v.DIYActual/v.DIYTarget) ge 1, 'ResultClassGreen', if(and((v.DIYActual/v.DIYTarget) ge 0.8 , (v.DIYActual/v.DIYTarget) lt 1),'ResultClassYellow', 'ResultClassWhite')))}" format=".%"/>
+						</lightning:layoutItem>
+					</lightning:layout>
+				</aura:if>
+
+				<aura:if isTrue="{!v.WorkType=='CM'}">
+					<lightning:layout multipleRows="false" horizontalAlign="center" verticalAlign="start">
+						<lightning:layoutItem padding="around-small" size="3" smallDeviceSize="6" mediumDeviceSize="3">
+							<ui:inputCurrency label="Booking Target" value="{!v.NetBookingTarget}" class="NormalClass" format="{!if(v.NetBookingTarget == 0, '', '$#,###')}"/>
+						</lightning:layoutItem>
+						<lightning:layoutItem padding="around-small" size="3" smallDeviceSize="6" mediumDeviceSize="3">
+							<ui:inputCurrency label="Booking Actual" value="{!v.NetBookingActual}" class="NormalClass" format="{!if(v.NetBookingActual == 0, '', '$#,###')}"/>
+						</lightning:layoutItem>
+						<lightning:layoutItem padding="around-small" size="3" smallDeviceSize="6" mediumDeviceSize="3">
+							<ui:inputNumber label="% to Target" value="{!v.NetBookingActual/v.NetBookingTarget}" class="{!if((v.NetBookingActual/v.NetBookingTarget) lt 0.8, 'ResultClassRed', if((v.NetBookingActual/v.NetBookingTarget) ge 1, 'ResultClassGreen', if(and((v.NetBookingActual/v.NetBookingTarget) ge 0.8 , (v.NetBookingActual/v.NetBookingTarget) lt 1),'ResultClassYellow', 'ResultClassWhite')))}" format=".%"/>
+						</lightning:layoutItem>
+					</lightning:layout>
+
+					<lightning:layout multipleRows="false" horizontalAlign="center" verticalAlign="start">
+						<lightning:layoutItem padding="around-small" size="3" smallDeviceSize="6" mediumDeviceSize="3">
+							<ui:inputCurrency label="PL Target" value="{!v.PLTarget}" class="NormalClass" format="#,###"/>
+						</lightning:layoutItem>
+						<lightning:layoutItem padding="around-small" size="3" smallDeviceSize="6" mediumDeviceSize="3">
+							<ui:inputCurrency label="PL Actual" value="{!v.PLActual}" class="NormalClass" format="#,###"/>
+						</lightning:layoutItem>
+						<lightning:layoutItem padding="around-small" size="3" smallDeviceSize="6" mediumDeviceSize="3">
+							<ui:inputNumber label="% to Target" value="{!v.PLActual/v.PLTarget}" class="{!if((v.PLActual/v.PLTarget) lt 0.8, 'ResultClassRed', if((v.PLActual/v.PLTarget) ge 1, 'ResultClassGreen', if(and((v.PLActual/v.PLTarget) ge 0.8 , (v.PLActual/v.PLTarget) lt 1),'ResultClassYellow', 'ResultClassWhite')))}" format=".%"/>
+						</lightning:layoutItem>
+					</lightning:layout>
+					<!--
+					<lightning:layout multipleRows="false" horizontalAlign="center" verticalAlign="start">
+						<lightning:layoutItem padding="around-small" size="3" smallDeviceSize="6" mediumDeviceSize="3">
+							<ui:inputCurrency label="Maintenance Target" value="{!v.MaintenanceTarget}" class="NormalClass" format="{!if( v.MaintenanceTarget == 0, '', '$#,###')}"/>
+						</lightning:layoutItem>
+						<lightning:layoutItem padding="around-small" size="3" smallDeviceSize="6" mediumDeviceSize="3">
+							<ui:inputCurrency label="Maintenance Actual" value="{!v.MaintenanceActual}" class="NormalClass" format="{!if(v.MaintenanceActual == 0, '', ' $#,###')}"/>
+						</lightning:layoutItem>
+						<lightning:layoutItem padding="around-small" size="3" smallDeviceSize="6" mediumDeviceSize="3">
+							<ui:inputText label="Maintenance Achieved" value="{!if(v.MaintenanceActual ge v.MaintenanceTarget, 'YES', if((MaintenanceActual == null) || (MaintenanceTarget == null), null, 'NO'))}" class="{!if((v.MaintenanceActual/v.MaintenanceTarget) lt 0.8, 'ResultClassRed', if((v.MaintenanceActual/v.MaintenanceTarget) ge 1, 'ResultClassGreen', if(and((v.MaintenanceActual/v.MaintenanceTarget) ge 0.8 , (v.MaintenanceActual/v.MaintenanceTarget) lt 1),'ResultClassYellow', 'ResultClassWhite')))}"/>
+						</lightning:layoutItem>
+					</lightning:layout>
+					 -->
+					<lightning:layout multipleRows="false" horizontalAlign="center" verticalAlign="start">
+						<lightning:layoutItem padding="around-small" size="3" smallDeviceSize="6" mediumDeviceSize="3">
+							<ui:inputSelect class="Single" aura:id="InputSelectSingleCMMaintenance" label="Maintenance Achieved" value="{!v.BoostMark}">
+								<ui:inputSelectOption text=""/>
+								<ui:inputSelectOption text="YES"/>
+								<ui:inputSelectOption text="NO"/>
+							</ui:inputSelect>
+						</lightning:layoutItem>
+					</lightning:layout>
+
+				</aura:if>
+
+				<aura:if isTrue="{!v.WorkType=='CPM'}">
+					<lightning:layout multipleRows="false" horizontalAlign="center" verticalAlign="start">
+						<lightning:layoutItem padding="around-small" size="3" smallDeviceSize="6" mediumDeviceSize="3">
+						</lightning:layoutItem>
+					</lightning:layout>
+					<lightning:layout multipleRows="false" horizontalAlign="center" verticalAlign="start">
+						<lightning:layoutItem padding="around-small" size="3" smallDeviceSize="6" mediumDeviceSize="3">
+							<ui:inputCurrency label="Target" value="{!v.NetBookingTarget}" class="NormalClass" format="{!if(v.NetBookingTarget ==0, '', '#,###')}"/>
+						</lightning:layoutItem>
+						<lightning:layoutItem padding="around-small" size="3" smallDeviceSize="6" mediumDeviceSize="3">
+							<ui:inputCurrency label="Actual" value="{!v.NetBookingActual}" class="NormalClass" format="{!if(v.NetBookingActual == 0, '', '#,###')}"/>
+						</lightning:layoutItem>
+						<lightning:layoutItem padding="around-small" size="3" smallDeviceSize="6" mediumDeviceSize="3">
+							<ui:inputNumber label="% to Target" value="{!v.NetBookingActual/v.NetBookingTarget}" class="{!if((v.NetBookingActual/v.NetBookingTarget) lt 0.8, 'ResultClassRed', if((v.NetBookingActual/v.NetBookingTarget) ge 1, 'ResultClassGreen', if(and((v.NetBookingActual/v.NetBookingTarget) ge 0.8 , (v.NetBookingActual/v.NetBookingTarget) lt 1),'ResultClassYellow', 'ResultClassWhite')))}" format=".%"/>
+						</lightning:layoutItem>
+					</lightning:layout>
+					<lightning:layout multipleRows="false" horizontalAlign="center" verticalAlign="start">
+						<lightning:layoutItem padding="around-small" size="3" smallDeviceSize="6" mediumDeviceSize="3">
+							<ui:inputCurrency label="Target" value="{!v.PLTarget}" class="NormalClass" format="#,###"/>
+						</lightning:layoutItem>
+						<lightning:layoutItem padding="around-small" size="3" smallDeviceSize="6" mediumDeviceSize="3">
+							<ui:inputCurrency label="Actual" value="{!v.PLActual}" class="NormalClass" format="#,###"/>
+						</lightning:layoutItem>
+						<lightning:layoutItem padding="around-small" size="3" smallDeviceSize="6" mediumDeviceSize="3">
+							<ui:inputNumber label="% to Target" value="{!v.PLActual/v.PLTarget}" class="{!if((v.PLActual/v.PLTarget) lt 0.8, 'ResultClassRed', if((v.PLActual/v.PLTarget) ge 1, 'ResultClassGreen', if(and((v.PLActual/v.PLTarget) ge 0.8 , (v.PLActual/v.PLTarget) lt 1),'ResultClassYellow', 'ResultClassWhite')))}" format=".%"/>
+						</lightning:layoutItem>
+					</lightning:layout>
+
+					<lightning:layout multipleRows="false" horizontalAlign="center" verticalAlign="start">
+						<lightning:layoutItem padding="around-small" size="3" smallDeviceSize="6" mediumDeviceSize="3">
+							<ui:inputCurrency label="Target" value="{!v.OnlineFlowTarget}" class="NormalClass" format="#,###"/>
+						</lightning:layoutItem>
+						<lightning:layoutItem padding="around-small" size="3" smallDeviceSize="6" mediumDeviceSize="3">
+							<ui:inputCurrency label="Actual" value="{!v.OnlineFlowActual}" class="NormalClass" format="#,###"/>
+						</lightning:layoutItem>
+						<lightning:layoutItem padding="around-small" size="3" smallDeviceSize="6" mediumDeviceSize="3">
+							<ui:inputNumber label="% to Target" value="{!v.OnlineFlowActual/v.OnlineFlowTarget}" class="{!if((v.OnlineFlowActual/v.OnlineFlowTarget) lt 0.8, 'ResultClassRed', if((v.OnlineFlowActual/v.OnlineFlowTarget) ge 1, 'ResultClassGreen', if(and((v.OnlineFlowActual/v.OnlineFlowTarget) ge 0.8 , (v.OnlineFlowActual/v.OnlineFlowTarget) lt 1),'ResultClassYellow', 'ResultClassWhite')))}" format=".%"/>
+						</lightning:layoutItem>
+					</lightning:layout>
+
+					<lightning:layout multipleRows="false" horizontalAlign="center" verticalAlign="start">
+						<lightning:layoutItem padding="around-small" size="3" smallDeviceSize="6" mediumDeviceSize="3">
+							<ui:inputSelect class="Single" aura:id="InputSelectSingleCMMaintenance" label="Boost Acheived" value="{!v.BoostMark}">
+								<ui:inputSelectOption text=""/>
+								<ui:inputSelectOption text="YES"/>
+								<ui:inputSelectOption text="NO"/>
+							</ui:inputSelect>
+						</lightning:layoutItem>
+					</lightning:layout>
+
+				</aura:if>
+				<aura:if isTrue="{!v.WorkType=='CS'}">
+					<lightning:layout multipleRows="false" horizontalAlign="center" verticalAlign="start">
+						<lightning:layoutItem padding="around-small" size="3" smallDeviceSize="6" mediumDeviceSize="3">
+						</lightning:layoutItem>
+					</lightning:layout>
+					<lightning:layout multipleRows="false" horizontalAlign="center" verticalAlign="start">
+						<lightning:layoutItem padding="around-small" size="3" smallDeviceSize="6" mediumDeviceSize="3">
+							<ui:inputCurrency label="Unit Target" value="{!v.UnitTarget}" class="NormalClass" format="#,###"/>
+						</lightning:layoutItem>
+						<lightning:layoutItem padding="around-small" size="3" smallDeviceSize="6" mediumDeviceSize="3">
+							<ui:inputCurrency label="Unit Actual" value="{!v.UnitActual}" class="NormalClass" format="#,###"/>
+						</lightning:layoutItem>
+						<lightning:layoutItem padding="around-small" size="3" smallDeviceSize="6" mediumDeviceSize="3">
+							<ui:inputNumber label="% to Target" value="{!v.UnitActual/v.UnitTarget}" class="{!if((v.UnitActual/v.UnitTarget) lt 0.8, 'ResultClassRed', if((v.UnitActual/v.UnitTarget) ge 1, 'ResultClassGreen', if(and((v.UnitActual/v.UnitTarget) ge 0.8 , (v.UnitActual/v.UnitTarget) lt 1),'ResultClassYellow', 'ResultClassWhite')))}" format=".%"/>
+						</lightning:layoutItem>
+					</lightning:layout>
+				</aura:if>
+
+				<aura:if isTrue="{!v.WorkType=='PC'}">
+					<lightning:layout multipleRows="false" horizontalAlign="center" verticalAlign="start">
+						<lightning:layoutItem padding="around-small" size="3" smallDeviceSize="6" mediumDeviceSize="3">
+							<ui:inputCurrency label="Unique Ref Target" value="{!v.UniqueRefTarget}" class="NormalClass" format="#,###"/>
+						</lightning:layoutItem>
+						<lightning:layoutItem padding="around-small" size="3" smallDeviceSize="6" mediumDeviceSize="3">
+							<ui:inputCurrency label="Unique Ref Actual" value="{!v.UniqueRefActual}" class="NormalClass" format="#,###"/>
+						</lightning:layoutItem>
+						<lightning:layoutItem padding="around-small" size="3" smallDeviceSize="6" mediumDeviceSize="3">
+							<ui:inputNumber label="% to Target" value="{!v.UniqueRefActual/v.UniqueRefTarget}" class="{!if((v.UniqueRefActual/v.UniqueRefTarget) lt 0.8, 'ResultClassRed', if((v.UniqueRefActual/v.UniqueRefTarget) ge 1, 'ResultClassGreen', if(and((v.UniqueRefActual/v.UniqueRefTarget) ge 0.8 , (v.UniqueRefActual/v.UniqueRefTarget) lt 1),'ResultClassYellow', 'ResultClassWhite')))}" format=".%"/>
+						</lightning:layoutItem>
+					</lightning:layout>
+
+					<lightning:layout multipleRows="false" horizontalAlign="center" verticalAlign="start">
+						<lightning:layoutItem padding="around-small" size="3" smallDeviceSize="6" mediumDeviceSize="3">
+							<ui:inputCurrency label="Unit Target" value="{!v.UnitTarget}" class="NormalClass" format="#,###"/>
+						</lightning:layoutItem>
+						<lightning:layoutItem padding="around-small" size="3" smallDeviceSize="6" mediumDeviceSize="3">
+							<ui:inputCurrency label="Unit Actual" value="{!v.UnitActual}" class="NormalClass" format="#,###"/>
+						</lightning:layoutItem>
+						<lightning:layoutItem padding="around-small" size="3" smallDeviceSize="6" mediumDeviceSize="3">
+							<ui:inputNumber label="% to Target" value="{!v.UnitActual/v.UnitTarget}" class="{!if((v.UnitActual/v.UnitTarget) lt 0.8, 'ResultClassRed', if((v.UnitActual/v.UnitTarget) ge 1, 'ResultClassGreen', if(and((v.UnitActual/v.UnitTarget) ge 0.8 , (v.UnitActual/v.UnitTarget) lt 1),'ResultClassYellow', 'ResultClassWhite')))}" format=".%"/>
+						</lightning:layoutItem>
+					</lightning:layout>
+				</aura:if>
+
+				<aura:if isTrue="{!v.WorkType=='DS'}">
+
+					<lightning:layout multipleRows="false" horizontalAlign="center" verticalAlign="start">
+						<lightning:layoutItem padding="around-small" size="3" smallDeviceSize="6" mediumDeviceSize="3">
+							<ui:inputCurrency label="Unit Target" value="{!v.UnitTarget}" class="NormalClass" format="#,###"/>
+						</lightning:layoutItem>
+						<lightning:layoutItem padding="around-small" size="3" smallDeviceSize="6" mediumDeviceSize="3">
+							<ui:inputCurrency label="Unit Actual" value="{!v.UnitActual}" class="NormalClass" format="#,###"/>
+						</lightning:layoutItem>
+						<lightning:layoutItem padding="around-small" size="3" smallDeviceSize="6" mediumDeviceSize="3">
+							<ui:inputNumber label="% to Target" value="{!v.UnitActual/v.UnitTarget}" class="{!if((v.UnitActual/v.UnitTarget) lt 0.8, 'ResultClassRed', if((v.UnitActual/v.UnitTarget) ge 1, 'ResultClassGreen', if(and((v.UnitActual/v.UnitTarget) ge 0.8 , (v.UnitActual/v.UnitTarget) lt 1),'ResultClassYellow', 'ResultClassWhite')))}" format=".%"/>
+						</lightning:layoutItem>
+					</lightning:layout>
+
+					<lightning:layout multipleRows="false" horizontalAlign="center" verticalAlign="start">
+						<lightning:layoutItem padding="around-small" size="3" smallDeviceSize="6" mediumDeviceSize="3">
+							<ui:inputNumber label="Multiplier %" value="{!v.Multiplier}" class="NormalClass" format=".%"/>
+						</lightning:layoutItem>
+					</lightning:layout>
+				</aura:if>
+			</div>
+		</aura:renderIf>
+		<br/>
+
+		<!--
+		<aura:if isTrue="{!v.WorkType=='CPM'}">        
+			   <div class="slds-box">
+
+				<lightning:layout multipleRows="false" horizontalAlign="center" verticalAlign="start">
+					<lightning:layoutItem padding="around-small" size="3" smallDeviceSize="6" mediumDeviceSize="3">
+
+					</lightning:layoutItem>
+
+				</lightning:layout>
+				<lightning:layout multipleRows="false" horizontalAlign="center" verticalAlign="start">
+					<lightning:layoutItem padding="around-small" size="3" smallDeviceSize="6" mediumDeviceSize="3">
+						<ui:inputCurrency label="Maintenance Target" value="{!v.MaintenanceTarget}" class="NormalClass" format="#,###"/>
+					</lightning:layoutItem>
+					<lightning:layoutItem padding="around-small" size="3" smallDeviceSize="6" mediumDeviceSize="3">
+						<ui:inputCurrency label="Maintenance Actual" value="{!v.MaintenanceActual}" class="NormalClass" format="#,###"/>
+					</lightning:layoutItem>
+					<lightning:layoutItem padding="around-small" size="3" smallDeviceSize="6" mediumDeviceSize="3">
+						<ui:inputText label="Maintenance Achieved" value="{!if(v.MaintenanceActual ge v.MaintenanceTarget, 'YES', if((v.MaintenanceActual == null) || (v.MaintenanceTarget == null), null, 'NO'))}" class="{!if((v.MaintenanceActual/v.MaintenanceTarget) lt 0.8, 'ResultClassRed', if((v.MaintenanceActual/v.MaintenanceTarget) ge 1, 'ResultClassGreen', if(and((v.MaintenanceActual/v.MaintenanceTarget) ge 0.8 , (v.MaintenanceActual/v.MaintenanceTarget) lt 1),'ResultClassYellow', 'ResultClassWhite')))}"/>
+					</lightning:layoutItem>
+				</lightning:layout>
+			</div>
+		</aura:if>
+		-->
+
+		<aura:if isTrue="{!v.WorkType=='CS'}">
+			<div class="slds-box">
+				<lightning:layout multipleRows="false" horizontalAlign="center" verticalAlign="start">
+					<lightning:layoutItem padding="around-small" size="3" smallDeviceSize="6" mediumDeviceSize="3">
+						<ui:inputSelect class="Single" aura:id="InputSelectSingle" label="Boost Achieved" value="{!v.BoostMark}">
+							<ui:inputSelectOption text=""/>
+							<ui:inputSelectOption text="YES"/>
+							<ui:inputSelectOption text="NO"/>
+						</ui:inputSelect>
+					</lightning:layoutItem>
+				</lightning:layout>
+			</div>
+		</aura:if>
+
+		<div class="slds-align_absolute-center" style="height: 5rem;">
+			<ui:button press="{!c.calculate}" label="Calculate" />
+		</div>
+
+		<br/>
+
+		<div class="slds-box">
+			<aura:if isTrue="{!v.WorkType=='TM'}">
+				<lightning:layout multipleRows="false" horizontalAlign="center" verticalAlign="start">
+					<lightning:layoutItem padding="around-small" size="3" smallDeviceSize="6" mediumDeviceSize="3">
+						<ui:inputCurrency label="Commission (inc. Super)" value="{!v.CommissionEarning}" class="ResultClass" format="{!if(v.CommissionEarning == 0, '', '$#,###')}"/>
+					</lightning:layoutItem>
+				</lightning:layout>
+			</aura:if>
+
+
+			<aura:if isTrue="{!v.WorkType=='CM'}">
+				<lightning:layout multipleRows="false" horizontalAlign="center" verticalAlign="start">
+					<lightning:layoutItem padding="around-small" size="3" smallDeviceSize="6" mediumDeviceSize="3">
+						<ui:inputCurrency label="Commission (Bookings)" value="{!v.CommissionBooking}" class="ResultClass" format="{!if(v.CommissionBooking ==0, '', '$#,###')}"/>
+					</lightning:layoutItem>
+					<lightning:layoutItem padding="around-small" size="3" smallDeviceSize="6" mediumDeviceSize="3">
+						<ui:inputCurrency label="Maintenance Boost" value="{!v.CommissionBookingBoost}" class="ResultClass" format="{!if(v.CommissionBookingBoost ==0, '', '$#,###')}"/>
+					</lightning:layoutItem>
+					<lightning:layoutItem padding="around-small" size="3" smallDeviceSize="6" mediumDeviceSize="3">
+						<ui:inputCurrency label="Total Commission" value="{!v.CommissionBookingTotal}" class="ResultClass" format="{!if(v.CommissionBookingTotal == 0, '', '$#,###')}"/>
+					</lightning:layoutItem>
+				</lightning:layout>
+				<lightning:layout multipleRows="false" horizontalAlign="center" verticalAlign="start">
+					<lightning:layoutItem padding="around-small" size="3" smallDeviceSize="6" mediumDeviceSize="3">
+						<ui:inputCurrency label="Commission (PL)" value="{!v.CommissionPL}" class="ResultClass" format="{!if(v.CommissionPL == 0, '', '$#,###')}"/>
+					</lightning:layoutItem>
+
+					<lightning:layoutItem padding="around-small" size="3" smallDeviceSize="6" mediumDeviceSize="3">
+						<ui:inputCurrency label="Maintenance Boost" value="{!v.CommissionPLBoost}" class="ResultClass" format="{!if(v.CommissionPLBoost == 0, '', '$#,###')}"/>
+					</lightning:layoutItem>
+
+					<lightning:layoutItem padding="around-small" size="3" smallDeviceSize="6" mediumDeviceSize="3">
+						<ui:inputCurrency label="Total Commission" value="{!v.CommissionPLTotal}" class="ResultClass" format="{!if(v.CommissionPLTotal == 0, '', '$#,###')}"/>
+					</lightning:layoutItem>
+				</lightning:layout>
+				<lightning:layout multipleRows="false" horizontalAlign="center" verticalAlign="start">
+					<lightning:layoutItem padding="around-small" size="3" smallDeviceSize="6" mediumDeviceSize="3">
+						<ui:inputCurrency label="Commission (inc. Super)" value="{!v.CommissionEarning}" class="ResultClass" format="{!if(v.CommissionEarning == 0, '', '$#,###')}"/>
+					</lightning:layoutItem>
+				</lightning:layout>
+			</aura:if>
+
+			<aura:if isTrue="{!v.WorkType=='CPM'}">
+				<lightning:layout multipleRows="false" horizontalAlign="center" verticalAlign="start">
+					<lightning:layoutItem padding="around-small" size="3" smallDeviceSize="6" mediumDeviceSize="3">
+						<ui:inputCurrency label="Commission" value="{!v.CommissionBooking}" class="ResultClass" format="{!if(v.CommissionBooking == 0, '', '$#,###')}"/>
+					</lightning:layoutItem>
+					<lightning:layoutItem padding="around-small" size="3" smallDeviceSize="6" mediumDeviceSize="3">
+						<ui:inputCurrency label="Boost" value="{!v.CommissionBookingBoost}" class="ResultClass" format="{!if(v.CommissionBookingBoost == 0, '', '$#,###')}"/>
+					</lightning:layoutItem>
+					<lightning:layoutItem padding="around-small" size="3" smallDeviceSize="6" mediumDeviceSize="3">
+						<ui:inputCurrency label="Total Comms" value="{!v.CommissionBookingTotal}" class="ResultClass" format="{!if(v.CommissionBookingTotal == 0, '', '$#,###')}"/>
+					</lightning:layoutItem>
+				</lightning:layout>
+				<lightning:layout multipleRows="false" horizontalAlign="center" verticalAlign="start">
+					<lightning:layoutItem padding="around-small" size="3" smallDeviceSize="6" mediumDeviceSize="3">
+						<ui:inputCurrency label="Commission" value="{!v.CommissionPL}" class="ResultClass" format="{!if(v.CommissionPL == 0, '', '$#,###')}"/>
+					</lightning:layoutItem>
+					<lightning:layoutItem padding="around-small" size="3" smallDeviceSize="6" mediumDeviceSize="3">
+						<ui:inputCurrency label="Boost" value="{!v.CommissionPLBoost}" class="ResultClass" format="{!if(v.CommissionPLBoost == 0, '', '$#,###')}"/>
+					</lightning:layoutItem>
+					<lightning:layoutItem padding="around-small" size="3" smallDeviceSize="6" mediumDeviceSize="3">
+						<ui:inputCurrency label="Total Comms" value="{!v.CommissionPLTotal}" class="ResultClass" format="{!if(v.CommissionPLTotal == 0, '', '$#,###')}"/>
+					</lightning:layoutItem>
+				</lightning:layout>
+				<lightning:layout multipleRows="false" horizontalAlign="center" verticalAlign="start">
+					<lightning:layoutItem padding="around-small" size="3" smallDeviceSize="6" mediumDeviceSize="3">
+						<ui:inputCurrency label="Commission" value="{!v.CommissionOnlineFlow}" class="ResultClass" format="{!if(v.CommissionOnlineFlow == 0, '', '$#,###')}"/>
+					</lightning:layoutItem>
+					<lightning:layoutItem padding="around-small" size="3" smallDeviceSize="6" mediumDeviceSize="3">
+						<ui:inputCurrency label="Boost" value="{!v.CommissionOnlineFlowBoost}" class="ResultClass" format="{!if(v.CommissionOnlineFlowBoost == 0, '', '$#,###')}"/>
+					</lightning:layoutItem>
+					<lightning:layoutItem padding="around-small" size="3" smallDeviceSize="6" mediumDeviceSize="3">
+						<ui:inputCurrency label="Total Comms" value="{!v.CommissionOnlineFlowTotal}" class="ResultClass" format="{!if(v.CommissionOnlineFlowTotal == 0, '', '$#,###')}"/>
+					</lightning:layoutItem>
+				</lightning:layout>
+				<lightning:layout multipleRows="false" horizontalAlign="center" verticalAlign="start">
+					<lightning:layoutItem padding="around-small" size="3" smallDeviceSize="6" mediumDeviceSize="3">
+						<ui:inputCurrency label="Commission (inc. Super)" value="{!v.CommissionEarning}" class="ResultClass" format="{!if(v.CommissionEarning == 0, '', '$#,###')}"/>
+					</lightning:layoutItem>
+				</lightning:layout>
+			</aura:if>
+
+			<aura:if isTrue="{!v.WorkType=='PM'}">
+				<lightning:layout multipleRows="false" horizontalAlign="center" verticalAlign="start">
+					<lightning:layoutItem padding="around-small" size="3" smallDeviceSize="6" mediumDeviceSize="3">
+						<ui:inputCurrency label="Commission (Units)" value="{!v.CommissionUnit}" class="ResultClass" format="{!if(v.CommissionUnit == 0, '', '$#,###')}"/>
+					</lightning:layoutItem>
+
+					<lightning:layoutItem padding="around-small" size="3" smallDeviceSize="6" mediumDeviceSize="3">
+						<ui:inputCurrency label="DIY Boost" value="{!v.CommissionUnitBoost}" class="ResultClass" format="{!if(v.CommissionUnitBoost == 0, '', '$#,###')}"/>
+					</lightning:layoutItem>
+
+					<lightning:layoutItem padding="around-small" size="3" smallDeviceSize="6" mediumDeviceSize="3">
+						<ui:inputCurrency label="Total Commission" value="{!v.CommissionUnitTotal}" class="ResultClass" format="{!if(v.CommissionUnitTotal == 0, '', '$#,###')}"/>
+					</lightning:layoutItem>
+				</lightning:layout>
+				<lightning:layout multipleRows="false" horizontalAlign="center" verticalAlign="start">
+					<lightning:layoutItem padding="around-small" size="3" smallDeviceSize="6" mediumDeviceSize="3">
+						<ui:inputCurrency label="Commission (Unique Ref.)" value="{!v.CommissionUnique}" class="ResultClass" format="{!if(v.CommissionUnique == 0, '', '$#,###')}"/>
+					</lightning:layoutItem>
+
+					<lightning:layoutItem padding="around-small" size="3" smallDeviceSize="6" mediumDeviceSize="3">
+						<ui:inputCurrency label="DIY Boost" value="{!v.CommissionUniqueRefBoost}" class="ResultClass" format="{!if(v.CommissionUniqueRefBoost == 0, '', '$#,###')}"/>
+					</lightning:layoutItem>
+
+					<lightning:layoutItem padding="around-small" size="3" smallDeviceSize="6" mediumDeviceSize="3">
+						<ui:inputCurrency label="Total Commission" value="{!v.CommissionUniqueRefTotal}" class="ResultClass" format="{!if(v.CommissionUniqueRefTotal == 0, '', '$#,###')}"/>
+					</lightning:layoutItem>
+				</lightning:layout>
+				<lightning:layout multipleRows="false" horizontalAlign="center" verticalAlign="start">
+					<lightning:layoutItem padding="around-small" size="3" smallDeviceSize="6" mediumDeviceSize="3">
+						<ui:inputCurrency label="Commission (inc. Super)" value="{!v.CommissionEarning}" class="ResultClass" format="{!if(v.CommissionEarning == 0, '', '$#,###')}"/>
+					</lightning:layoutItem>
+				</lightning:layout>
+			</aura:if>
+			<aura:if isTrue="{!v.WorkType=='CS'}">
+				<lightning:layout multipleRows="false" horizontalAlign="center" verticalAlign="start">
+					<lightning:layoutItem padding="around-small" size="3" smallDeviceSize="6" mediumDeviceSize="3">
+						<ui:inputCurrency label="Commission (Units)" value="{!v.CommissionUnit}" class="ResultClass" format="{!if(v.CommissionUnit == 0, '', '$#,###')}"/>
+					</lightning:layoutItem>
+
+					<lightning:layoutItem padding="around-small" size="3" smallDeviceSize="6" mediumDeviceSize="3">
+						<ui:inputCurrency label="Boost" value="{!v.Boost}" class="ResultClass" format="{!if(v.Boost == 0, '', '$#,###')}"/>
+					</lightning:layoutItem>
+
+					<lightning:layoutItem padding="around-small" size="3" smallDeviceSize="6" mediumDeviceSize="3">
+						<ui:inputCurrency label="Total Commission" value="{!v.CommissionUnitTotal}" class="ResultClass" format="{!if(v.CommissionUnitTotal == 0, '', '$#,###')}"/>
+					</lightning:layoutItem>
+				</lightning:layout>
+				<!--<lightning:layout multipleRows="false" horizontalAlign="center" verticalAlign="start">
+					<lightning:layoutItem padding="around-small" size="3" smallDeviceSize="6" mediumDeviceSize="3">
+						<ui:inputCurrency label="Commission (inc. Super)" value="{!v.CommissionEarning}" class="ResultClass" format="{!if(v.CommissionEarning == 0, '', '$#,###')}"/>
+					</lightning:layoutItem>
+				</lightning:layout>-->
+			</aura:if>
+
+			<aura:if isTrue="{!v.WorkType=='PC'}">
+				<lightning:layout multipleRows="false" horizontalAlign="center" verticalAlign="start">
+					<lightning:layoutItem padding="around-small" size="3" smallDeviceSize="6" mediumDeviceSize="3">
+						<ui:inputCurrency label="Commission (Unique Ref.)" value="{!v.CommissionUnique}" class="ResultClass" format="{!if(v.CommissionUnique == 0, '', '$#,###')}"/>
+					</lightning:layoutItem>
+
+					<lightning:layoutItem padding="around-small" size="3" smallDeviceSize="6" mediumDeviceSize="3">
+						<ui:inputCurrency label="Boost" value="{!v.CommissionUniqueRefBoost}" class="ResultClass" format="{!if(v.CommissionUniqueRefBoost == 0, '', '$#,###')}"/>
+					</lightning:layoutItem>
+
+					<lightning:layoutItem padding="around-small" size="3" smallDeviceSize="6" mediumDeviceSize="3">
+						<ui:inputCurrency label="Total Commission" value="{!v.CommissionUniqueRefTotal}" class="ResultClass" format="{!if(v.CommissionUniqueRefTotal == 0, '', '$#,###')}"/>
+					</lightning:layoutItem>
+				</lightning:layout>
+				<lightning:layout multipleRows="false" horizontalAlign="center" verticalAlign="start">
+					<lightning:layoutItem padding="around-small" size="3" smallDeviceSize="6" mediumDeviceSize="3">
+						<ui:inputCurrency label="Commission (inc. Super)" value="{!v.CommissionEarning}" class="ResultClass" format="{!if(v.CommissionEarning == 0, '', '$#,###.##')}"/>
+					</lightning:layoutItem>
+				</lightning:layout>
+			</aura:if>
+
+			<aura:if isTrue="{!v.WorkType=='DS'}">
+				<lightning:layout multipleRows="false" horizontalAlign="center" verticalAlign="start">
+					<lightning:layoutItem padding="around-small" size="3" smallDeviceSize="6" mediumDeviceSize="3">
+						<ui:inputCurrency label="Commission" value="{!v.CommissionEarning}" class="ResultClass" format="$#,###"/>
+					</lightning:layoutItem>
+				</lightning:layout>
+			</aura:if>
+		</div>
+		<br/>
+
+		<div class="slds-box">
+			<lightning:layout multipleRows="false" horizontalAlign="center" verticalAlign="start">
+
+				<ui:outputText aura:id="nameOutput" value="*This calculator is to provide indicative commission payouts. Final payouts will be provided by the Sales Operations Team."/>
+
+			</lightning:layout>
+		</div>
+
+	</div>
+</aura:component>

@@ -1,0 +1,38 @@
+.THIS .ResultClass {
+    color:white;
+    font-weight:bold;
+    background-color:#6100A5;
+    text-align: center;
+}
+
+.THIS .ResultClassRed {
+    color:white;
+    font-weight:bold;
+    background-color:#EC0677;
+    text-align: center;
+}
+
+.THIS .ResultClassYellow {
+    color:black;
+    font-weight:bold;
+    background-color:#FFDC4B;
+    text-align: center;
+}
+
+.THIS .ResultClassGreen {
+    color:white;
+    font-weight:bold;
+    background-color:#00BC6F;
+    text-align: center;
+}
+
+.THIS .ResultClassWhite {
+    color:black;
+    font-weight:bold;
+    background-color:White;
+    text-align: center;
+}
+
+.THIS .NormalClass {
+    text-align: center;
+}

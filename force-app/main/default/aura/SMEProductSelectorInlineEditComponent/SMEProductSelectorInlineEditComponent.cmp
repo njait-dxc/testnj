@@ -1,0 +1,144 @@
+<aura:component
+        implements="flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,force:lightningQuickAction"
+        access="global" controller="SMEProductSelector">
+
+    <aura:attribute name="promoCodePicklistOpts" type="string[]" description="store picklist options values"/>
+    <aura:attribute name="showSaveCancelBtn" type="boolean"/>
+    <aura:attribute name="promoCodeValues" type="string[]" default="false"/>
+    <aura:attribute name="promoCodeWrapperMap" type="Map[]"/>
+    <aura:attribute name="showErrorClass" type="boolean" default="false"/>
+    <aura:attribute name="sNo" type="string"/>
+    <aura:attribute name="singleRec" type="Object"/>
+    <aura:attribute name="qtyEditMode" type="boolean" default="false"/>
+    <aura:attribute name="prmoEditMode" type="boolean" default="false"/>
+    <aura:attribute name="unitPrice" type="Decimal" default="0"/>
+    <aura:attribute name="totalPrice" type="Decimal" default="0"/>
+    <aura:attribute name="retrievePromoCodeList" type="boolean" default="true"/>
+    <aura:attribute name="loaded" type="boolean" default="false"/>
+    <aura:attribute name="processing" type="boolean" default="false"/>
+    <aura:attribute name="tnc" type="string"/>
+
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+
+    <!--Table Row Start-->
+    <tr>
+        <!--<td>
+            <div class="slds-truncate">{!v.sNo}</div>
+        </td> -->
+        <td>
+            <div class="slds-truncate" title="{!v.singleRec.productName}">{!v.singleRec.productName}</div>
+        </td>
+
+        <td ondblclick="{!c.inlineEditQty}"
+            class="{! v.showErrorClass == true ? 'slds-cell-edit slds-has-error' : 'slds-cell-edit'}">
+            <span class="slds-grid slds-grid_align-spread">
+                <!-- show input and output section based on boolean flag --> 
+                <aura:if isTrue="{!v.qtyEditMode == false}">
+                    <span class="slds-truncate" title="Name">{!v.singleRec.quantity}</span>
+                    <button onclick="{!c.inlineEditQty}"
+                            class="slds-button slds-button_icon slds-cell-edit__button slds-m-left_x-small" tabindex="0"
+                            title="Quantity">
+                      <lightning:icon iconName="utility:edit" size="xx-small" alternativeText="edit"/>
+                    </button>
+
+                    <!-- Inline Edit Section in else case-->  
+                    <aura:set attribute="else">
+                        <section tabindex="0" class="slds-popover slds-popover_edit" role="dialog"
+                                 style="position: absolute; top: 0px; width:120px">
+                            <div class="slds-popover__body">
+                                <div class="slds-form-element slds-grid slds-wrap">
+                                    <div class="slds-form-element__control slds-grow">
+                                        <ui:inputNumber class="slds-input inputFieldWidth"
+                                                        labelClass="slds-form-element__label slds-form-element__label_edit slds-no-flex"
+                                                        aura:id="inputId"
+                                                        blur="{!c.closeQtyBox}"
+                                                        change="{!c.onQtyChange}"
+                                                        required="false"
+                                                        label="Quantity"
+                                                        value="{!v.singleRec.quantity}"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <span id="form-end" tabindex="0"></span>
+                        </section>  
+                    </aura:set>  
+                </aura:if> 
+            </span>
+        </td>
+
+        <td ondblclick="{!c.inlineEditPromoCode}" class="slds-cell-edit">
+            <span class="slds-grid slds-grid_align-spread">
+            	<aura:if isTrue="{!v.loaded == false}">
+                    <!-- show input and output section based on boolean flag --> 
+                    <aura:if isTrue="{!v.prmoEditMode == false}">
+                        <span class="slds-truncate" title="{!v.singleRec.promoCode}">{!v.singleRec.promoCode}</span>
+                        <button onclick="{!c.inlineEditPromoCode}"
+                                class="slds-button slds-button_icon slds-cell-edit__button slds-m-left_x-small"
+                                tabindex="0" title="Edit Promo Code">
+                            <lightning:icon iconName="utility:edit" size="xx-small" alternativeText="edit"/>
+                        </button>
+
+                        <!-- Inline Edit Section in else case-->  
+                        <aura:set attribute="else">
+                            <section tabindex="0" class="slds-popover slds-popover_edit" role="dialog"
+                                     style="position: absolute; top: 0px; width:240px">
+                                <div class="slds-popover__body">
+                                    <div class="slds-form-element slds-grid slds-wrap">
+                                        <div class="slds-form-element__control slds-grow">
+                                            <!--<label class="slds-form-element__label"></label>-->
+                                            <ui:inputSelect aura:id="oppPromoCode"
+                                                            class="slds-select inputFieldPromoWidth"
+                                                            blur="{!c.closePromoCodeBox}"
+                                                            change="{!c.onPromoCodeChange}"
+                                                            value="{!v.singleRec.promoCode}"
+                                            >
+                                                <aura:iteration items="{!v.promoCodePicklistOpts}" var="promocodeVal">
+                                                    <ui:inputSelectOption text="{!promocodeVal}"
+                                                                          label="{!promocodeVal}"/>
+                                               </aura:iteration>
+                                            </ui:inputSelect>
+                                        </div>
+                                    </div>
+                                </div>
+                                <span id="form-end" tabindex="0"></span>
+                            </section>  
+                        </aura:set>  
+                    </aura:if> 
+                    <aura:set attribute="else">
+                        <div class="spinnerHolder">
+                            <lightning:spinner alternativeText="Loading" size="small"/>
+                        </div>
+                    </aura:set>
+                </aura:if>
+            </span>
+        </td>
+         <td>
+            <div class="slds-truncate">
+                <lightning:formattedUrl value="{!v.singleRec.tnc}" label = "Click For Promo Terms"/>
+            </div>
+        </td>
+        <td>
+            <div class="slds-truncate">
+                {!v.singleRec.currencyISOCode}&nbsp;&nbsp;{!v.singleRec.priceExclGST}
+            </div>
+        </td>
+        <td>
+            <div class="slds-truncate">
+                {!v.singleRec.currencyISOCode}&nbsp;&nbsp;{!v.unitPrice}
+            </div>
+        </td>
+        <td>
+            <div class="slds-truncate">
+                {!v.singleRec.currencyISOCode}&nbsp;&nbsp;{!v.totalPrice}
+            </div>
+            <div class="spinnerHolder">
+                <aura:if isTrue="{!v.processing == false}">
+
+                    <aura:set attribute="else">
+                        <lightning:spinner alternativeText="Loading" size="small"/>
+                    </aura:set>
+                </aura:if>
+            </div>
+        </td>
+    </tr>
+</aura:component>

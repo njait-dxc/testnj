@@ -1,0 +1,53 @@
+<apex:page standardController="Contact" lightningStylesheets="true">
+<apex:form >
+    <apex:pageBlock >
+        <apex:pageBlockSection >
+            <apex:pageBlockSectionItem >                
+                <apex:outputLabel value="Must join new Partner Program"></apex:outputLabel>
+                <apex:outputField value="{!contact.CC_Must_join_new_Partner_Program__c}"/>
+            </apex:pageBlockSectionItem>        
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel value="Complete Product Training – Essentials and AccountRight"></apex:outputLabel>
+                <apex:outputField value="{!contact.CC_Complete_Product_Training__c}"/>
+            </apex:pageBlockSectionItem>
+
+        </apex:pageBlockSection>
+
+        <apex:pageBlockSection >
+            <apex:pageBlockSectionItem >                
+                <apex:outputLabel value="Complete Dashboard set up"></apex:outputLabel>
+                <apex:outputField value="{!contact.CC_Complete_Dashboard_set_up__c}"/>
+            </apex:pageBlockSectionItem>        
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel value="Working/ linked with >10  files on your Partner Dashboard"></apex:outputLabel>
+                <apex:outputField value="{!contact.CC_Working_10_files_Partner_Dashboard__c}"/>
+            </apex:pageBlockSectionItem>
+
+        </apex:pageBlockSection>
+
+        <apex:pageBlockSection >
+            <apex:pageBlockSectionItem >                
+                <apex:outputLabel value="AccountRight and Essentials solutions clients on Dashboard"></apex:outputLabel>
+                <apex:outputField value="{!contact.CC_AccountRight_and_Essentials_solutions__c}"/>
+            </apex:pageBlockSectionItem>        
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel value="Set up bank rules via Dashboard for minimum 1 ARL & ES file"></apex:outputLabel>
+                <apex:outputField value="{!contact.CC_Set_up_bank_rules_via_Dashboard__c}"/>
+            </apex:pageBlockSectionItem>
+
+        </apex:pageBlockSection>
+                
+        <apex:pageBlockSection >
+            <apex:pageBlockSectionItem >                
+                <apex:outputLabel value="Joined the MYOB Loans PRP"></apex:outputLabel>
+                <apex:outputField value="{!contact.CC_Joined_the_MYOB_Loans_PRP__c}"/>
+            </apex:pageBlockSectionItem>        
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel value="Attend at least one MYOB event per year to maintain certification - INCITE or PC"></apex:outputLabel>
+                <apex:outputField value="{!contact.CC_Attend_at_least_one_MYOB_event__c}"/>
+            </apex:pageBlockSectionItem>
+
+        </apex:pageBlockSection>                        
+    </apex:pageBlock>
+</apex:form>
+</apex:page>

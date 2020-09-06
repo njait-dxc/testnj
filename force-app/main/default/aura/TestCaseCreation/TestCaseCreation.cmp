@@ -1,0 +1,664 @@
+<aura:component controller="CaseController" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global" >
+      
+    <ltng:require styles="{!$Resource.modal_width}"/>
+
+     <!--Declare Attributes-->
+    <aura:attribute name="parentList" type="list" default="[]" description=""/>
+    <aura:attribute name="childList" type="list" default="[]"/>
+    <aura:attribute name="subProductList" type="list" default="[]"/>
+    <aura:attribute name="featureList" type="list" default="[]"/>
+    <aura:attribute name="serviceINTList" type="list" default="[]"/>
+    <aura:attribute name="knowledgeList" type="list" default="[]"/>
+    <aura:attribute name="partnerIssueINTList" type="list" default="[]"/>
+    <aura:attribute name="selfServeList" type="list" default="[]"/>
+    <aura:attribute name="functionList" type="list" default="[]"/>
+    
+    <aura:attribute name="howManyUsersEffectedList" type="list" default="[]"/>
+    <aura:attribute name="severityOfIssueList" type="list" default="[]"/>
+    <aura:attribute name="caseGroupList" type="list" default="[]"/>
+    <aura:attribute name="statusList" type="list" default="[]"/>
+    <aura:attribute name="subStatusList" type="list" default="[]"/>
+    <aura:attribute name="caseOriginList" type="list" default="[]"/>
+    <aura:attribute name="resolutionCodeList" type="list" default="[]"/>
+    
+    <!-- Picklist Maps to store Controller and Dependent fields-->
+    <aura:attribute name="pickListMap" type="map"/>
+    <aura:attribute name="prodSubPKLMap" type="map"/>
+    <aura:attribute name="featurePKLMap" type="map"/>
+    <aura:attribute name="serviceINTPKLMap" type="map"/>
+    <aura:attribute name="knowledgePKLMap" type="map"/>
+    <aura:attribute name="partnerIssuePKLMap" type="map"/>
+    <aura:attribute name="selfServicePKLMap" type="map"/>
+    <aura:attribute name="functionPKLMap" type="map"/>
+     <aura:attribute name="statusPKLMap" type="map"/>
+    
+    <aura:attribute name="disabledChildField" type="boolean" default="true"/>
+    
+    <aura:attribute name="productValue" type="string" default=""/>
+    <aura:attribute name="natureValue" type="string" default=""/>
+    
+    <aura:attribute name="trecordId" type="String" default="00T0k00000IubPTEAZ" />
+    <aura:attribute name="caseId" type="String" default="" />
+     <aura:attribute name="caseRecordId" type="String" default="" />
+    <aura:attribute name="RecordTypeId" type="String" default=""/>
+    <aura:attribute name="objTask" type="Map"/>
+    <aura:attribute name="objRecordType" type="RecordType[]"/>
+    <aura:attribute name="ocProductType" type="Map"/> 
+    <aura:attribute name="objectName" type="string" default="Case"/>
+    <aura:attribute name="accountName" type="string" />
+    <aura:attribute name="contactName" type="string" />
+    <aura:attribute name="hasError" type="boolean" default="false"/>
+    <aura:attribute name="msgBody" type="string" />
+
+    
+     <aura:attribute name="objCase" type="Case" default="{'sobjectType':'Case', 
+                                                        'AccountId': '',
+                                                        'ContactId': '',
+                                                        'RecordTypeId':'',
+                                                        'OwnerId':'',
+                                                        'Product_Type__c': '',
+                                                        'PSSSubProduct__c': '',
+                                                        'Nature_of_Client_enquiry__c': '',
+                                                        'How_many_users_affected__c': '',
+                                                        'Severity__c': '',
+                                                        'Feature__c': '',
+                                                        'Function__c': '',
+                                                        'Subject': '',
+                                                        'Description': '',
+                                                        'Case_Group__c': '',
+                                                        'Origin': 'Phone',
+                                                        'Status': 'Open',
+                                                        'Sub_Status__c': 'In Progress',
+                                                        'Call_Object_Identifier__c': '',
+                                                        'Knowledge_Requirement__c': '',
+                                                        'Business_Case__c': '',
+                                                        'Partner_or_Client_issue__c': '',
+                                                        'Was_there_a_self_service_portal_to_facil__c': '',
+                                                        'Is_the_Service_Internal_External_to_MYOB__c': '',
+                                                        'Incident_Number__c': '',
+                                                        'Resolution_Code__c': '',
+                                                        'Resolution__c': ''}"/>
+
+    
+    <!--Declare Handler-->
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>  
+     
+    <!--Component Start-->
+    
+    <!---<div class="slds-text-heading_large slds-align_absolute-center"> Create PSS Support Case </div>-->
+   
+    <aura:if isTrue="{!v.hasError}"> 	
+            <ui:message title="Error" severity="error">
+               {!v.msgBody}
+            </ui:message> 
+        </aura:if> 
+    
+    <div class="container-fluid slds-m-top_large">
+
+        <lightning:layout multipleRows="true">
+            <lightning:layoutItem padding='around-small' size="12" smallDeviceSize="12" mediumDeviceSize="6">
+                <lightning:input name="caseAccount" aura:id="caseAccount" type="text" disabled ="true" required="true" label="Account " value="{!v.accountName}" />
+            </lightning:layoutItem>
+            <lightning:layoutItem padding='around-small' size="12" smallDeviceSize="12" mediumDeviceSize="6">
+                <lightning:input name="caseContact" aura:id="caseContact" type="text" disabled ="true" required="true" label="Contact" value="{!v.contactName}" />
+            </lightning:layoutItem>
+        </lightning:layout>
+
+        <!-- Create a line -->
+        <hr style="color:black;background-color:black" /> 
+               
+                <lightning:layout multipleRows="true">
+                    <lightning:layoutItem padding='around-small' size="12" smallDeviceSize="12" mediumDeviceSize="6">
+                        <lightning:input name="caseSubject" 
+                                 aura:id="caseSubject" 
+                                 type="text" required="true" 
+                                 label="Subject"  messageWhenValueMissing="Enter a valid value."
+                                 value="{!v.objCase.Subject}" />
+                    </lightning:layoutItem>
+                    <lightning:layoutItem padding='around-small' size="12" smallDeviceSize="12" mediumDeviceSize="6">
+                        <lightning:textarea name="caseDescription" 
+                        aura:id="caseDescription" required="true" 
+                        messageWhenValueMissing="Enter a valid value."
+                        label="Description" value="{!v.objCase.Description}"
+                        onError="{!c.handleError}" onClearErrors="{!c.handleClearError}" />
+                    </lightning:layoutItem>
+                </lightning:layout>  
+                
+                <lightning:layout multipleRows="true">
+                    <lightning:layoutItem padding='around-small' size="12" smallDeviceSize="12" mediumDeviceSize="6">
+                       <!-- <lightning:select name="caseProduct" 
+                              aura:id="caseProduct"
+                              value="{!v.objCase.Product_Type__c}"
+                              label="Product"
+                              onchange="{!c.caseProductfieldChange}">
+                                <aura:iteration items="{!v.parentList}" var="val" indexVar="key">
+                            	<option text="{!val}" value="{!val}"></option>
+                                </aura:iteration>
+                        </lightning:select>-->
+                        <lightning:select name="caseUsersAffected" 
+                                              aura:id="caseHowManyUserAff"
+                                              label="How many users affected?" 
+                                              required="true" 
+                                              value="{!v.objCase.How_many_users_affected__c}">
+                                            <option value="">--- None ---</option>
+                                            <aura:iteration items="{!v.howManyUsersEffectedList}" var="value">
+                                                <option value="{!value}">{!value}</option>
+                                            </aura:iteration> 
+                            </lightning:select>
+                            <lightning:helptext content="One - less than 20% of the practice is affected; Some – more than 20% or less than 80% of the practice is affected; All - more than 80% of the practice is affected" icon-name="utility:info">
+                        </lightning:helptext>
+                    </lightning:layoutItem>
+                    <lightning:layoutItem padding='around-small' size="12" smallDeviceSize="12" mediumDeviceSize="6">
+                       <!--<lightning:select name="caseFeature" 
+                                  aura:id="caseFeature"
+                                  label="Feature" 
+                                  
+                                  value="{!v.objCase.Feature__c}" 
+                                  onchange="{!c.caseFeaturefieldChange}">
+                      			<aura:iteration items="{!v.featureList}" var="value">
+                                    <option value="{!value}">{!value}</option>
+                                </aura:iteration>
+                </lightning:select>-->
+                        <lightning:select name="caseStatus" 
+                                        aura:id="caseStatus"
+                                        label="Status" 
+                                        required="true" 
+                                        value="{!v.objCase.Status}"
+                                        onchange="{!c.caseStatusfieldChange}">
+                                        <aura:iteration items="{!v.statusList}" var="value">
+                                            <option value="{!value}" selected="{!value==v.objCase.Status}">{!value}</option>
+                                        </aura:iteration>
+                        </lightning:select>
+                    </lightning:layoutItem>
+                </lightning:layout>  
+
+                <lightning:layout multipleRows="true">
+                    <lightning:layoutItem padding='around-small' size="12" smallDeviceSize="12" mediumDeviceSize="6">
+                        <!--<lightning:select name="caseSubProduct" 
+                                aura:id="caseSubPro"
+                                  value="{!v.objCase.PSSSubProduct__c}"
+                                  label="Sub-Product" >
+                    			<aura:iteration items="{!v.subProductList}" var="value">
+                                    <option value="{!value}">{!value}</option>
+                                </aura:iteration> 
+                        </lightning:select>-->
+                        <lightning:select name="caseSeverity" 
+                                  aura:id="caseSeverity"
+                                  label="Severity of the Issue?" 
+                                  required="true" 
+                                  value="{!v.objCase.Severity__c}" >
+                    			<option value="">--- None ---</option>
+                                <aura:iteration items="{!v.severityOfIssueList}" var="value">
+                                    <option value="{!value}">{!value}</option>
+                                </aura:iteration>
+                </lightning:select>
+                <lightning:helptext content="Cosmetic – Functionality is working, but software appears different to expected;
+                Inconvenient – Workaround required to complete workflow, or delay in normal process;
+                Stops Work –There is no workaround. The client cannot complete a process." icon-name="utility:info">
+                </lightning:helptext> 
+                    </lightning:layoutItem>
+                    <lightning:layoutItem padding='around-small' size="12" smallDeviceSize="12" mediumDeviceSize="6">
+                        <!--<lightning:select name="caseStatus" 
+                                        aura:id="caseStatus"
+                                        label="Status" 
+                                        required="true" 
+                                        value="{!v.objCase.Status}"
+                                        onchange="{!c.caseStatusfieldChange}">
+                                        <aura:iteration items="{!v.statusList}" var="value">
+                                            <option value="{!value}" selected="{!value==v.objCase.Status}">{!value}</option>
+                                        </aura:iteration>
+                        </lightning:select>-->
+                        <!--<lightning:select name="caseFunction" 
+                                  label="Function" 
+                                  aura:id="caseFunction"
+                                  
+                                  value="{!v.objCase.Function__c}">
+                                <aura:iteration items="{!v.functionList}" var="value">
+                                    <option value="{!value}">{!value}</option>
+                                </aura:iteration>
+                </lightning:select>-->
+                        <lightning:select name="caseSubStatus" 
+                                    aura:id="caseSubStatus"
+                                    label="Sub-Status" 
+                                    required="true" 
+                                    value="{!v.objCase.Sub_Status__c}">
+                                <aura:iteration items="{!v.subStatusList}" var="value">
+                                    <option value="{!value}" selected="{!value==v.objCase.Sub_Status__c}">{!value}</option>
+                                </aura:iteration>
+                            </lightning:select>
+                    </lightning:layoutItem>
+                </lightning:layout>  
+
+                <lightning:layout multipleRows="true">
+                    <lightning:layoutItem padding='around-small' size="12" smallDeviceSize="12" mediumDeviceSize="6">
+                        <!--<lightning:select name="caseNature" 
+                                    aura:id="caseNature"
+                                    value="{!v.objCase.Nature_of_Client_enquiry__c}"
+                                    label="Nature Of Client Enquiry"
+                                    onchange="{!c.caseNaturefieldChange}"
+                                   >
+                                        <aura:iteration items="{!v.childList}" var="value">
+                                            <option value="{!value}">{!value}</option>
+                                        </aura:iteration> 
+                        </lightning:select>
+                        <lightning:helptext content="Defect: Software errors.
+                                                    How to: Using the software.
+                                                    Enhancement request: Software improvements/suggestions.
+                                                    Account Management: my.myob/housekeeping/2FA.
+                                                    Billing: Arrears, invoice queries like commissions, pricing, etc.
+                                                    Outage: Site downs, MYOB/External outages." icon-name="utility:info">
+                        </lightning:helptext>-->
+                        <lightning:select name="caseGroup" 
+                        aura:id="caseGroup"
+                         label="Case Group" 
+                         required="true" 
+                         value="{!v.objCase.Case_Group__c}"  >
+                       <option value="">--- None ---</option>
+                       <aura:iteration items="{!v.caseGroupList}" var="value">
+                           <option value="{!value}" selected="{!value==v.objCase.Case_Group__c}">{!value}</option>
+                       </aura:iteration>
+                        </lightning:select>
+                    </lightning:layoutItem>
+                    <lightning:layoutItem padding='around-small' size="12" smallDeviceSize="12" mediumDeviceSize="6">
+                            <!--<lightning:select name="caseSubStatus" 
+                                    aura:id="caseSubStatus"
+                                    label="Sub-Status" 
+                                    required="true" 
+                                    value="{!v.objCase.Sub_Status__c}">
+                                <aura:iteration items="{!v.subStatusList}" var="value">
+                                    <option value="{!value}" selected="{!value==v.objCase.Sub_Status__c}">{!value}</option>
+                                </aura:iteration>
+                            </lightning:select>-->
+                        <lightning:select name="caseOrigin" 
+                                  aura:id="caseOrigin"
+                                  label="Case Origin" 
+                                  required="true" 
+                                  value="{!v.objCase.Origin}">
+                                  <aura:iteration items="{!v.caseOriginList}" var="value">
+                                    <option value="{!value}" selected="{!value==v.objCase.Origin}">{!value}</option>
+                                </aura:iteration>
+                        </lightning:select>
+                        </lightning:layoutItem>
+                </lightning:layout>
+       	 <lightning:layout multipleRows="true">
+                    <lightning:layoutItem padding='around-small' size="12" smallDeviceSize="12" mediumDeviceSize="6">
+                        <lightning:select name="caseProduct" 
+                              aura:id="caseProduct"
+                              value="{!v.objCase.Product_Type__c}"
+                              label="Product"
+                              onchange="{!c.caseProductfieldChange}">
+                                <aura:iteration items="{!v.parentList}" var="val" indexVar="key">
+                            	<option text="{!val}" value="{!val}"></option>
+                                </aura:iteration>
+                        </lightning:select>
+             </lightning:layoutItem>
+             <lightning:layoutItem padding='around-small' size="12" smallDeviceSize="12" mediumDeviceSize="6">
+             			<lightning:select name="caseFeature" 
+                                  aura:id="caseFeature"
+                                  label="Feature" 
+                                  
+                                  value="{!v.objCase.Feature__c}" 
+                                  onchange="{!c.caseFeaturefieldChange}">
+                      			<aura:iteration items="{!v.featureList}" var="value">
+                                    <option value="{!value}">{!value}</option>
+                                </aura:iteration>
+                </lightning:select>
+             </lightning:layoutItem>
+        </lightning:layout>
+        <lightning:layout multipleRows="true">
+                    <lightning:layoutItem padding='around-small' size="12" smallDeviceSize="12" mediumDeviceSize="6">
+                        <lightning:select name="caseSubProduct" 
+                                aura:id="caseSubPro"
+                                  value="{!v.objCase.PSSSubProduct__c}"
+                                  label="Sub-Product" >
+                    			<aura:iteration items="{!v.subProductList}" var="value">
+                                    <option value="{!value}">{!value}</option>
+                                </aura:iteration> 
+                        </lightning:select>
+            </lightning:layoutItem>
+            <lightning:layoutItem padding='around-small' size="12" smallDeviceSize="12" mediumDeviceSize="6">
+            			<lightning:select name="caseFunction" 
+                                  label="Function" 
+                                  aura:id="caseFunction"                                  
+                                  value="{!v.objCase.Function__c}">
+                                <aura:iteration items="{!v.functionList}" var="value">
+                                    <option value="{!value}">{!value}</option>
+                                </aura:iteration>
+                </lightning:select>
+            </lightning:layoutItem>
+        </lightning:layout>
+        <lightning:layout multipleRows="true">
+                    <lightning:layoutItem padding='around-small' size="12" smallDeviceSize="12" mediumDeviceSize="6">
+                        <lightning:select name="caseNature" 
+                                    aura:id="caseNature"
+                                    value="{!v.objCase.Nature_of_Client_enquiry__c}"
+                                    label="Nature Of Client Enquiry"
+                                    onchange="{!c.caseNaturefieldChange}"
+                                   >
+                                        <aura:iteration items="{!v.childList}" var="value">
+                                            <option value="{!value}">{!value}</option>
+                                        </aura:iteration> 
+                        </lightning:select>
+                        <lightning:helptext content="Defect: Software errors.
+                                                    How to: Using the software.
+                                                    Enhancement request: Software improvements/suggestions.
+                                                    Account Management: my.myob/housekeeping/2FA.
+                                                    Billing: Arrears, invoice queries like commissions, pricing, etc.
+                                                    Outage: Site downs, MYOB/External outages." icon-name="utility:info">
+                        </lightning:helptext>
+            </lightning:layoutItem>
+        </lightning:layout>
+
+ <!-- NJ Add-->          
+ 
+            <aura:if isTrue="{!v.natureValue == 'How To'}">
+                    <lightning:layout multipleRows="true">
+                            <lightning:layoutItem padding='around-small' size="12" smallDeviceSize="12" mediumDeviceSize="6">
+
+                                <lightning:select name="caseKnowledgeReq" 
+                                        aura:id="CaseKnowReq"
+                                        
+                                        label="Knowledge Requirement" 
+                                        value="{!v.objCase.Knowledge_Requirement__c}">
+                                        
+                                        <aura:iteration items="{!v.knowledgeList}" var="value">
+                                            <option value="{!value}">{!value}</option>
+                                        </aura:iteration>
+
+                                </lightning:select>
+                                <lightning:helptext content="Workflow Confusion: Client is unsure of the software process Client Knowledge: Client does not have the knowledge required KB/Help explanation: There is a KB/Help page, but required explanation No Help/KB: There was no KB/Help" icon-name="utility:info">
+                        </lightning:helptext> 
+                            </lightning:layoutItem> 
+                            
+                    </lightning:layout>                
+                </aura:if>
+
+                <aura:if isTrue="{!v.natureValue == 'Enhancement Request'}">
+                        <lightning:layout multipleRows="true">
+                                <lightning:layoutItem padding='around-small' size="12" smallDeviceSize="12" mediumDeviceSize="6">
+                                    <lightning:textarea name="caseBusinessCase" label="Business Case" value="{!v.objCase.Business_Case__c}" />
+                                </lightning:layoutItem>  
+                        </lightning:layout>        
+                </aura:if>
+
+                <aura:if isTrue="{!v.natureValue == 'Account Management'}">
+                        <lightning:layout multipleRows="true">
+                                <lightning:layoutItem padding='around-small' size="12" smallDeviceSize="12" mediumDeviceSize="6">
+                                    <lightning:select name="casePCIssue" 
+                                           
+                                            label="Partner or Client Issue" 
+                                            value="{!v.objCase.Partner_or_Client_issue__c}">
+                                            <aura:iteration items="{!v.partnerIssueINTList}" var="value">
+                                                <option value="{!value}">{!value}</option>
+                                            </aura:iteration>
+                                    </lightning:select>
+                                </lightning:layoutItem>  
+                        </lightning:layout>         
+                </aura:if>   
+                
+                <aura:if isTrue="{!v.natureValue == 'Account Management'}">
+                        <lightning:layout multipleRows="true">
+                                <lightning:layoutItem padding='around-small' size="12" smallDeviceSize="12" mediumDeviceSize="6">
+                                    <lightning:select name="caseSelfServicePortal" 
+                                            
+                                            label="Self service portal to facilitate this?" 
+                                            value="{!v.objCase.Was_there_a_self_service_portal_to_facil__c}">
+                                            <aura:iteration items="{!v.selfServeList}" var="value">
+                                                <option value="{!value}">{!value}</option>
+                                            </aura:iteration>
+                                    </lightning:select>
+                                </lightning:layoutItem>  
+                        </lightning:layout>                
+                </aura:if>
+                <aura:if isTrue="{!v.natureValue == 'Billing'}">
+                        <lightning:layout multipleRows="true">
+                                <lightning:layoutItem padding='around-small' size="12" smallDeviceSize="12" mediumDeviceSize="6">
+                                    <lightning:select name="caseSelfServicePortal" 
+                                            
+                                            label="Self service portal to facilitate this?" 
+                                            value="{!v.objCase.Was_there_a_self_service_portal_to_facil__c}">
+                                            <aura:iteration items="{!v.selfServeList}" var="value">
+                                                <option value="{!value}">{!value}</option>
+                                            </aura:iteration>
+                                    </lightning:select>
+                                </lightning:layoutItem>  
+                        </lightning:layout>                
+                </aura:if>  
+                
+
+                <aura:if isTrue="{!v.natureValue == 'Outage'}">
+                        <lightning:layout multipleRows="true">
+                                <lightning:layoutItem padding='around-small' size="12" smallDeviceSize="12" mediumDeviceSize="6">
+                                    <lightning:input name="caseIncidentNumber" type="text" required="false" label="Incident Number" value="{!v.objCase.Incident_Number__c}" />
+                                </lightning:layoutItem>  
+                        </lightning:layout>          
+                </aura:if>         
+
+         <aura:if isTrue="{!v.natureValue == 'Outage'}">
+                        <lightning:layout multipleRows="true">
+                              <lightning:layoutItem padding='around-small' size="12" smallDeviceSize="12" mediumDeviceSize="6">
+                                    <lightning:select name="caseServiceIntExt"  
+                                        
+                                        label="Is the Service Internal / External To Myob? " 
+                                        value="{!v.objCase.Is_the_Service_Internal_External_to_MYOB__c}">
+                                      <aura:iteration items="{!v.serviceINTList}" var="value">
+                                          <option value="{!value}">{!value}</option>
+                                      </aura:iteration>
+                              </lightning:select>
+                                </lightning:layoutItem>  
+                        </lightning:layout>          
+                </aura:if>
+        
+        <lightning:layout multipleRows="true">
+                        <lightning:layoutItem padding='around-small' size="12" smallDeviceSize="12" mediumDeviceSize="6">
+                            <!----> 
+                        </lightning:layoutItem>
+                       <lightning:layoutItem padding='around-small' size="12" smallDeviceSize="12" mediumDeviceSize="6">
+                        <!--<lightning:select name="caseOrigin" 
+                                  aura:id="caseOrigin"
+                                  label="Case Origin" 
+                                  required="true" 
+                                  value="{!v.objCase.Origin}">
+                                  <aura:iteration items="{!v.caseOriginList}" var="value">
+                                    <option value="{!value}" selected="{!value==v.objCase.Origin}">{!value}</option>
+                                </aura:iteration>
+                        </lightning:select>-->
+                    </lightning:layoutItem>
+                    </lightning:layout> 
+
+                <div class="form-group">
+                    <div class="slds-grid slds-gutters slds-align_absolute-center">
+                    <div class="slds-col slds-size_1-of-2"><span>
+                    
+                  <!---<lightning:select name="caseProduct" 
+                              aura:id="caseProduct"
+                              value="{!v.objCase.Product_Type__c}"
+                              label="Product"
+                              required="true"
+                              messageWhenValueMissing="Enter a valid value."
+                              onchange="{!c.caseProductfieldChange}">
+                                <aura:iteration items="{!v.parentList}" var="val" indexVar="key">
+                            	<option text="{!val}" value="{!val}"></option>
+                                </aura:iteration>
+                    </lightning:select>-->
+         <!--Dependent Field-->      
+                 <!--<lightning:select name="caseSubProduct" 
+                                aura:id="caseSubPro"
+                                  value="{!v.objCase.PSSSubProduct__c}"
+                                  required="true"
+                                  messageWhenValueMissing="You must specify Sub Product."
+                                  label="Sub-Product" >
+                    			<aura:iteration items="{!v.subProductList}" var="value">
+                                    <option value="{!value}">{!value}</option>
+                                </aura:iteration> 
+                </lightning:select>
+            		
+                
+                   <lightning:select name="caseNature" 
+                              aura:id="caseNature"
+                              value="{!v.objCase.Nature_of_Client_enquiry__c}"
+                              required="true"
+                              label="Nature Of Client Enquiry"
+                              onchange="{!c.caseNaturefieldChange}"
+                              messageWhenValueMissing="You must specify Nature">
+                                <aura:iteration items="{!v.childList}" var="value">
+                                    <option value="{!value}">{!value}</option>
+                                </aura:iteration> 
+                   </lightning:select>-->
+
+                   <!--<aura:if isTrue="{!v.natureValue == 'How To'}">
+                        <lightning:select name="caseKnowledgeReq" 
+                                  aura:id="CaseKnowReq"
+                                  required="true"
+                                  label="Knowledge Requirement" 
+                                  value="{!v.objCase.Knowledge_Requirement__c}">
+                                 <aura:iteration items="{!v.knowledgeList}" var="value">
+                                    <option value="{!value}">{!value}</option>
+                                </aura:iteration>
+                        </lightning:select>
+                    </aura:if>
+                    <aura:if isTrue="{!v.natureValue == 'Enhancement Request'}">
+                        <lightning:textarea name="caseBusinessCase" required="true" label="Business Case" value="{!v.objCase.Business_Case__c}" />
+                    </aura:if>
+                
+                    <aura:if isTrue="{!v.natureValue == 'Account Management'}">
+                        <lightning:select name="casePCIssue" 
+                                  required="true"
+                                  label="Partner or Client Issue" 
+                                  value="{!v.objCase.Partner_or_Client_issue__c}">
+                                <aura:iteration items="{!v.partnerIssueINTList}" var="value">
+                                    <option value="{!value}">{!value}</option>
+                                </aura:iteration>
+                        </lightning:select> 
+				    </aura:if>   
+                    
+                    <aura:if isTrue="{!v.natureValue == 'Account Management'}">
+                        <lightning:select name="caseSelfServicePortal" 
+                                  required="true"
+                                  label="Self service portal to facilitate this?" 
+                                  value="{!v.objCase.Was_there_a_self_service_portal_to_facil__c}">
+                                <aura:iteration items="{!v.selfServeList}" var="value">
+                                    <option value="{!value}">{!value}</option>
+                                </aura:iteration>
+                        </lightning:select>
+                    </aura:if>
+                    <aura:if isTrue="{!v.natureValue == 'Billing'}">
+                        <lightning:select name="caseSelfServicePortal" 
+                                  required="true"
+                                  label="Self service portal to facilitate this?" 
+                                  value="{!v.objCase.Was_there_a_self_service_portal_to_facil__c}">
+                                <aura:iteration items="{!v.selfServeList}" var="value">
+                                    <option value="{!value}">{!value}</option>
+                                </aura:iteration>
+                        </lightning:select>
+                    </aura:if>    
+			        <aura:if isTrue="{!v.natureValue == 'Outage'}">
+                        <lightning:select name="caseServiceIntExt"  
+                                  required="true"
+                                  label="Is the Service Internal / External To Myob? " 
+                                  value="{!v.objCase.Is_the_Service_Internal_External_to_MYOB__c}">
+                                <aura:iteration items="{!v.serviceINTList}" var="value">
+                                    <option value="{!value}">{!value}</option>
+                                </aura:iteration>
+                        </lightning:select>
+                    </aura:if>-->
+
+                              
+                <!---<lightning:select name="caseUsersAffected" 
+                                  aura:id="caseHowManyUserAff"
+                                  label="How many users affected?" 
+                                  required="true" 
+                                  value="{!v.objCase.How_many_users_affected__c}">
+                    			<option value="">- None-</option>
+                                <aura:iteration items="{!v.howManyUsersEffectedList}" var="value">
+                                    <option value="{!value}">{!value}</option>
+                                </aura:iteration> 
+                </lightning:select>--> 
+                
+                               
+				              
+                <!--<lightning:select name="caseFeature" 
+                                  aura:id="caseFeature"
+                                  label="Feature" 
+                                  
+                                  value="{!v.objCase.Feature__c}" 
+                                  onchange="{!c.caseFeaturefieldChange}">
+                      			<aura:iteration items="{!v.featureList}" var="value">
+                                    <option value="{!value}">{!value}</option>
+                                </aura:iteration>
+                </lightning:select>-->
+                <!--<lightning:select name="caseFunction" 
+                                  label="Function" 
+                                  aura:id="caseFunction"
+                                  
+                                  value="{!v.objCase.Function__c}">
+                                <aura:iteration items="{!v.functionList}" var="value">
+                                    <option value="{!value}">{!value}</option>
+                                </aura:iteration>
+                </lightning:select>-->
+                 
+                </span></div>
+                <div class="slds-col slds-size_1-of-2"><span> 
+               
+			   <!--<lightning:select name="caseGroup" 
+                                 aura:id="caseGroup"
+                                  label="Case Group" 
+                                  required="true" 
+                                  value="{!v.objCase.Case_Group__c}"  >
+                                <option value="">- None-</option>
+                                <aura:iteration items="{!v.caseGroupList}" var="value">
+                                    <option value="{!value}" selected="{!value==v.objCase.Case_Group__c}">{!value}</option>
+                                </aura:iteration>
+                </lightning:select>
+                <lightning:select name="caseOrigin" 
+                                  aura:id="caseOrigin"
+                                  label="Case Origin" 
+                                  required="true" 
+                                  value="{!v.objCase.Origin}">
+                                  <aura:iteration items="{!v.caseOriginList}" var="value">
+                                    <option value="{!value}" selected="{!value==v.objCase.Origin}">{!value}</option>
+                                </aura:iteration>
+                </lightning:select>
+              
+                <lightning:select name="caseStatus" 
+                                  aura:id="caseStatus"
+                                  label="Status" 
+                                  required="true" 
+                                  value="{!v.objCase.Status}"
+                                  onchange="{!c.caseStatusfieldChange}">
+                                <aura:iteration items="{!v.statusList}" var="value">
+                                    <option value="{!value}" selected="{!value==v.objCase.Status}">{!value}</option>
+                                </aura:iteration>
+                </lightning:select>
+                <lightning:select name="caseSubStatus" 
+                                  aura:id="caseSubStatus"
+                                  label="Sub-Status" 
+                                  required="true" 
+                                  value="{!v.objCase.Sub_Status__c}">
+                                <aura:iteration items="{!v.subStatusList}" var="value">
+                                    <option value="{!value}" selected="{!value==v.objCase.Sub_Status__c}">{!value}</option>
+                                </aura:iteration>
+                </lightning:select>-->
+              
+               <aura:if isTrue="{!v.objCase.Sub_Status__c == 'Resolved'}">
+                <lightning:select name="caseResolutionCode" 
+                                  label="Resolution Code" 
+                                  value="{!v.objCase.Resolution_Code__c}" >
+                                <option value="">--- None ---</option>
+                                <aura:iteration items="{!v.resolutionCodeList}" var="value">
+                                    <option value="{!value}">{!value}</option>
+                                </aura:iteration>
+                </lightning:select>
+                 </aura:if>
+                <aura:if isTrue="{!v.objCase.Sub_Status__c == 'Resolved'}">
+                <lightning:textarea name="caseResolution" required="true" label="Resolution" value="{!v.objCase.Resolution__c}" />
+                </aura:if>
+               
+                </span></div>    
+   				 </div>
+                <div class="slds-align_absolute-center slds-m-top_large"> 
+                    <lightning:button variant="brand" label="Submit" title="Create Case" onclick="{! c.createCaseJs }" />
+              </div> 
+              </div>
+        </div>
+</aura:component>

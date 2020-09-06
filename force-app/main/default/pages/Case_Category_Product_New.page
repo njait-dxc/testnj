@@ -1,0 +1,1940 @@
+<apex:page standardController="case" docType="html-5.0" extensions="CaseCreationExtension" lightningStylesheets="true">
+    <style>
+        div.hideCurrDate span.dateInput span.dateFormat{
+           display:none !important;
+        }     
+    </style>
+    
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <script type="text/javascript">
+     
+        var jsonObjArr = JSON.parse('{!JSENCODE(jsonMap)}');
+        console.log('start showing array!');
+        console.log(jsonObjArr);
+       
+        jQuery(document).ready(
+            function(){
+                hideRating('initial');            
+            }
+        );
+        $(window).on("load", function(){hideRating('initial');} );
+        
+        
+        function execute (input){
+            var fieldSet = ['CallSupportBeforeOutput', 'CallSupportBeforeQuestionLabel', 'CallSupportBeforeQuestion', 'CaseDescriptionLabel', 'CaseDescription', 'CaseSubjectLabel', 'CaseSubject', 
+                            'CaseExpectedOutcomeLabel', 'CaseExpectedOutcome', 'CallSupportBeforeOutputReminder', 'SerialNumberLabel', 'SerialNumber', 'CancellationReasonLabel', 'CancellationReason',
+                            'RefundRequiredLabel', 'RefundRequired', 'TotalValueLabel', 'TotalValue', 'ORLabel', 'PerMonthLabel', 'PerMonth', 'RefundDateRangeFrom',
+                            'RefundDateRangeFromLabel', 'RefundDateRangeToLabel', 'RefundDateRangeTo', 'CancellationEffectiveDateLabel', 'CancellationEffectiveDate', 'CRCompetitorLabel', 'CRCompetitor',
+                            'CRAdditionalReasonLabel', 'CRAdditionalReason', 'CRSpecificReasonLabel', 'CRSpecificReason', 'CaseCategoryLabel', 'CaseCategory', 'CaseSubCategoryLabel', 'CaseSubCategory',
+                            'ClearReasonForTheCreditLabel', 'ClearReasonForTheCredit', 'AttachedfileLable', 'Attachedfile', 'LicenseReductionHeaderLabel', 'LicenseReductionFromLabel', 
+                            'LicenseReductionFrom', 'LicenseReductionToLabel', 'LicenseReductionTo', 'ARLBasicLabel', 'ARLBasic', 'ARLStandardLabel', 'ARLStandard', 'ARLPlusLabel', 'ARLPlus',
+                            'EAStarterLabel', 'EAStarter', 'EAPayrollFor1Label', 'EAPayrollFor1', 'EAPayrollUnlimitedLabel', 'EAPayrollUnlimited', 'ConnectedLedgerLabel', 'ConnectedLedger', 
+                            'MYOBEssentialsConnectedLedgerwPayrollLabel', 'MYOBEssentialsConnectedLedgerwPayroll', 'MYOBEssentialsPayroll', 'MYOBEssentialsPayrollLabel' , 
+                            'WhosPayingLabel', 'WhosPaying', 'PartnerPaysLabel', 'QuoteCreationSerialEmailLabel', 'QuoteCreationSerialEmail', 'QuoteCreationSerialNumberLabel', 'QuoteCreationSerialNumber',
+                            'QuoteCreationNewAccountNameLabel', 'QuoteCreationNewAccountName', 'NewAccountLabel', 'NewAccount', 'BanklinkPracticeCodeLabel', 'BanklinkPracticeCode', 'AccountRightVersion19Label',
+                            'BLEssentialSerialNumberClientIdLabel', 'BLEssentialSerialNumberClientId', 'ARAEMigrationServiceLabel', 'WhatOfferShouldBeAppliedLabel', 'WhatOfferShouldBeApplied', 'CodedTransactionMigrationRequired' , 'CodedTransactionMigrationRequiredLabel' ,
+                            'InvoiceNumberLabel', 'InvoiceNumber', 'MostAppropriateContactToLiaiseWithLabel', 'MostAppropriateContactToLiaiseWith', 'MergeAmicableLabel', 'MergeAmicable', 'TypeOfMigration' , 'TypeOfMigrationLabel' ,
+                            'SplitAmicableLabel', 'SplitAmicable', 'MergeClientIdLabel', 'MergeClientId', 'MergeEffectiveDateLabel', 'MergeEffectiveDate', 'SplitEffectiveDateLabel', 'SplitEffectiveDate', 'SplitClientIdLabel', 'SplitClientId',
+                            'DashboardCleanupOrProvisioningEmailLabel', 'DashboardCleanupOrProvisioningEmail', 'OnlineFileRemovalSerialNumberLabel', 'OnlineFileRemovalSerialNumber', 'CompanyFileNumberLabel', 'CompanyFileNumber',
+                            'BankFeedSerialNumberFromLabel', 'BankFeedSerialNumberFrom', 'BankFeedSerialNumberToLabel', 'BankFeedSerialNumberTo', 'BankFeedCompanyDataFileNumberFromLabel', 'BankFeedCompanyDataFileNumberFrom',
+                            'BankFeedCompanyDataFileNumberToLabel', 'BankFeedCompanyDataFileNumberTo', 'BankFeedRemoveOnlineFileLabel', 'BankFeedRemoveOnlineFile', 'BankFeedBankAccountCCSwapLabel', 'BankFeedBankAccountCCSwap',
+                            'SalesPromotionSerialNumberLabel', 'SalesPromotionSerialNumber', 'ServicesRequired', 'ServicesRequiredLabel', 'ProductCreateQuote', 'ProductCreateQuoteLabel', 'EAPayrolNZOnly', 'EAPayrolNZOnlyLabel',
+                            'PartnerEmployeeSplitLabel', 'PartnerEmployeeSplit', 'SwapOrSwitchLabel', 'SwapOrSwitch', 'MoveOrCopyLabel', 'MoveOrCopy', 'ProductNameFromLabel', 'ProductNameFrom', 'ProductNameToLabel', 'ProductNameTo', 'BankFeedStartDateLabel', 'BankFeedStartDate',
+                            'AccountRightOrEssentialsLabel', 'AccountRightOrEssentials','TotalNumberOfFilesTobeMigratedLabel', 'TotalNumberOfFilesTobeMigrated', 'ProductForBLEssentialsLabel', 'ProductForBLEssentials', 'ProofOfConceptLabel', 'ProofOfConcept', 'ChartOfAccountLabel', 'ChartOfAccount', 
+                            'OpeningBalancesLabel', 'OpeningBalances', 'RelevantIndustryQualificationLabel', 'RelevantIndustryQualification', 'PartnerOnNewPartnerProgramLabel', 'PartnerOnNewPartnerProgram', 'PartnerOnNewPartnerProgramNoLabel',
+                            'PartnerCompletedPreworkLabel', 'PartnerCompletedPrework', 'PartnerCompletedPreworkNoLabel', 'DashboardSetupLeast10FilesLinkedLabel', 'DashboardSetupLeast10FilesLinked', 'DashboardSetupLeast10FilesLinkedNoLabel', 'MoreBankfeedStartDateLabel', 'MoreBankfeedStartDate', 'MigrationRequiredLabel', 'MigrationRequired',
+                            'CompletedSpreadSheetAttachedLabel', 'CompletedSpreadSheetAttached', 'TrainingConsultantInvolvedLabel', 'TrainingConsultantInvolved', 'ConciergeLabel', 'Concierge', 'SpokendAboutChartOfAccountToPracticeLabel', 'SpokendAboutChartOfAccountToPractice', 'WhichPracticePayingServicesLabel', 'WhichPracticePayingServices',
+                            'BLEssentialsBankfeedStartDateMonthLabel', 'BLEssentialsBankfeedStartDateMonth', 'BLEssentialsBankfeedStartDateYearLabel', 'BLEssentialsBankfeedStartDateYear', 'TrainingConsultantNameLabel', 'TrainingConsultantName', 'FirstLastNameClient', 'FirstLastNameClientLabel', 'ClientEmailAddressLabel', 'ClientEmailAddress', 'datePicker', 'IndicativeMigrationDateLabel', 'IndicativeMigrationDate',
+                            'NumberofFilesToBeCancelledLabel', 'NumberofFilesToBeCancelled'
+
+            ];
+
+            for(var i= 0; i< fieldSet.length; i++){
+                if($.inArray(fieldSet[i], input) == -1){
+                    jQuery('[id$='+fieldSet[i]+']')[0].style.display = "none";
+                }
+                else{
+                    jQuery('[id$='+fieldSet[i]+']')[0].style.display = "inline";
+                    //alert(fieldSet[i]);
+                }
+            }
+        }
+        
+        function messageDisplay(input){
+            console.log('input for messageDisplay menthod:'+input);
+            var caseCategory = input.replace(/ +/g, "");
+            console.log('trimmed content:'+caseCategory );
+            //alert(caseCategory );
+            //var content = jsonObjArr[caseCategory].Content__c;
+            //console.log(jsonObjArr[caseCategory].Content__c);           
+            //alert(jsonObjArr[caseCategory].Content__c); 
+            //console.log('content:');
+            //console.log(content);
+            if(typeof jsonObjArr[caseCategory] === 'undefined' ){
+                $("#MessageDiv").html("");
+            }
+            else{
+                $("#MessageDiv").html("<br/><table><tr><td width='20%'><td width='60%'>"+jsonObjArr[caseCategory].Content__c+ "<td width='20%'/></td><td><td></table><br/>");
+                //$("#MessageDiv").html(jsonObjArr[caseCategory].Content__c);
+            }
+
+        }
+        
+        function hideRating(scope){
+            var UITheme = '{!$User.UIThemeDisplayed}';
+            var input;
+            if(scope=='initial'){
+                execute('none');                           
+            }
+            else if (scope== "CallCaseSubCategory"){
+                if((jQuery('[id$=CaseSubCategory]').val()=='Wholesale Order')){
+                    input = ['ARLBasicLabel', 'ARLBasic', 'ARLStandardLabel', 'ARLStandard', 'ARLPlusLabel', 'ARLPlus', 'EAStarterLabel', 'EAStarter', 'EAPayrollFor1Label', 'EAPayrollFor1', 'EAPayrollUnlimitedLabel', 'EAPayrollUnlimited', 'ConnectedLedgerLabel', 'ConnectedLedger', 'EAPayrolNZOnly', 'EAPayrolNZOnlyLabel', 'CaseExpectedOutcomeLabel', 'CaseExpectedOutcome', 'MYOBEssentialsPayroll', 'MYOBEssentialsPayrollLabel', 'MYOBEssentialsConnectedLedgerwPayrollLabel' , 'MYOBEssentialsConnectedLedgerwPayroll' ];
+                    execute(input);
+                    input = '';
+                    jQuery('[id$=CaseSubCategoryLabel]')[0].style.display = "inline"; 
+                    jQuery('[id$=CaseSubCategory]')[0].style.display = "inline"; 
+                    jQuery('[id$=CaseCategoryLabel]')[0].style.display = "inline"; 
+                    jQuery('[id$=CaseCategory]')[0].style.display = "inline"; 
+                }
+                else if((jQuery('[id$=CaseSubCategory]').val()=='Quote Creation')){
+                    input = ['WhosPayingLabel', 'WhosPaying'];
+                    execute(input);
+                    jQuery('[id$=CaseSubCategoryLabel]')[0].style.display = "inline"; 
+                    jQuery('[id$=CaseSubCategory]')[0].style.display = "inline"; 
+                    jQuery('[id$=CaseCategoryLabel]')[0].style.display = "inline"; 
+                    jQuery('[id$=CaseCategory]')[0].style.display = "inline"; 
+                    input = '';               
+                }
+                else if(jQuery('[id$=CaseSubCategory]').val()=='Migration Services' && jQuery('[id$=CaseCategory]').val()=='BL - Essentials'){
+                    //input = ['BanklinkPracticeCodeLabel', 'BanklinkPracticeCode', 'AttachedfileLable', 'Attachedfile', 'CaseExpectedOutcomeLabel', 'CaseExpectedOutcome'];
+                    //input = ['TotalNumberOfFilesTobeMigratedLabel', 'TotalNumberOfFilesTobeMigrated', 'ProductForBLEssentialsLabel', 'ProductForBLEssentials', 'ProofOfConceptLabel', 'ProofOfConcept', 'ChartOfAccountLabel', 'ChartOfAccount', 'OpeningBalancesLabel', 'OpeningBalances',
+                    // 'CompletedSpreadSheetAttachedLabel', 'CompletedSpreadSheetAttached', 'ConciergeLabel', 'Concierge', 'AttachedfileLable', 'Attachedfile', 'CaseExpectedOutcomeLabel', 'CaseExpectedOutcome', 'BLEssentialsBankfeedStartDateMonthLabel', 'BLEssentialsBankfeedStartDateMonth', 'BLEssentialsBankfeedStartDateYearLabel', 
+                    // 'BLEssentialsBankfeedStartDateYear', 'MoreBankfeedStartDateLabel', 'MoreBankfeedStartDate'];
+                    
+                    input = ['CodedTransactionMigrationRequiredLabel', 'CodedTransactionMigrationRequired' ];
+                    
+                    //input = ['CodedTransactionMigrationRequiredLabel', 'CodedTransactionMigrationRequired' , 'ProofOfConceptLabel', 'ProofOfConcept', 'TrainingConsultantInvolvedLabel', 'TrainingConsultantInvolved',
+                    // 'TrainingConsultantNameLabel', 'TrainingConsultantName', 'CompletedSpreadSheetAttachedLabel', 'CompletedSpreadSheetAttached', 'TotalNumberOfFilesTobeMigratedLabel', 'TotalNumberOfFilesTobeMigrated'];
+                    
+                    execute(input);
+                    jQuery('[id$=CaseSubCategoryLabel]')[0].style.display = "inline"; 
+                    jQuery('[id$=CaseSubCategory]')[0].style.display = "inline"; 
+                    jQuery('[id$=CaseCategoryLabel]')[0].style.display = "inline"; 
+                    jQuery('[id$=CaseCategory]')[0].style.display = "inline"; 
+                    input = '';                 
+                }
+                else if(jQuery('[id$=CaseSubCategory]').val()=='Migration Services' && jQuery('[id$=CaseCategory]').val()=='AR - ARL'){
+                    input = ['BLEssentialSerialNumberClientIdLabel', 'BLEssentialSerialNumberClientId', 'AccountRightVersion19Label'];
+                    execute(input);
+                    jQuery('[id$=CaseSubCategoryLabel]')[0].style.display = "inline"; 
+                    jQuery('[id$=CaseSubCategory]')[0].style.display = "inline"; 
+                    jQuery('[id$=CaseCategoryLabel]')[0].style.display = "inline"; 
+                    jQuery('[id$=CaseCategory]')[0].style.display = "inline"; 
+                    input = '';             
+                }
+                else if(jQuery('[id$=CaseSubCategory]').val()=='Migration Services' && jQuery('[id$=CaseCategory]').val()=='AR - EA'){
+                    input = ['ARAEMigrationServiceLabel'];
+                    execute(input);
+                    jQuery('[id$=CaseSubCategoryLabel]')[0].style.display = "inline"; 
+                    jQuery('[id$=CaseSubCategory]')[0].style.display = "inline"; 
+                    jQuery('[id$=CaseCategoryLabel]')[0].style.display = "inline"; 
+                    jQuery('[id$=CaseCategory]')[0].style.display = "inline"; 
+                    input = '';
+                    
+                } 
+                else if(jQuery('[id$=CaseSubCategory]').val()=='Practice Split'){
+                    input = ['MostAppropriateContactToLiaiseWithLabel', 'MostAppropriateContactToLiaiseWith', 'SplitAmicableLabel', 'SplitAmicable', 'SplitClientIdLabel', 'SplitClientId', 'SplitEffectiveDateLabel', 'SplitEffectiveDate', 'ServicesRequiredLabel', 'ServicesRequired', 'CaseDescriptionLabel', 'CaseDescription', 'CaseSubjectLabel', 'CaseSubject', 
+                            'CaseExpectedOutcomeLabel', 'CaseExpectedOutcome', 'AttachedfileLable', 'Attachedfile', 'PartnerEmployeeSplitLabel', 'PartnerEmployeeSplit', 'WhichPracticePayingServicesLabel', 'WhichPracticePayingServices'];
+                    execute(input);
+                    jQuery('[id$=CaseSubCategoryLabel]')[0].style.display = "inline"; 
+                    jQuery('[id$=CaseSubCategory]')[0].style.display = "inline"; 
+                    jQuery('[id$=CaseCategoryLabel]')[0].style.display = "inline"; 
+                    jQuery('[id$=CaseCategory]')[0].style.display = "inline"; 
+                    input = '';               
+                               
+                }
+                else if(jQuery('[id$=CaseSubCategory]').val()=='Practice Merger'){
+                    input = ['MostAppropriateContactToLiaiseWithLabel', 'MostAppropriateContactToLiaiseWith', 'MergeAmicableLabel', 'MergeAmicable', 'MergeClientIdLabel', 'MergeClientId', 'MergeEffectiveDateLabel', 'MergeEffectiveDate', 'ServicesRequiredLabel', 'ServicesRequired', 'CaseDescriptionLabel', 'CaseDescription', 'CaseSubjectLabel', 'CaseSubject', 
+                            'CaseExpectedOutcomeLabel', 'CaseExpectedOutcome', 'AttachedfileLable', 'Attachedfile', 'WhichPracticePayingServicesLabel', 'WhichPracticePayingServices'];
+                    execute(input);
+                    jQuery('[id$=CaseSubCategoryLabel]')[0].style.display = "inline"; 
+                    jQuery('[id$=CaseSubCategory]')[0].style.display = "inline"; 
+                    jQuery('[id$=CaseCategoryLabel]')[0].style.display = "inline"; 
+                    jQuery('[id$=CaseCategory]')[0].style.display = "inline"; 
+                    input = '';               
+                } 
+                else if(jQuery('[id$=CaseSubCategory]').val()=='EA Demo File'){
+                    input =[ 'CaseExpectedOutcomeLabel', 'CaseExpectedOutcome'];
+                    execute(input);
+                    jQuery('[id$=CaseSubCategoryLabel]')[0].style.display = "inline"; 
+                    jQuery('[id$=CaseSubCategory]')[0].style.display = "inline"; 
+                    jQuery('[id$=CaseCategoryLabel]')[0].style.display = "inline"; 
+                    jQuery('[id$=CaseCategory]')[0].style.display = "inline"; 
+                    input = '';                     
+                } 
+                else if(jQuery('[id$=CaseSubCategory]').val()=='Dashboard Cleanup or Provisioning'){
+                    input = ['DashboardCleanupOrProvisioningEmailLabel', 'DashboardCleanupOrProvisioningEmail', 'CaseSubjectLabel', 'CaseSubject', 'CaseDescriptionLabel', 'CaseDescription'];
+                    execute(input);
+                    jQuery('[id$=CaseSubCategoryLabel]')[0].style.display = "inline"; 
+                    jQuery('[id$=CaseSubCategory]')[0].style.display = "inline"; 
+                    jQuery('[id$=CaseCategoryLabel]')[0].style.display = "inline"; 
+                    jQuery('[id$=CaseCategory]')[0].style.display = "inline"; 
+                    input = '';                 
+                }
+                else if(jQuery('[id$=CaseSubCategory]').val()=='Online File Removal'){
+                    input = ['OnlineFileRemovalSerialNumberLabel', 'OnlineFileRemovalSerialNumber', 'CompanyFileNumberLabel', 'CompanyFileNumber', 'CaseDescriptionLabel', 'CaseDescription'];
+                    execute(input);
+                    jQuery('[id$=CaseSubCategoryLabel]')[0].style.display = "inline"; 
+                    jQuery('[id$=CaseSubCategory]')[0].style.display = "inline"; 
+                    jQuery('[id$=CaseCategoryLabel]')[0].style.display = "inline"; 
+                    jQuery('[id$=CaseCategory]')[0].style.display = "inline"; 
+                    input = '';                     
+                } 
+                else if(jQuery('[id$=CaseSubCategory]').val()=='BankFeed Swap/Switch'){
+                    //input = ['BankFeedSerialNumberFromLabel', 'BankFeedSerialNumberFrom', 'BankFeedSerialNumberToLabel', 'BankFeedSerialNumberTo', 'BankFeedCompanyDataFileNumberFromLabel', 'BankFeedCompanyDataFileNumberFrom',
+                    //        'BankFeedCompanyDataFileNumberToLabel', 'BankFeedCompanyDataFileNumberTo', 'BankFeedRemoveOnlineFileLabel', 'BankFeedRemoveOnlineFile', 'BankFeedBankAccountCCSwapLabel', 'BankFeedBankAccountCCSwap'];
+                    input = ['SwapOrSwitchLabel', 'SwapOrSwitch'];
+                    execute(input);
+                    jQuery('[id$=CaseSubCategoryLabel]')[0].style.display = "inline"; 
+                    jQuery('[id$=CaseSubCategory]')[0].style.display = "inline"; 
+                    jQuery('[id$=CaseCategoryLabel]')[0].style.display = "inline"; 
+                    jQuery('[id$=CaseCategory]')[0].style.display = "inline"; 
+                    input = '';                     
+                }  
+                else if((jQuery('[id$=CaseCategory]').val()=='SME Solutions') || (jQuery('[id$=CaseCategory]').val()=='Practice Solutions')){
+                    input = ['CallSupportBeforeQuestionLabel', 'CallSupportBeforeQuestion'];
+                    execute(input);
+                    jQuery('[id$=CaseSubCategoryLabel]')[0].style.display = "inline"; 
+                    jQuery('[id$=CaseSubCategory]')[0].style.display = "inline"; 
+                    jQuery('[id$=CaseCategoryLabel]')[0].style.display = "inline"; 
+                    jQuery('[id$=CaseCategory]')[0].style.display = "inline"; 
+                    input = '';                 
+                }  
+                else if(jQuery('[id$=CaseSubCategory]').val()=='Free File'){
+                    input = ['AccountRightOrEssentialsLabel', 'AccountRightOrEssentials', 'CaseDescriptionLabel', 'CaseDescription'];
+                    execute(input);
+                    jQuery('[id$=CaseSubCategoryLabel]')[0].style.display = "inline"; 
+                    jQuery('[id$=CaseSubCategory]')[0].style.display = "inline"; 
+                    jQuery('[id$=CaseCategoryLabel]')[0].style.display = "inline"; 
+                    jQuery('[id$=CaseCategory]')[0].style.display = "inline"; 
+                    input = '';                 
+                }                                                                           
+                else{
+                    input = ['CaseSubjectLabel', 'CaseSubject', 'CaseDescriptionLabel', 'CaseDescription', 'CaseExpectedOutcomeLabel', 'CaseExpectedOutcome', 'AttachedfileLable', 'Attachedfile'];
+                    execute(input);
+                    jQuery('[id$=CaseSubCategoryLabel]')[0].style.display = "inline"; 
+                    jQuery('[id$=CaseSubCategory]')[0].style.display = "inline"; 
+                    jQuery('[id$=CaseCategoryLabel]')[0].style.display = "inline"; 
+                    jQuery('[id$=CaseCategory]')[0].style.display = "inline"; 
+                    input = '';                   
+                }
+                
+                var caseCategory = jQuery('[id$=CasePrimaryCategory]').val() + jQuery('[id$=CaseCategory]').val() + jQuery('[id$=CaseSubCategory]').val();
+                
+                messageDisplay(caseCategory);      
+            }
+            else if(scope =="WhoPays"){
+                if(jQuery('[id$=WhosPaying]').val() == 'Partner Pays'){
+                    input = ['CaseDescriptionLabel', 'CaseDescription', 'PartnerPaysLabel', 'WhosPayingLabel', 'WhosPaying'];
+                    execute(input);
+                    jQuery('[id$=CaseSubCategoryLabel]')[0].style.display = "inline"; 
+                    jQuery('[id$=CaseSubCategory]')[0].style.display = "inline"; 
+                    jQuery('[id$=CaseCategoryLabel]')[0].style.display = "inline"; 
+                    jQuery('[id$=CaseCategory]')[0].style.display = "inline"; 
+                    input = '';                              
+                }
+                else if(jQuery('[id$=WhosPaying]').val() == 'Client Pays'){
+                    input = ['NewAccountLabel', 'NewAccount', 'WhosPayingLabel', 'WhosPaying'];
+                    execute(input);
+                    jQuery('[id$=CaseSubCategoryLabel]')[0].style.display = "inline"; 
+                    jQuery('[id$=CaseSubCategory]')[0].style.display = "inline"; 
+                    jQuery('[id$=CaseCategoryLabel]')[0].style.display = "inline"; 
+                    jQuery('[id$=CaseCategory]')[0].style.display = "inline"; 
+                    input = '';                                                  
+                }
+            } 
+            else if(scope =="NewAccount"){
+                if(jQuery('[id$=NewAccount]').val() == 'Yes'){
+                    input = ['QuoteCreationSerialEmailLabel', 'QuoteCreationSerialEmail', 'ProductCreateQuoteLabel', 'ProductCreateQuote', 'QuoteCreationNewAccountNameLabel', 'QuoteCreationNewAccountName','NewAccountLabel', 'NewAccount', 'WhosPayingLabel', 'WhosPaying', 'CaseExpectedOutcomeLabel', 'CaseExpectedOutcome', 'FirstLastNameClient', 'FirstLastNameClientLabel', 'ClientEmailAddressLabel', 'ClientEmailAddress'];
+                    execute(input);
+                    jQuery('[id$=CaseSubCategoryLabel]')[0].style.display = "inline"; 
+                    jQuery('[id$=CaseSubCategory]')[0].style.display = "inline"; 
+                    jQuery('[id$=CaseCategoryLabel]')[0].style.display = "inline"; 
+                    jQuery('[id$=CaseCategory]')[0].style.display = "inline"; 
+                    input = '';                                
+                }
+                else if(jQuery('[id$=NewAccount]').val() == 'No'){
+                    input = ['QuoteCreationSerialEmailLabel', 'QuoteCreationSerialEmail', 'QuoteCreationSerialNumberLabel', 'QuoteCreationSerialNumber','NewAccountLabel', 'NewAccount', 'WhosPayingLabel', 'WhosPaying', 'ProductCreateQuoteLabel', 'ProductCreateQuote', 'CaseExpectedOutcomeLabel', 'CaseExpectedOutcome'];
+                    execute(input);
+                    jQuery('[id$=CaseSubCategoryLabel]')[0].style.display = "inline"; 
+                    jQuery('[id$=CaseSubCategory]')[0].style.display = "inline"; 
+                    jQuery('[id$=CaseCategoryLabel]')[0].style.display = "inline"; 
+                    jQuery('[id$=CaseCategory]')[0].style.display = "inline"; 
+                    input = '';                  
+                }
+            }            
+            else if(scope =="Concierge"){
+                if(jQuery('[id$=Concierge]').val() == 'Yes' && jQuery('[id$=MigrationRequired]').val()=='Yes'){
+                    input = ['EAStarterLabel', 'EAStarter', 'EAPayrollFor1Label', 'EAPayrollFor1', 'EAPayrollUnlimitedLabel', 'EAPayrollUnlimited', 'ConnectedLedgerLabel', 'ConnectedLedger', 'CaseExpectedOutcomeLabel', 'CaseExpectedOutcome', 'MigrationRequiredLabel', 'MigrationRequired',
+                    'ChartOfAccountLabel', 'ChartOfAccount', 'OpeningBalancesLabel', 'OpeningBalances', 'BLEssentialsBankfeedStartDateMonthLabel', 'BLEssentialsBankfeedStartDateMonth', 'BLEssentialsBankfeedStartDateYearLabel', 'BLEssentialsBankfeedStartDateYear',
+                    'CompletedSpreadSheetAttachedLabel', 'CompletedSpreadSheetAttached', 'ConciergeLabel', 'Concierge', 'AttachedfileLable', 'Attachedfile', 'CaseExpectedOutcomeLabel', 'CaseExpectedOutcome', 'TrainingConsultantInvolvedLabel', 'TrainingConsultantInvolved', 'SpokendAboutChartOfAccountToPracticeLabel', 'SpokendAboutChartOfAccountToPractice'];
+                    execute(input);
+                    jQuery('[id$=CaseSubCategoryLabel]')[0].style.display = "none"; 
+                    jQuery('[id$=CaseSubCategory]')[0].style.display = "none"; 
+                    jQuery('[id$=CaseCategoryLabel]')[0].style.display = "inline"; 
+                    jQuery('[id$=CaseCategory]')[0].style.display = "inline"; 
+                    input = '';                 
+                }
+                else if(jQuery('[id$=Concierge]').val() == 'No' && jQuery('[id$=MigrationRequired]').val()=='Yes'){
+                    input = ['EAStarterLabel', 'EAStarter', 'EAPayrollFor1Label', 'EAPayrollFor1', 'EAPayrollUnlimitedLabel', 'EAPayrollUnlimited', 'ConnectedLedgerLabel', 'ConnectedLedger', 'CaseExpectedOutcomeLabel', 'CaseExpectedOutcome', 'MigrationRequiredLabel', 'MigrationRequired',
+                    'ChartOfAccountLabel', 'ChartOfAccount', 'OpeningBalancesLabel', 'OpeningBalances', 'BLEssentialsBankfeedStartDateMonthLabel', 'BLEssentialsBankfeedStartDateMonth', 'BLEssentialsBankfeedStartDateYearLabel', 'BLEssentialsBankfeedStartDateYear',
+                    'CompletedSpreadSheetAttachedLabel', 'CompletedSpreadSheetAttached', 'ConciergeLabel', 'Concierge', 'AttachedfileLable', 'Attachedfile', 'CaseExpectedOutcomeLabel', 'CaseExpectedOutcome'];
+                    execute(input);
+                    jQuery('[id$=CaseSubCategoryLabel]')[0].style.display = "none"; 
+                    jQuery('[id$=CaseSubCategory]')[0].style.display = "none"; 
+                    jQuery('[id$=CaseCategoryLabel]')[0].style.display = "inline"; 
+                    jQuery('[id$=CaseCategory]')[0].style.display = "inline"; 
+                    input = '';                 
+                }
+                else if(jQuery('[id$=Concierge]').val() == 'Yes'){
+                    input = ['CodedTransactionMigrationRequiredLabel', 'CodedTransactionMigrationRequired' ,'TotalNumberOfFilesTobeMigratedLabel', 'TotalNumberOfFilesTobeMigrated', 'ProductForBLEssentialsLabel', 'ProductForBLEssentials', 'ProofOfConceptLabel', 'ProofOfConcept', 'ChartOfAccountLabel', 'ChartOfAccount', 'OpeningBalancesLabel', 'OpeningBalances', 'BLEssentialsBankfeedStartDateMonthLabel', 'BLEssentialsBankfeedStartDateMonth', 'BLEssentialsBankfeedStartDateYearLabel', 'BLEssentialsBankfeedStartDateYear',
+                             'CompletedSpreadSheetAttachedLabel', 'CompletedSpreadSheetAttached', 'ConciergeLabel', 'Concierge', 'AttachedfileLable', 'Attachedfile', 'CaseExpectedOutcomeLabel', 'CaseExpectedOutcome', 'TrainingConsultantInvolvedLabel', 'TrainingConsultantInvolved', 'SpokendAboutChartOfAccountToPracticeLabel', 'SpokendAboutChartOfAccountToPractice'];
+                    execute(input);
+                    jQuery('[id$=CaseSubCategoryLabel]')[0].style.display = "inline"; 
+                    jQuery('[id$=CaseSubCategory]')[0].style.display = "inline"; 
+                    jQuery('[id$=CaseCategoryLabel]')[0].style.display = "inline"; 
+                    jQuery('[id$=CaseCategory]')[0].style.display = "inline"; 
+                    input = '';                                
+                }
+                else if(jQuery('[id$=Concierge]').val() == 'No'){
+                    input = ['CodedTransactionMigrationRequiredLabel', 'CodedTransactionMigrationRequired', 'TotalNumberOfFilesTobeMigratedLabel', 'TotalNumberOfFilesTobeMigrated', 'ProductForBLEssentialsLabel', 'ProductForBLEssentials', 'ProofOfConceptLabel', 'ProofOfConcept', 'ChartOfAccountLabel', 'ChartOfAccount', 'OpeningBalancesLabel', 'OpeningBalances', 'BLEssentialsBankfeedStartDateMonthLabel', 'BLEssentialsBankfeedStartDateMonth', 'BLEssentialsBankfeedStartDateYearLabel', 'BLEssentialsBankfeedStartDateYear',
+                             'CompletedSpreadSheetAttachedLabel', 'CompletedSpreadSheetAttached', 'ConciergeLabel', 'Concierge', 'AttachedfileLable', 'Attachedfile', 'CaseExpectedOutcomeLabel', 'CaseExpectedOutcome'];
+                    execute(input);
+                    jQuery('[id$=CaseSubCategoryLabel]')[0].style.display = "inline"; 
+                    jQuery('[id$=CaseSubCategory]')[0].style.display = "inline"; 
+                    jQuery('[id$=CaseCategoryLabel]')[0].style.display = "inline"; 
+                    jQuery('[id$=CaseCategory]')[0].style.display = "inline"; 
+                    input = '';                  
+                }
+            }
+            else if(scope =="TrainingConsultant"){
+                if(jQuery('[id$=TrainingConsultantInvolved]').val() == 'Yes'  && jQuery('[id$=MigrationRequired]').val()=='Yes'){
+                    input = ['EAStarterLabel', 'EAStarter', 'EAPayrollFor1Label', 'EAPayrollFor1', 'EAPayrollUnlimitedLabel', 'EAPayrollUnlimited', 'ConnectedLedgerLabel', 'ConnectedLedger',  'CaseExpectedOutcomeLabel', 'CaseExpectedOutcome', 'MigrationRequiredLabel', 'MigrationRequired',
+                    'ChartOfAccountLabel', 'ChartOfAccount', 'OpeningBalancesLabel', 'OpeningBalances', 'BLEssentialsBankfeedStartDateMonthLabel', 'BLEssentialsBankfeedStartDateMonth', 'BLEssentialsBankfeedStartDateYearLabel', 'BLEssentialsBankfeedStartDateYear',
+                    'CompletedSpreadSheetAttachedLabel', 'CompletedSpreadSheetAttached', 'ConciergeLabel', 'Concierge', 'AttachedfileLable', 'Attachedfile', 'CaseExpectedOutcomeLabel', 'CaseExpectedOutcome', 'TrainingConsultantInvolvedLabel', 'TrainingConsultantInvolved', 'SpokendAboutChartOfAccountToPracticeLabel', 'SpokendAboutChartOfAccountToPractice', 'TrainingConsultantNameLabel', 'TrainingConsultantName'];                
+                    jQuery('[id$=CaseSubCategoryLabel]')[0].style.display = "none"; 
+                    jQuery('[id$=CaseSubCategory]')[0].style.display = "none"; 
+                    jQuery('[id$=CaseCategoryLabel]')[0].style.display = "inline"; 
+                    jQuery('[id$=CaseCategory]')[0].style.display = "inline"; 
+                    input = '';                 
+                }
+                else if(jQuery('[id$=TrainingConsultantInvolved]').val() == 'No'  && jQuery('[id$=MigrationRequired]').val()=='Yes'){
+                    input = ['EAStarterLabel', 'EAStarter', 'EAPayrollFor1Label', 'EAPayrollFor1', 'EAPayrollUnlimitedLabel', 'EAPayrollUnlimited', 'ConnectedLedgerLabel', 'ConnectedLedger', 'CaseExpectedOutcomeLabel', 'CaseExpectedOutcome', 'MigrationRequiredLabel', 'MigrationRequired',
+                    'ChartOfAccountLabel', 'ChartOfAccount', 'OpeningBalancesLabel', 'OpeningBalances', 'BLEssentialsBankfeedStartDateMonthLabel', 'BLEssentialsBankfeedStartDateMonth', 'BLEssentialsBankfeedStartDateYearLabel', 'BLEssentialsBankfeedStartDateYear',
+                    'CompletedSpreadSheetAttachedLabel', 'CompletedSpreadSheetAttached', 'ConciergeLabel', 'Concierge', 'AttachedfileLable', 'Attachedfile', 'CaseExpectedOutcomeLabel', 'CaseExpectedOutcome', 'TrainingConsultantInvolvedLabel', 'TrainingConsultantInvolved', 'SpokendAboutChartOfAccountToPracticeLabel', 'SpokendAboutChartOfAccountToPractice'];                
+                    jQuery('[id$=CaseSubCategoryLabel]')[0].style.display = "none"; 
+                    jQuery('[id$=CaseSubCategory]')[0].style.display = "none"; 
+                    jQuery('[id$=CaseCategoryLabel]')[0].style.display = "inline"; 
+                    jQuery('[id$=CaseCategory]')[0].style.display = "inline"; 
+                    input = '';                 
+                }                
+                else if(jQuery('[id$=TrainingConsultantInvolved]').val() == 'Yes'){
+                    //input = ['TotalNumberOfFilesTobeMigratedLabel', 'TotalNumberOfFilesTobeMigrated', 'ProductForBLEssentialsLabel', 'ProductForBLEssentials', 'ProofOfConceptLabel', 'ProofOfConcept', 'ChartOfAccountLabel', 'ChartOfAccount', 'OpeningBalancesLabel', 'OpeningBalances', 'BLEssentialsBankfeedStartDateMonthLabel', 'BLEssentialsBankfeedStartDateMonth', 'BLEssentialsBankfeedStartDateYearLabel', 'BLEssentialsBankfeedStartDateYear',
+                    //        'CompletedSpreadSheetAttachedLabel', 'CompletedSpreadSheetAttached', 'ConciergeLabel', 'Concierge', 'AttachedfileLable', 'Attachedfile', 'CaseExpectedOutcomeLabel', 'CaseExpectedOutcome', 'TrainingConsultantInvolvedLabel', 'TrainingConsultantInvolved', 'SpokendAboutChartOfAccountToPracticeLabel', 'SpokendAboutChartOfAccountToPractice', 'TrainingConsultantNameLabel', 'TrainingConsultantName'];
+                    
+                    input = ['CodedTransactionMigrationRequiredLabel', 'CodedTransactionMigrationRequired' , 'TypeOfMigrationLabel' ,'TypeOfMigration' ,'TotalNumberOfFilesTobeMigratedLabel', 'TotalNumberOfFilesTobeMigrated', 'ProofOfConceptLabel', 'ProofOfConcept', 'CompletedSpreadSheetAttachedLabel', 'CompletedSpreadSheetAttached', 'TrainingConsultantInvolvedLabel', 'TrainingConsultantInvolved', 'TrainingConsultantNameLabel', 'TrainingConsultantName'];
+                                     
+                    
+                    execute(input);
+                    jQuery('[id$=CaseSubCategoryLabel]')[0].style.display = "inline"; 
+                    jQuery('[id$=CaseSubCategory]')[0].style.display = "inline"; 
+                    jQuery('[id$=CaseCategoryLabel]')[0].style.display = "inline"; 
+                    jQuery('[id$=CaseCategory]')[0].style.display = "inline"; 
+                    input = '';                                
+                }
+                else if(jQuery('[id$=TrainingConsultantInvolved]').val() == 'No'){
+                    input = ['CodedTransactionMigrationRequiredLabel', 'CodedTransactionMigrationRequired' , 'TypeOfMigrationLabel' , 'TypeOfMigration' , 'TotalNumberOfFilesTobeMigratedLabel', 'TotalNumberOfFilesTobeMigrated', 'ProofOfConceptLabel', 'ProofOfConcept', 
+                             'CompletedSpreadSheetAttachedLabel', 'CompletedSpreadSheetAttached', 'AttachedfileLable', 'Attachedfile', 'CaseExpectedOutcomeLabel', 'CaseExpectedOutcome', 'TrainingConsultantInvolvedLabel', 'TrainingConsultantInvolved'];
+                    execute(input);
+                    jQuery('[id$=CaseSubCategoryLabel]')[0].style.display = "inline"; 
+                    jQuery('[id$=CaseSubCategory]')[0].style.display = "inline"; 
+                    jQuery('[id$=CaseCategoryLabel]')[0].style.display = "inline"; 
+                    jQuery('[id$=CaseCategory]')[0].style.display = "inline"; 
+                    input = '';                  
+                }
+            }                         
+             
+            else if(scope =="CasePrimaryCategory"){
+                if(jQuery('[id$=CasePrimaryCategory]').val() == 'Sales Processing' || jQuery('[id$=CasePrimaryCategory]').val()== 'Support Escalation' ){
+                    jQuery('[id$=CaseCategoryLabel]')[0].style.display = "inline"; 
+                    jQuery('[id$=CaseCategory]')[0].style.display = "inline"; 
+                }
+                else if (jQuery('[id$=CasePrimaryCategory]').val() == 'Feedback' || jQuery('[id$=CasePrimaryCategory]').val() == 'Ledger Success'){
+                    jQuery('[id$=CaseCategoryLabel]')[0].style.display = "inline"; 
+                    jQuery('[id$=CaseCategory]')[0].style.display = "inline";   
+                    setTimeout(function() {
+                        jQuery('[id$=CaseSubCategoryLabel]')[0].style.display = "none"; 
+                        jQuery('[id$=CaseSubCategory]')[0].style.display = "none";                    
+                    }, 0)               
+                }
+                else if(jQuery('[id$=CasePrimaryCategory]').val() == 'Partner Program' || jQuery('[id$=CasePrimaryCategory]').val() == 'Ledger Success'){
+                    input = ['CaseDescriptionLabel', 'CaseDescription', 'CaseExpectedOutcomeLabel', 'CaseExpectedOutcome','AttachedfileLable', 'Attachedfile', 'CaseSubjectLabel', 'CaseSubject'];
+                    execute(input);
+                    setTimeout(function() {
+                        jQuery('[id$=CaseSubCategoryLabel]')[0].style.display = "none"; 
+                        jQuery('[id$=CaseSubCategory]')[0].style.display = "none";                    
+                    }, 0)   
+                    jQuery('[id$=CaseCategoryLabel]')[0].style.display = "inline"; 
+                    jQuery('[id$=CaseCategory]')[0].style.display = "inline"; 
+                    input = '';                                   
+                }
+                else if(jQuery('[id$=CasePrimaryCategory]').val() != null){
+                    input = [''];
+                    execute(input);
+                    setTimeout(function() {
+                        jQuery('[id$=CaseSubCategoryLabel]')[0].style.display = "none"; 
+                        jQuery('[id$=CaseSubCategory]')[0].style.display = "none";                    
+                    }, 0) 
+                    jQuery('[id$=CaseCategoryLabel]')[0].style.display = "inline"; 
+                    jQuery('[id$=CaseCategory]')[0].style.display = "inline"; 
+                    input = '';                                  
+                }
+            }
+            else if((scope=='CategorySMESolutions') || (scope=='CategoryPracticeSolutions')) {
+
+                if((jQuery('[id$=CaseCategory]').val()=='SME Solutions') || (jQuery('[id$=CaseCategory]').val()=='Practice Solutions')) {
+                    input = ['CallSupportBeforeQuestionLabel', 'CallSupportBeforeQuestion'];
+                    execute(input);
+                    jQuery('[id$=CaseSubCategoryLabel]')[0].style.display = "inline"; 
+                    jQuery('[id$=CaseSubCategory]')[0].style.display = "inline"; 
+                    jQuery('[id$=CaseCategoryLabel]')[0].style.display = "inline"; 
+                    jQuery('[id$=CaseCategory]')[0].style.display = "inline"; 
+                    input = '';                     
+                }
+                else if((jQuery('[id$=CaseCategory]').val()=='Certified Consultant On Boarding')) {
+                    input = ['RelevantIndustryQualificationLabel', 'RelevantIndustryQualification', 'PartnerOnNewPartnerProgramLabel', 'PartnerOnNewPartnerProgram', '', 'CaseSubjectLabel', 'CaseSubject', 'CaseDescriptionLabel', 'CaseDescription', 'AttachedfileLable', 'Attachedfile',
+                            'PartnerCompletedPreworkLabel', 'PartnerCompletedPrework', '', 'DashboardSetupLeast10FilesLinkedLabel', 'DashboardSetupLeast10FilesLinked', ''];
+                    execute(input);
+                    setTimeout(function() {
+                        jQuery('[id$=CaseSubCategory]')[0].style.display = "none"; 
+                        jQuery('[id$=CaseSubCategoryLabel]')[0].style.display = "none"; 
+                    }, 0)  
+                    jQuery('[id$=CaseCategoryLabel]')[0].style.display = "inline"; 
+                    jQuery('[id$=CaseCategory]')[0].style.display = "inline"; 
+                    input = '';  
+                }                                   
+                else if((jQuery('[id$=CaseCategory]').val()=='SME Solution')) {
+                    input = [''];
+                    execute(input);
+                    jQuery('[id$=CaseSubCategoryLabel]')[0].style.display = "inline"; 
+                    jQuery('[id$=CaseSubCategory]')[0].style.display = "inline"; 
+                    jQuery('[id$=CaseCategoryLabel]')[0].style.display = "inline"; 
+                    jQuery('[id$=CaseCategory]')[0].style.display = "inline"; 
+                    input = '';                 
+                }
+                else if (jQuery('[id$=CaseCategory]').val()=='Cancellations'){
+                    input = ['CancellationReasonLabel', 'CancellationReason', 'SerialNumberLabel', 'SerialNumber', 'CancellationEffectiveDateLabel', 'CancellationEffectiveDate', 'NumberofFilesToBeCancelledLabel', 'NumberofFilesToBeCancelled'];
+                    execute(input);
+                    setTimeout(function() {
+                        jQuery('[id$=CaseSubCategory]')[0].style.display = "none"; 
+                        jQuery('[id$=CaseSubCategoryLabel]')[0].style.display = "none"; 
+                    }, 0) 
+                    jQuery('[id$=CaseCategoryLabel]')[0].style.display = "inline"; 
+                    jQuery('[id$=CaseCategory]')[0].style.display = "inline"; 
+                    input = ''; 
+                }
+                else if (jQuery('[id$=CaseCategory]').val()=='Credit Note'){
+                    //input = ['CaseDescriptionLabel', 'CaseDescription', 'TotalValueLabel', 'TotalValue', 'ORLabel', 'PerMonthLabel', 'PerMonth', 'RefundDateRangeFrom', 'RefundDateRangeFromLabel', 'RefundDateRangeToLabel', 'RefundDateRangeTo', 'ClearReasonForTheCreditLabel', 'ClearReasonForTheCredit', 'AttachedfileLable', 'Attachedfile'];
+                    input = ['CaseDescriptionLabel', 'CaseDescription', 'TotalValueLabel', 'TotalValue',  'ClearReasonForTheCreditLabel', 'ClearReasonForTheCredit', 'AttachedfileLable', 'Attachedfile'];
+                    execute(input);
+                    setTimeout(function() {
+                        jQuery('[id$=CaseSubCategory]')[0].style.display = "none"; 
+                        jQuery('[id$=CaseSubCategoryLabel]')[0].style.display = "none"; 
+                    }, 0) 
+                    jQuery('[id$=CaseCategoryLabel]')[0].style.display = "inline"; 
+                    jQuery('[id$=CaseCategory]')[0].style.display = "inline"; 
+                    input = '';                                                    
+                }
+                else if(jQuery('[id$=CasePrimaryCategory]').val() == 'Partner Program'){
+                    setTimeout(function() {
+                        jQuery('[id$=CaseSubCategory]')[0].style.display = "none"; 
+                        jQuery('[id$=CaseSubCategoryLabel]')[0].style.display = "none";  
+                    }, 0) 
+                }
+                else if (jQuery('[id$=CaseCategory]').val()=='License Reduction'){
+                    input = ['SerialNumberLabel', 'SerialNumber', 'CancellationReasonLabel', 'CancellationReason', 'CancellationEffectiveDateLabel', 'CancellationEffectiveDate', 'LicenseReductionHeaderLabel', 'LicenseReductionFromLabel', 'LicenseReductionFrom', 'LicenseReductionToLabel', 'LicenseReductionTo'];
+                    execute(input);
+                    setTimeout(function() {
+                        jQuery('[id$=CaseSubCategory]')[0].style.display = "none"; 
+                        jQuery('[id$=CaseSubCategoryLabel]')[0].style.display = "none"; 
+                    }, 0) 
+                    jQuery('[id$=CaseCategoryLabel]')[0].style.display = "inline"; 
+                    jQuery('[id$=CaseCategory]')[0].style.display = "inline"; 
+                    input = '';                         
+                } 
+                else if(jQuery('[id$=CaseCategory]').val()=='BL - Essentials'){
+                    //input = ['BanklinkPracticeCodeLabel', 'BanklinkPracticeCode', 'AttachedfileLable', 'Attachedfile', 'CaseExpectedOutcomeLabel', 'CaseExpectedOutcome'];
+                    //input = ['TotalNumberOfFilesTobeMigratedLabel', 'TotalNumberOfFilesTobeMigrated', 'ProductForBLEssentialsLabel', 'ProductForBLEssentials', 'ProofOfConceptLabel', 'ProofOfConcept', 'ChartOfAccountLabel', 'ChartOfAccount', 'OpeningBalancesLabel', 'OpeningBalances', 'BLEssentialsBankfeedStartDateMonthLabel', 'BLEssentialsBankfeedStartDateMonth', 'BLEssentialsBankfeedStartDateYearLabel', 'BLEssentialsBankfeedStartDateYear',
+                    //     'CompletedSpreadSheetAttachedLabel', 'CompletedSpreadSheetAttached', 'ConciergeLabel', 'Concierge', 'AttachedfileLable', 'Attachedfile', 'CaseExpectedOutcomeLabel', 'CaseExpectedOutcome', 'MoreBankfeedStartDateLabel', 'MoreBankfeedStartDate'];
+                    
+                    input = ['CodedTransactionMigrationRequiredLabel', 'CodedTransactionMigrationRequired' ];                    
+                    execute(input);
+                    jQuery('[id$=CaseSubCategoryLabel]')[0].style.display = "inline"; 
+                    jQuery('[id$=CaseSubCategory]')[0].style.display = "inline"; 
+                    jQuery('[id$=CaseCategoryLabel]')[0].style.display = "inline"; 
+                    jQuery('[id$=CaseCategory]')[0].style.display = "inline"; 
+                    input = '';                 
+                } 
+                else if(jQuery('[id$=CaseCategory]').val()=='AR - ARL'){
+                    input = ['BLEssentialSerialNumberClientIdLabel', 'BLEssentialSerialNumberClientId', 'AccountRightVersion19Label'];
+                    execute(input);
+                    jQuery('[id$=CaseSubCategoryLabel]')[0].style.display = "inline"; 
+                    jQuery('[id$=CaseSubCategory]')[0].style.display = "inline"; 
+                    jQuery('[id$=CaseCategoryLabel]')[0].style.display = "inline"; 
+                    jQuery('[id$=CaseCategory]')[0].style.display = "inline"; 
+                    input = '';                             
+                } 
+                else if(jQuery('[id$=CaseCategory]').val()=='AR - EA'){
+                    input = ['ARAEMigrationServiceLabel'];
+                    execute(input);
+                    jQuery('[id$=CaseSubCategoryLabel]')[0].style.display = "inline"; 
+                    jQuery('[id$=CaseSubCategory]')[0].style.display = "inline"; 
+                    jQuery('[id$=CaseCategoryLabel]')[0].style.display = "inline"; 
+                    jQuery('[id$=CaseCategory]')[0].style.display = "inline"; 
+                    input = '';                  
+                } 
+                else if(jQuery('[id$=CaseCategory]').val()=='Sales Promotion/Agreement Adjustment'){
+                    /*jQuery('[id$=WhatOfferShouldBeAppliedLabel')[0].style.display = "inline"; 
+                    jQuery('[id$=WhatOfferShouldBeApplied')[0].style.display = "inline"; 
+                    jQuery('[id$=SalesPromotionSerialNumberLabel')[0].style.display = "inline";   
+                    jQuery('[id$=SalesPromotionSerialNumber')[0].style.display = "inline";*/
+                    
+                    input = ['WhatOfferShouldBeAppliedLabel', 'WhatOfferShouldBeApplied', 'SalesPromotionSerialNumberLabel', 'SalesPromotionSerialNumber', 'CaseSubjectLabel', 'CaseSubject', 'CaseDescriptionLabel', 'CaseDescription', 'CaseExpectedOutcomeLabel', 'CaseExpectedOutcome', 'AttachedfileLable', 'Attachedfile', 'CaseCategoryLabel', 'CaseCategory'];
+                    execute(input);   
+                    setTimeout(function() {
+                        jQuery('[id$=CaseSubCategory]')[0].style.display = "none"; 
+                        jQuery('[id$=CaseSubCategoryLabel]')[0].style.display = "none";  
+                    }, 0)                  
+                }                 
+                else if(jQuery('[id$=CaseCategory]').val()=='Invoicing Query'){
+                    input = ['CaseSubjectLabel', 'CaseSubject', 'CaseDescriptionLabel', 'CaseDescription', 'CaseExpectedOutcomeLabel', 'CaseExpectedOutcome', 'AttachedfileLable', 'Attachedfile', 'InvoiceNumberLabel', 'InvoiceNumber', 'CaseCategoryLabel', 'CaseCategory'];
+                    execute(input);                
+
+                    setTimeout(function() {
+                        jQuery('[id$=CaseSubCategory]')[0].style.display = "none"; 
+                        jQuery('[id$=CaseSubCategoryLabel]')[0].style.display = "none";  
+                    }, 0) 
+                }
+                else if(jQuery('[id$=CaseCategory]').val()=='Referral Rebates & Commissions' || jQuery('[id$=CaseCategory]').val()=='Change Billing Contact/Details' || jQuery('[id$=CaseCategory]').val()=='Account in Arrears' ){
+                    input = ['CaseSubjectLabel', 'CaseSubject', 'CaseDescriptionLabel', 'CaseDescription', 'CaseExpectedOutcomeLabel', 'CaseExpectedOutcome', 'AttachedfileLable', 'Attachedfile', 'CaseCategoryLabel', 'CaseCategory'];
+                    execute(input);                
+
+                    setTimeout(function() {
+                        jQuery('[id$=CaseSubCategory]')[0].style.display = "none"; 
+                        jQuery('[id$=CaseSubCategoryLabel]')[0].style.display = "none";  
+                    }, 0) 
+                }                
+                else if(jQuery('[id$=CaseCategory]').val()=='Project X'){
+                    input = ['EAStarterLabel', 'EAStarter', 'EAPayrollFor1Label', 'EAPayrollFor1', 'EAPayrollUnlimitedLabel', 'EAPayrollUnlimited', 'ConnectedLedgerLabel', 'ConnectedLedger', 'CaseExpectedOutcomeLabel', 'CaseExpectedOutcome', 'MigrationRequiredLabel', 'MigrationRequired'];
+                    execute(input);
+                    input = '';
+                    setTimeout(function() {
+                        jQuery('[id$=CaseSubCategory]')[0].style.display = "none"; 
+                        jQuery('[id$=CaseSubCategoryLabel]')[0].style.display = "none";  
+                    }, 0) 
+                    jQuery('[id$=CaseCategoryLabel]')[0].style.display = "inline"; 
+                    jQuery('[id$=CaseCategory]')[0].style.display = "inline"; 
+                }                                                           
+                else{
+                    input = ['CaseSubjectLabel', 'CaseSubject', 'CaseDescriptionLabel', 'CaseDescription', 'CaseExpectedOutcomeLabel', 'CaseExpectedOutcome', 'AttachedfileLable', 'Attachedfile'];
+                    execute(input);
+
+                    jQuery('[id$=CaseCategoryLabel]')[0].style.display = "inline"; 
+                    jQuery('[id$=CaseCategory]')[0].style.display = "inline"; 
+                    
+                    if(jQuery('[id$=CasePrimaryCategory]').val() == "Billing & Finance" || jQuery('[id$=CasePrimaryCategory]').val() == "Ledger Success" || jQuery('[id$=CasePrimaryCategory]').val() == "Ledger Specialist" || jQuery('[id$=CasePrimaryCategory]').val() == "Feedback"){
+                        jQuery('[id$=CaseSubCategoryLabel]')[0].style.display = "none";
+                        setTimeout(function() {
+                            jQuery('[id$=CaseSubCategory]')[0].style.display = "none";  
+                        }, 0)
+                    }
+                    else{
+                        jQuery('[id$=CaseSubCategoryLabel]')[0].style.display = "inline";  
+                        jQuery('[id$=CaseSubCategory]')[0].style.display = "inline"; 
+                    }
+                    input = '';             
+                }
+                
+                var caseCategory = jQuery('[id$=CasePrimaryCategory]').val() + jQuery('[id$=CaseCategory]').val();
+                
+                messageDisplay(caseCategory);
+
+            }  
+            else if(scope=='CallSupportBeforeQuestion'){
+                if(jQuery('[id$=CallSupportBeforeQuestion]').val()=='Yes'){
+                    jQuery('[id$=CallSupportBeforeOutput]')[0].style.display = "none";
+                    jQuery('[id$=CaseSubjectLabel]')[0].style.display = "inline";
+                    jQuery('[id$=CaseSubject]')[0].style.display = "inline";
+                    jQuery('[id$=CaseDescriptionLabel]')[0].style.display = "inline";
+                    jQuery('[id$=CaseDescription]')[0].style.display = "inline";
+                    jQuery('[id$=CaseExpectedOutcomeLabel]')[0].style.display = "inline";
+                    jQuery('[id$=CaseExpectedOutcome]')[0].style.display = "inline"; 
+                    jQuery('[id$=CallSupportBeforeOutputReminder]')[0].style.display = "inline";
+                    jQuery('[id$=AttachedfileLable]')[0].style.display = "inline";  
+                    jQuery('[id$=Attachedfile]')[0].style.display = "inline";                           
+                }
+                else{
+                    jQuery('[id$=CallSupportBeforeOutput]')[0].style.display = "inline"; 
+                    jQuery('[id$=CallSupportBeforeOutputReminder]')[0].style.display = "none"; 
+                    jQuery('[id$=CaseSubjectLabel]')[0].style.display = "none";
+                    jQuery('[id$=CaseSubject]')[0].style.display = "none";
+                    jQuery('[id$=CaseDescriptionLabel]')[0].style.display = "none";
+                    jQuery('[id$=CaseDescription]')[0].style.display = "none";
+                    jQuery('[id$=CaseExpectedOutcomeLabel]')[0].style.display = "none";
+                    jQuery('[id$=CaseExpectedOutcome]')[0].style.display = "none"; 
+                    jQuery('[id$=AttachedfileLable]')[0].style.display = "none";  
+                    jQuery('[id$=Attachedfile]')[0].style.display = "none";  
+                                
+                }
+            }
+            //sprint28
+            else if(scope=='CodedTransactionMigrationRequired'){
+                if(jQuery('[id$=CodedTransactionMigrationRequired]').val()=='Yes'){
+                    jQuery('[id$=TypeOfMigrationLabel]')[0].style.display = "inline";
+                    jQuery('[id$=TypeOfMigration]')[0].style.display = "inline";
+                    jQuery('[id$=ProofOfConceptLabel]')[0].style.display = "inline";
+                    jQuery('[id$=ProofOfConcept]')[0].style.display = "inline";
+                    
+                    jQuery('[id$=TrainingConsultantInvolvedLabel]')[0].style.display = "inline";
+                    jQuery('[id$=TrainingConsultantInvolved]')[0].style.display = "inline";  
+                    jQuery('[id$=TrainingConsultantNameLabel]')[0].style.display = "inline"; 
+                    jQuery('[id$=TrainingConsultantName]')[0].style.display = "inline"; 
+                    jQuery('[id$=CompletedSpreadSheetAttachedLabel]')[0].style.display = "inline"; 
+                    jQuery('[id$=CompletedSpreadSheetAttached]')[0].style.display = "inline"; 
+                    jQuery('[id$=TotalNumberOfFilesTobeMigratedLabel]')[0].style.display = "inline"; 
+                    jQuery('[id$=TotalNumberOfFilesTobeMigrated]')[0].style.display = "inline"; 
+                }
+                else if(jQuery('[id$=CodedTransactionMigrationRequired]').val()=='No'){
+                    
+                    input = ['CodedTransactionMigrationRequiredLabel' , 'CodedTransactionMigrationRequired' , 'TotalNumberOfFilesTobeMigratedLabel', 'TotalNumberOfFilesTobeMigrated', 'ProductForBLEssentialsLabel', 'ProductForBLEssentials', 'ProofOfConceptLabel', 'ProofOfConcept', 'ChartOfAccountLabel', 'ChartOfAccount', 'OpeningBalancesLabel', 'OpeningBalances',
+                     'CompletedSpreadSheetAttachedLabel', 'CompletedSpreadSheetAttached', 'ConciergeLabel', 'Concierge', 'AttachedfileLable', 'Attachedfile', 'CaseExpectedOutcomeLabel', 'CaseExpectedOutcome', 'BLEssentialsBankfeedStartDateMonthLabel', 'BLEssentialsBankfeedStartDateMonth', 'BLEssentialsBankfeedStartDateYearLabel', 
+                     'BLEssentialsBankfeedStartDateYear', 'MoreBankfeedStartDateLabel', 'MoreBankfeedStartDate'];
+                    execute(input);
+                    
+                    jQuery('[id$=CaseSubCategoryLabel]')[0].style.display = "inline"; 
+                    jQuery('[id$=CaseSubCategory]')[0].style.display = "inline"; 
+                    jQuery('[id$=CaseCategoryLabel]')[0].style.display = "inline"; 
+                    jQuery('[id$=CaseCategory]')[0].style.display = "inline"; 
+                    input = '';  
+                    
+                    }                                
+                }
+            
+            //Release 3.9.2017
+            else if(scope=='RefundRequired'){
+                if(jQuery('[id$=RefundRequired]').val()=='Yes'){
+                    jQuery('[id$=TotalValueLabel]')[0].style.display = "inline";
+                    jQuery('[id$=TotalValue]')[0].style.display = "inline";
+                    //jQuery('[id$=ORLabel]')[0].style.display = "inline";
+                    //jQuery('[id$=NumberofMonthsToRefundLabel]')[0].style.display = "inline";
+                    //jQuery('[id$=NumberofMonthsToRefund]')[0].style.display = "inline";
+                    //jQuery('[id$=PerMonthLabel]')[0].style.display = "inline";
+                    //jQuery('[id$=PerMonth]')[0].style.display = "inline"; 
+                    //jQuery('[id$=CancellationRefundNoticeLabel]')[0].style.display = "inline";  
+                    //jQuery('[id$=RefundDateRangeFrom]')[0].style.display = "inline";
+                    //jQuery('[id$=RefundDateRangeFromLabel]')[0].style.display = "inline";
+                    //jQuery('[id$=RefundDateRangeToLabel]')[0].style.display = "inline";
+                    //jQuery('[id$=RefundDateRangeTo]')[0].style.display = "inline";  
+                    jQuery('[id$=CaseDescriptionLabel]')[0].style.display = "inline";
+                    jQuery('[id$=CaseDescription]')[0].style.display = "inline";   
+                    jQuery('[id$=AttachedfileLable]')[0].style.display = "inline";  
+                    jQuery('[id$=Attachedfile]')[0].style.display = "inline";                                       
+                }
+                else{
+                    //jQuery('[id$=TotalValueLabel]')[0].style.display = "none";
+                    //jQuery('[id$=TotalValue]')[0].style.display = "none";
+                    jQuery('[id$=ORLabel]')[0].style.display = "none";
+                    //jQuery('[id$=NumberofMonthsToRefundLabel]')[0].style.display = "none";
+                    //jQuery('[id$=NumberofMonthsToRefund]')[0].style.display = "none";
+                    jQuery('[id$=PerMonthLabel]')[0].style.display = "none";
+                    jQuery('[id$=PerMonth]')[0].style.display = "none"; 
+                    //jQuery('[id$=CancellationRefundNoticeLabel]')[0].style.display = "none"; 
+                    jQuery('[id$=RefundDateRangeFrom]')[0].style.display = "none";
+                    jQuery('[id$=RefundDateRangeFromLabel]')[0].style.display = "none";
+                    jQuery('[id$=RefundDateRangeToLabel]')[0].style.display = "none";
+                    jQuery('[id$=RefundDateRangeTo]')[0].style.display = "none";
+                    jQuery('[id$=CaseDescriptionLabel]')[0].style.display = "inline";
+                    jQuery('[id$=CaseDescription]')[0].style.display = "inline"; 
+                    jQuery('[id$=AttachedfileLable]')[0].style.display = "inline";  
+                    jQuery('[id$=Attachedfile]')[0].style.display = "inline";                                 
+                }
+            }
+            else if(scope=='CancellationReason'){
+                //alert(jQuery('[id$=CancellationReason]').val());
+                if(jQuery('[id$=CancellationReason]').val()=='Nothing' || jQuery('[id$=CancellationReason]').val()=='Competitor'){
+                    jQuery('[id$=CaseDescriptionLabel]')[0].style.display = "none";
+                    jQuery('[id$=CaseDescription]')[0].style.display = "none";
+                    if(UITheme != 'Theme4t'){  
+                        jQuery('[id$=CompetitorRequiredSymbol]')[0].style.display = "inline"; 
+                        jQuery('[id$=AttachedfileLable]')[0].style.display = "none";  
+                        jQuery('[id$=Attachedfile]')[0].style.display = "none";  
+                    }
+                    jQuery('[id$=CRCompetitorLabel]')[0].style.display = "inline";
+                    jQuery('[id$=CRCompetitor]')[0].style.display = "inline";
+                                                    
+                    setTimeout(function() {
+                        jQuery('[id$=CRAdditionalReason]')[0].style.display = "none";
+                        jQuery('[id$=CRSpecificReason]')[0].style.display = "none";                      
+                    }, 0)
+                }
+                else{
+                    jQuery('[id$=RefundRequiredLabel]')[0].style.display = "inline";
+                    jQuery('[id$=RefundRequired]')[0].style.display = "inline";
+                    jQuery('[id$=CaseDescriptionLabel]')[0].style.display = "none";
+                    jQuery('[id$=CaseDescription]')[0].style.display = "none";   
+                    setTimeout(function() {
+                        jQuery('[id$=CRCompetitorLabel]')[0].style.display = "none";
+                        jQuery('[id$=CRCompetitor]')[0].style.display = "none";
+                        jQuery('[id$=CRAdditionalReasonLabel]')[0].style.display = "none";
+                        jQuery('[id$=CRAdditionalReason]')[0].style.display = "none";
+                        jQuery('[id$=CRSpecificReasonLabel]')[0].style.display = "none";
+                        jQuery('[id$=CRSpecificReason]')[0].style.display = "none";
+                    }, 0)
+                    if(UITheme != 'Theme4t'){                     
+                        jQuery('[id$=CompetitorRequiredSymbol]')[0].style.display = "none"; 
+                        jQuery('[id$=AdditionalReasonRequiredSymbol]')[0].style.display = "none";
+                        jQuery('[id$=SpecificReasonRequiredSymbol]')[0].style.display = "none";  
+                        jQuery('[id$=AttachedfileLable]')[0].style.display = "none";  
+                        jQuery('[id$=Attachedfile]')[0].style.display = "none";
+                    }                 
+                }
+            }             
+            //End of Release 3.9.2017  
+            else if(scope=='Competitor'){
+                if(jQuery('[id$=CRCompetitor]').val()=='Closure of Business' || jQuery('[id$=CRCompetitor]').val()=='Unconsumed Bureau' || jQuery('[id$=CRCompetitor]').val()=='Staff Reduction'){
+                    if(UITheme != 'Theme4t'){
+                        jQuery('[id$=AdditionalReasonRequiredSymbol]')[0].style.display = "none";
+                        jQuery('[id$=SpecificReasonRequiredSymbol]')[0].style.display = "none"; 
+                    }
+                    jQuery('[id$=RefundRequiredLabel]')[0].style.display = "inline";
+                    jQuery('[id$=RefundRequired]')[0].style.display = "inline";
+                    setTimeout(function() {
+                        jQuery('[id$=CRAdditionalReason]')[0].style.display = "none";
+                        jQuery('[id$=CRAdditionalReasonLabel]')[0].style.display = "none";
+                        jQuery('[id$=CRSpecificReason]')[0].style.display = "none";
+                        jQuery('[id$=CRSpecificReasonLabel]')[0].style.display = "none";
+                    }, 0)                  
+                }
+                else if(jQuery('[id$=CRCompetitor]').val()!='Closure of Business' && jQuery('[id$=CRCompetitor]').val()!='Unconsumed Bureau' && jQuery('[id$=CRCompetitor]').val()!='Staff Reduction' && jQuery('[id$=CRCompetitor]').val()!=""){
+                    if(UITheme != 'Theme4t'){
+                        jQuery('[id$=AdditionalReasonRequiredSymbol]')[0].style.display = "inline";
+                        jQuery('[id$=SpecificReasonRequiredSymbol]')[0].style.display = "none"; 
+                    }
+                    jQuery('[id$=CRAdditionalReasonLabel]')[0].style.display = "inline";
+                    jQuery('[id$=CRAdditionalReason]')[0].style.display = "inline";
+                    
+                    setTimeout(function(){
+                        jQuery('[id$=CRSpecificReasonLabel]')[0].style.display = "none";
+                        jQuery('[id$=CRSpecificReason]')[0].style.display = "none";                    
+                    }, 0)  
+                }
+            }
+            else if(scope == "AdditionalReason"){
+                jQuery('[id$=CRSpecificReasonLabel]')[0].style.display = "inline";
+                jQuery('[id$=CRSpecificReason]')[0].style.display = "inline";
+                if(UITheme != 'Theme4t'){
+                    jQuery('[id$=SpecificReasonRequiredSymbol]')[0].style.display = "inline";
+                }
+            } 
+            else if(scope == "SpecificReason"){
+                jQuery('[id$=RefundRequiredLabel]')[0].style.display = "inline";
+                jQuery('[id$=RefundRequired]')[0].style.display = "inline";                
+            } 
+            else if(scope == "BankFeedSwapSwitch"){
+                if(jQuery('[id$=SwapOrSwitch]').val()=='Swap'){
+                    input = ['BankFeedSerialNumberFromLabel', 'BankFeedSerialNumberFrom', 'BankFeedSerialNumberToLabel', 'BankFeedSerialNumberTo', 'BankFeedCompanyDataFileNumberFromLabel', 'BankFeedCompanyDataFileNumberFrom',
+                            'BankFeedCompanyDataFileNumberToLabel', 'BankFeedCompanyDataFileNumberTo', 'BankFeedRemoveOnlineFileLabel', 'BankFeedRemoveOnlineFile', 'BankFeedBankAccountCCSwapLabel', 'BankFeedBankAccountCCSwap', 'SwapOrSwitchLabel', 'SwapOrSwitch', 'AttachedfileLable', 'Attachedfile']; 
+                    execute(input);
+                    jQuery('[id$=CaseSubCategoryLabel]')[0].style.display = "inline"; 
+                    jQuery('[id$=CaseSubCategory]')[0].style.display = "inline"; 
+                    jQuery('[id$=CaseCategoryLabel]')[0].style.display = "inline"; 
+                    jQuery('[id$=CaseCategory]')[0].style.display = "inline"; 
+                    input = '';                     
+                }
+                else if (jQuery('[id$=SwapOrSwitch]').val()=='Switch'){
+                    input = ['BankFeedSerialNumberFromLabel', 'BankFeedSerialNumberFrom', 'BankFeedSerialNumberToLabel', 'BankFeedSerialNumberTo', 'BankFeedCompanyDataFileNumberFromLabel', 'BankFeedCompanyDataFileNumberFrom',
+                            'BankFeedCompanyDataFileNumberToLabel', 'BankFeedCompanyDataFileNumberTo', 'BankFeedRemoveOnlineFileLabel', 'BankFeedRemoveOnlineFile', 'SwapOrSwitchLabel', 'SwapOrSwitch', 'MoveOrCopyLabel', 'MoveOrCopy', 'ProductNameFromLabel', 'ProductNameFrom', 'ProductNameToLabel', 'ProductNameTo', 'BankFeedStartDateLabel', 'BankFeedStartDate', 'AttachedfileLable', 'Attachedfile']; 
+                    execute(input);
+                    jQuery('[id$=CaseSubCategoryLabel]')[0].style.display = "inline"; 
+                    jQuery('[id$=CaseSubCategory]')[0].style.display = "inline"; 
+                    jQuery('[id$=CaseCategoryLabel]')[0].style.display = "inline"; 
+                    jQuery('[id$=CaseCategory]')[0].style.display = "inline"; 
+                    input = '';                 
+                }
+            }
+            else if(scope=='PartnerOnNewPartnerProgram'){
+                if((jQuery('[id$=PartnerOnNewPartnerProgram]').val()=='No')) {
+                    input = ['RelevantIndustryQualificationLabel', 'RelevantIndustryQualification', 'PartnerOnNewPartnerProgramLabel', 'PartnerOnNewPartnerProgram', 'PartnerOnNewPartnerProgramNoLabel', 'CaseSubjectLabel', 'CaseSubject', 'CaseDescriptionLabel', 'CaseDescription', 'AttachedfileLable', 'Attachedfile',
+                            'PartnerCompletedPreworkLabel', 'PartnerCompletedPrework', 'DashboardSetupLeast10FilesLinkedLabel', 'DashboardSetupLeast10FilesLinked'];
+                    execute(input);
+                    jQuery('[id$=CaseSubCategoryLabel]')[0].style.display = "inline"; 
+                    jQuery('[id$=CaseSubCategory]')[0].style.display = "inline"; 
+                    jQuery('[id$=CaseCategoryLabel]')[0].style.display = "inline"; 
+                    jQuery('[id$=CaseCategory]')[0].style.display = "inline"; 
+                    input = '';                  
+                }
+            }
+            else if(scope=='PartnerCompletedPrework'){
+                if((jQuery('[id$=PartnerCompletedPrework]').val()=='No')) {
+                    input = ['RelevantIndustryQualificationLabel', 'RelevantIndustryQualification', 'PartnerOnNewPartnerProgramLabel', 'PartnerOnNewPartnerProgram', 'CaseSubjectLabel', 'CaseSubject', 'CaseDescriptionLabel', 'CaseDescription', 'AttachedfileLable', 'Attachedfile',
+                            'PartnerCompletedPreworkLabel', 'PartnerCompletedPrework', 'DashboardSetupLeast10FilesLinkedLabel', 'DashboardSetupLeast10FilesLinked', 'PartnerCompletedPreworkNoLabel'];
+                    execute(input);
+                    jQuery('[id$=CaseSubCategoryLabel]')[0].style.display = "inline"; 
+                    jQuery('[id$=CaseSubCategory]')[0].style.display = "inline"; 
+                    jQuery('[id$=CaseCategoryLabel]')[0].style.display = "inline"; 
+                    jQuery('[id$=CaseCategory]')[0].style.display = "inline"; 
+                    input = '';                 
+                }            
+            } 
+            else if(scope=='DashboardSetupLeast10FilesLinked'){
+                if((jQuery('[id$=DashboardSetupLeast10FilesLinked]').val()=='No')) {
+                    input = ['RelevantIndustryQualificationLabel', 'RelevantIndustryQualification', 'PartnerOnNewPartnerProgramLabel', 'PartnerOnNewPartnerProgram', 'CaseSubjectLabel', 'CaseSubject', 'CaseDescriptionLabel', 'CaseDescription', 'AttachedfileLable', 'Attachedfile',
+                            'PartnerCompletedPreworkLabel', 'PartnerCompletedPrework', 'DashboardSetupLeast10FilesLinkedLabel', 'DashboardSetupLeast10FilesLinked', 'DashboardSetupLeast10FilesLinkedNoLabel'];
+                    execute(input);
+                    jQuery('[id$=CaseSubCategoryLabel]')[0].style.display = "inline"; 
+                    jQuery('[id$=CaseSubCategory]')[0].style.display = "inline"; 
+                    jQuery('[id$=CaseCategoryLabel]')[0].style.display = "inline"; 
+                    jQuery('[id$=CaseCategory]')[0].style.display = "inline"; 
+                    input = '';                 
+                }            
+            } 
+            else if(scope=='MigrationRequired'){
+                if((jQuery('[id$=MigrationRequired]').val()=='Yes')) {
+                    input = ['EAStarterLabel', 'EAStarter', 'EAPayrollFor1Label', 'EAPayrollFor1', 'EAPayrollUnlimitedLabel', 'EAPayrollUnlimited', 'ConnectedLedgerLabel', 'ConnectedLedger', 'CaseExpectedOutcomeLabel', 'CaseExpectedOutcome', 'MigrationRequiredLabel', 'MigrationRequired',
+                    'ChartOfAccountLabel', 'ChartOfAccount', 'OpeningBalancesLabel', 'OpeningBalances','CompletedSpreadSheetAttachedLabel', 'CompletedSpreadSheetAttached', 'ConciergeLabel', 'Concierge', 'AttachedfileLable', 'Attachedfile', 'CaseExpectedOutcomeLabel', 'CaseExpectedOutcome', 'BLEssentialsBankfeedStartDateMonthLabel', 'BLEssentialsBankfeedStartDateMonth', 'BLEssentialsBankfeedStartDateYearLabel', 'BLEssentialsBankfeedStartDateYear', 'MoreBankfeedStartDateLabel', 'MoreBankfeedStartDate'];
+                    execute(input);
+                    jQuery('[id$=CaseSubCategoryLabel]')[0].style.display = "none"; 
+                    jQuery('[id$=CaseSubCategory]')[0].style.display = "none"; 
+                    jQuery('[id$=CaseCategoryLabel]')[0].style.display = "inline"; 
+                    jQuery('[id$=CaseCategory]')[0].style.display = "inline"; 
+                    input = '';                 
+                }
+                else if((jQuery('[id$=MigrationRequired]').val()=='No')) {  
+                    input = ['EAStarterLabel', 'EAStarter', 'EAPayrollFor1Label', 'EAPayrollFor1', 'EAPayrollUnlimitedLabel', 'EAPayrollUnlimited', 'ConnectedLedgerLabel', 'ConnectedLedger', 'CaseExpectedOutcomeLabel', 'CaseExpectedOutcome', 'MigrationRequiredLabel', 'MigrationRequired', 'IndicativeMigrationDateLabel', 'IndicativeMigrationDate'];
+                    execute(input);
+                    jQuery('[id$=CaseSubCategoryLabel]')[0].style.display = "none"; 
+                    jQuery('[id$=CaseSubCategory]')[0].style.display = "none"; 
+                    jQuery('[id$=CaseCategoryLabel]')[0].style.display = "inline"; 
+                    jQuery('[id$=CaseCategory]')[0].style.display = "inline"; 
+                    input = '';                 
+                }         
+            }
+            else if(scope=='MergerSplitServiceRequired'){
+                if((jQuery('[id$=ServicesRequired]').val()=='Yes' && jQuery('[id$=CaseSubCategory]').val()=='Practice Split')) {
+                    input = ['MostAppropriateContactToLiaiseWithLabel', 'MostAppropriateContactToLiaiseWith', 'SplitAmicableLabel', 'SplitAmicable', 'SplitClientIdLabel', 'SplitClientId', 'SplitEffectiveDateLabel', 'SplitEffectiveDate', 'ServicesRequiredLabel', 'ServicesRequired', 'CaseDescriptionLabel', 'CaseDescription', 'CaseSubjectLabel', 'CaseSubject', 
+                            'CaseExpectedOutcomeLabel', 'CaseExpectedOutcome', 'AttachedfileLable', 'Attachedfile', 'PartnerEmployeeSplitLabel', 'PartnerEmployeeSplit', 'WhichPracticePayingServicesLabel', 'WhichPracticePayingServices'];
+                    execute(input);
+                    jQuery('[id$=CaseSubCategoryLabel]')[0].style.display = "inline"; 
+                    jQuery('[id$=CaseSubCategory]')[0].style.display = "inline"; 
+                    jQuery('[id$=CaseCategoryLabel]')[0].style.display = "inline"; 
+                    jQuery('[id$=CaseCategory]')[0].style.display = "inline"; 
+                    input = '';                  
+                }
+                else if((jQuery('[id$=ServicesRequired]').val()=='No' && jQuery('[id$=CaseSubCategory]').val()=='Practice Split')) {  
+                    input = ['MostAppropriateContactToLiaiseWithLabel', 'MostAppropriateContactToLiaiseWith', 'SplitAmicableLabel', 'SplitAmicable', 'SplitClientIdLabel', 'SplitClientId', 'SplitEffectiveDateLabel', 'SplitEffectiveDate', 'ServicesRequiredLabel', 'ServicesRequired', 'CaseDescriptionLabel', 'CaseDescription', 'CaseSubjectLabel', 'CaseSubject', 
+                            'CaseExpectedOutcomeLabel', 'CaseExpectedOutcome', 'AttachedfileLable', 'Attachedfile', 'PartnerEmployeeSplitLabel', 'PartnerEmployeeSplit'];
+                    execute(input);
+                    jQuery('[id$=CaseSubCategoryLabel]')[0].style.display = "inline"; 
+                    jQuery('[id$=CaseSubCategory]')[0].style.display = "inline"; 
+                    jQuery('[id$=CaseCategoryLabel]')[0].style.display = "inline"; 
+                    jQuery('[id$=CaseCategory]')[0].style.display = "inline"; 
+                    input = '';                  
+                }
+                else if((jQuery('[id$=ServicesRequired]').val()=='Yes' && jQuery('[id$=CaseSubCategory]').val()=='Practice Merger')) {
+                    input = ['MostAppropriateContactToLiaiseWithLabel', 'MostAppropriateContactToLiaiseWith', 'MergeAmicableLabel', 'MergeAmicable', 'MergeClientIdLabel', 'MergeClientId', 'MergeEffectiveDateLabel', 'MergeEffectiveDate', 'ServicesRequiredLabel', 'ServicesRequired', 'CaseDescriptionLabel', 'CaseDescription', 'CaseSubjectLabel', 'CaseSubject', 
+                            'CaseExpectedOutcomeLabel', 'CaseExpectedOutcome', 'AttachedfileLable', 'Attachedfile', 'WhichPracticePayingServicesLabel', 'WhichPracticePayingServices'];
+                    execute(input);
+                    jQuery('[id$=CaseSubCategoryLabel]')[0].style.display = "inline"; 
+                    jQuery('[id$=CaseSubCategory]')[0].style.display = "inline"; 
+                    jQuery('[id$=CaseCategoryLabel]')[0].style.display = "inline"; 
+                    jQuery('[id$=CaseCategory]')[0].style.display = "inline"; 
+                    input = '';                  
+                }
+                else if((jQuery('[id$=ServicesRequired]').val()=='No' && jQuery('[id$=CaseSubCategory]').val()=='Practice Merger')) {  
+                    input = ['MostAppropriateContactToLiaiseWithLabel', 'MostAppropriateContactToLiaiseWith', 'MergeAmicableLabel', 'MergeAmicable', 'MergeClientIdLabel', 'MergeClientId', 'MergeEffectiveDateLabel', 'MergeEffectiveDate', 'ServicesRequiredLabel', 'ServicesRequired', 'CaseDescriptionLabel', 'CaseDescription', 'CaseSubjectLabel', 'CaseSubject', 
+                            'CaseExpectedOutcomeLabel', 'CaseExpectedOutcome', 'AttachedfileLable', 'Attachedfile'];
+                    execute(input);
+                    jQuery('[id$=CaseSubCategoryLabel]')[0].style.display = "inline"; 
+                    jQuery('[id$=CaseSubCategory]')[0].style.display = "inline"; 
+                    jQuery('[id$=CaseCategoryLabel]')[0].style.display = "inline"; 
+                    jQuery('[id$=CaseCategory]')[0].style.display = "inline"; 
+                    input = '';                 
+                } 
+                
+            }                                                        
+            else{
+
+            }
+            return false;
+        } 
+          
+    </script>
+    
+    
+    <apex:outputPanel id="Lightning">    
+        <apex:includeScript value="/lightning/lightning.out.js" />
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js"></script> 
+        <html xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+            <head>
+                <apex:stylesheet value="{!URLFOR($Resource.SLDS0121, 'assets/styles/salesforce-lightning-design-system-vf.css')}" />
+                <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+                <style>
+                    select {display:block;width:100%;height:34px;padding:6px 14px;font-size:14px;line-height:1.42857143;color:#000;background-color:#fff;background-image:none;border:1px solid #cfd0d2;border-radius:4px;-webkit-box-shadow:inset 0 1px 1px rgba(0,0,0,.075);box-shadow:inset 0 1px 1px rgba(0,0,0,.075);-webkit-transition:border-color ease-in-out .15s,box-shadow ease-in-out .15s;transition:border-color ease-in-out .15s,box-shadow ease-in-out .15s}
+                </style>  
+            </head>
+            
+            <body>
+                <div class="slds">
+                <apex:form >
+                    
+                    <div class="slds-page-header" role="banner">             
+                    <div class="slds-grid">                                                        
+                        <div class="slds-col">                   
+                            <div class="slds-media">
+                              <div class="slds-media__figure">
+                                <span class="slds-avatar slds-avatar--large">
+                                  <img src="{!URLFOR($Resource.SLDS0121, 'assets/images/avatar1.jpg')}" alt="" />
+                                </span>
+                              </div>
+                              <div class="slds-media__body">
+                                <p class="slds-text-heading--label">Cases</p>
+                                <h1 class="slds-text-heading--medium">New Case</h1>
+                              </div>
+                            </div>                
+                        </div>                    
+                           <div class="slds-col slds-no-flex slds-align-top">
+                               <div class="slds-button-group" role="group">
+                                   <apex:commandButton value="Save" action="{!validateSaveRedirect}" styleClass="slds-button slds-button--neutral" onclick="this.onclick=function(){return false;}"/>
+                                   <apex:commandButton value="Cancel" action="{!cancelRedirect}" styleClass="slds-button slds-button--neutral" immediate="true" html-formnovalidate="formnovalidate"/>
+                               </div>
+                           </div>                                            
+                      </div>                                 
+                    </div>                
+                    <br/> 
+                    
+                                  
+                    <form class="slds-form--stacked">
+                    <div class="slds-form--stacked">
+                    
+                        <div class="slds-form-element slds-form-element__label" style="background-color:lightyellow;" id="MessageDiv">
+                          <!--
+                          <span class="slds-assistive-text">Info</span>
+                          <button class="slds-button slds-button--icon-inverse slds-notify__close">
+                            <svg aria-hidden="true" class="slds-button__icon">
+                              <use xlink:href="/assets/icons/action-sprite/svg/symbols.svg#close"></use>
+                            </svg>
+                            <span class="slds-assistive-text">Close</span>
+                          </button>
+                          <h2 id="MessageBoard">
+                           <table border="0" cellpadding="0" cellspacing="0" style="width: 1015px;"><tbody><tr><td align="right" colspan="1" rowspan="1">1</td><td colspan="1" rowspan="1"><font>This category is for:</font><font> Change of: </font><font>SME Ownership/SME Business Name/Practice Contact/Practice Street Address/Practice Payment Profile</font></td></tr><tr><td align="right" colspan="1" rowspan="1">2</td><td colspan="1" rowspan="1"><font>Current Alerts:</font><font> </font><font>NONE</font></td></tr><tr><td align="right" colspan="1" rowspan="1">3</td><td colspan="1" rowspan="1"><font>How It&#39;s Resolved:</font><font> Change of Details form is required for SME requests/Direct Debit form sent for Practice requests</font></td></tr><tr><td align="right" colspan="1" rowspan="1">4</td><td colspan="1" rowspan="1"><font>Average Historical Resolution Time:</font><font> 7 Business Days</font></td></tr><tr><td align="right" colspan="1" rowspan="1">5</td><td colspan="1" rowspan="1"><font>This category is NOT for:</font><font> Change of Billing (goto billing &amp; finance for that)/Change of Practice Ownership (goto Entity Transfer for that)</font></td></tr></tbody></table>
+                           
+                          </h2>
+                          -->
+                        </div>
+                  
+                        <div class="slds-form-element">
+                            <div class="slds-form-element">
+                                <font color="red"><b><apex:messages /></b></font>
+                            </div>
+                        </div>
+                        <!--
+                        <apex:outputPanel id="SalesforceMobile" rendered="{!$User.UIThemeDisplayed == 'Theme4t'}">   
+                           <div class="form-group">
+                                <div class="form-group">
+                                    <label class="field-label">Contact Name</label>
+                                </div>
+                                <div class="form-group">
+                                    <div class="hideCurrDate">
+                                    <apex:outputField value="{!case.ContactId}" styleClass="form-control" label=""/>
+                                    </div>
+                                </div>
+        
+                            </div>
+                            <div class="form-group">
+                                 <div class="form-group">
+                                    <label class="field-label">Partner Name</label>
+                                 </div>
+                                 <div class="form-group">
+                                    <apex:outputField value="{!case.AccountId}" styleClass="form-control" label=""/>
+                                 </div>
+                            </div>                       
+                        </apex:outputpanel>
+                        
+                        <apex:outputPanel id="SalesforceOther" rendered="{!$User.UIThemeDisplayed != 'Theme4t'}"> 
+                        -->  
+                            <div class="slds-form-element">
+                                 <div class="slds-form-element">
+                                    <label class="slds-form-element__label">Practice / Company Name</label>
+                                 </div>
+                                 <div class="slds-form-element">
+                                    <!--<apex:outputField value="{!case.AccountId}" styleClass="slds-output" label=""/>-->
+
+                                    <apex:inputField value="{!case.AccountId}" required="true"/>
+
+                                 </div>
+                            </div>
+ 
+                                 <div class="slds-form-element">
+                                    <!--<apex:outputField value="{!case.AccountId}" styleClass="slds-output" label=""/>-->
+                                    <div class="hideCurrDate">
+                                    <apex:outputField value="{!case.account.Status__c}"/>
+                                    </div>
+                                </div> 
+                        
+                            <div class="slds-form-element">
+                                <div class="slds-form-element">
+                                    <label class="slds-form-element__label">Contact Name</label>
+                                </div>
+                                <div class="slds-form-element">
+                                    <!--<apex:outputField value="{!case.ContactId}" styleClass="slds-output" label=""/>-->
+
+                                    <apex:inputField value="{!case.ContactId}" required="true"/>
+                                    
+                                </div>
+                            </div>                        
+                        <!--</apex:outputpanel>-->
+                                                
+
+                   
+                        <div class="slds-form-element slds-is-required">
+                            <label class="field-label"><strong><abbr class="slds-required" title="required">*</abbr></strong>Primary Category</label>
+                        </div>
+                        <div class="slds-form-element slds-is-required">
+                            <div class="hideCurrDate">
+                                <apex:inputField value="{!case.Primary_Category__c}" required="true" label="" styleClass="slds-input" id="CasePrimaryCategory" onchange="hideRating('CasePrimaryCategory')"/>
+                            </div>  
+                        </div>
+
+                        <div class="slds-form-element">
+                            <div class="hideCurrDate">
+                            <apex:outputLabel value="Category" id="CaseCategoryLabel"></apex:outputLabel>
+                            </div>
+                        </div>
+                        <div class="slds-form-element"> 
+                            <div class="hideCurrDate">
+                                <apex:inputField value="{!case.Categ__c}"  styleClass="slds-input" required="false" label="Category" id="CaseCategory" onchange="hideRating('CategorySMESolutions')"/>                                    
+                            </div>
+                        </div>
+                                                                           
+                        <div class="slds-form-element slds-is-required"> 
+                            <label class="slds-form-element__label" id="CaseSubCategoryLabel">Sub Category</label>
+                        </div>
+                        <div class="slds-form-element slds-is-required">
+                            <div class="hideCurrDate">
+                            <apex:inputField value="{!case.Sub_Category__c}" required="false" onchange="hideRating('CallCaseSubCategory')" style="slds-input" id="CaseSubCategory"/>
+                            </div>
+                        </div>
+                        
+                        
+                        <div class="slds-form-element"> 
+                            <label class="slds-form-element__label" id="CallSupportBeforeQuestionLabel">Has this partner called Partner Technical Support to resolve their query?</label>
+                        </div>
+                        <div class="slds-form-element">
+                            <div class="hideCurrDate">
+                            <apex:inputField value="{!case.Called_Support_Before__c}" label="" required="false" onchange="hideRating('CallSupportBeforeQuestion')" id="CallSupportBeforeQuestion"/>
+                            </div>
+                        </div>
+                                                
+                        <div class="slds-form-element"> 
+                            <label class="slds-form-element__label" id="CallSupportBeforeOutput">Please advise partner to call Partner Technical Support to resolve their query first. Thanks!</label>
+                        </div>
+                        
+                        <div class="slds-form-element"> 
+                            <label class="slds-form-element__label" id="CallSupportBeforeOutputReminder">Please note this case will be assigned to the appropriate team to resolve.  For a faster resolution time, please provide the SR number where appropriate</label>   
+                        </div>
+                       
+                        <div class="slds-form-element slds-is-required"> 
+                            <label class="slds-form-element__label" id="SerialNumberLabel"><strong><abbr class="slds-required" title="required">*</abbr></strong>Product Name or Serial Number</label>
+                        </div>
+                        <div class="slds-form-element slds-is-required"> 
+                            <div class="hideCurrDate">
+                            <apex:inputField value="{!case.Serial_Number__c}"  required="false" styleClass="slds-input" label="" id="SerialNumber"/>
+                            </div> 
+                        </div>
+                        
+                        
+                        
+                        <div class="slds-form-element slds-is-required"> 
+                            <label class="slds-form-element__label" id="NumberofFilesToBeCancelledLabel"><strong><abbr class="slds-required" title="required">*</abbr></strong>Quantity of Subscriptions to Cancel</label>
+                        </div>
+                        <div class="slds-form-element slds-is-required"> 
+                            <apex:inputField value="{!case.Number_of_Files_to_Cancelled__c}"  required="false" styleClass="slds-input" label="" id="NumberofFilesToBeCancelled"/> 
+                        </div>                        
+                        
+                        
+                        
+                                                
+
+                        <div class="slds-form-element"> 
+                            <label class="slds-form-element__label" id="CancellationEffectiveDateLabel">Effective Date of Cancellation</label>
+                        </div>
+                        <div class="slds-form-element">
+                            <div class="hideCurrDate">
+                                <apex:inputField value="{!case.Cancellation_Effective_Date__c}"  required="false" styleClass="slds-input" label="" id="CancellationEffectiveDate"/>
+                            </div>
+                        </div>
+                        
+                        <div class="slds-form-element"> 
+                            <label class="slds-form-element__label" id="LicenseReductionHeaderLabel">Number of License being reduced</label>
+                        </div>
+
+                        <div class="slds-form-element"> 
+                            <label class="slds-form-element__label" id="LicenseReductionFromLabel">From</label>
+                        </div>
+                        <div class="slds-form-element">
+                            <div class="hideCurrDate">
+                                <apex:inputField value="{!case.License_Reduction_From__c}"  required="false" styleClass="slds-input" label="" id="LicenseReductionFrom"/>
+                            </div>
+                        </div>                      
+                        
+                        <div class="slds-form-element"> 
+                            <label class="slds-form-element__label" id="LicenseReductionToLabel">To</label>
+                        </div>
+                        <div class="slds-form-element">
+                            <div class="hideCurrDate">
+                                <apex:inputField value="{!case.License_Reduction_To__c}"  required="false" styleClass="slds-input" label="" id="LicenseReductionTo"/>
+                            </div>
+                        </div>                         
+                        
+                        <div class="slds-form-element slds-is-required"> 
+                            <label class="slds-form-element__label" id="CancellationReasonLabel"><strong><abbr class="slds-required" title="required">*</abbr></strong>What Are They Moving To?</label>
+                        </div>
+                        <div class="slds-form-element slds-is-required">
+                            <div class="hideCurrDate">
+                                <apex:inputField value="{!case.Cancellation_Reason__c}"  required="false" styleClass="slds-input" label="" id="CancellationReason" onchange="hideRating('CancellationReason')"/>
+                            </div>
+                        </div>
+                        
+                        <div class="slds-form-element slds-is-required"> 
+                            <label class="slds-form-element__label" id="CRCompetitorLabel"><strong><abbr class="slds-required" title="required" id="CompetitorRequiredSymbol">*</abbr></strong>Why/Who?</label>
+                        </div>
+                        <div class="slds-form-element slds-is-required"> 
+                            <div class="hideCurrDate">
+                                <apex:inputField value="{!case.Cancellation_Reason_Competitor__c}"  required="false" styleClass="slds-input" label="" id="CRCompetitor" onchange="hideRating('Competitor')"/>
+                            </div>  
+                        </div>                        
+                        
+                        <div class="slds-form-element slds-is-required"> 
+                            <label class="slds-form-element__label" id="CRAdditionalReasonLabel"><strong><abbr class="slds-required" title="required" id="AdditionalReasonRequiredSymbol">*</abbr></strong>Additional Reason</label>
+                        </div>
+                        <div class="slds-form-element slds-is-required"> 
+                            <div class="hideCurrDate">
+                                <apex:inputField value="{!case.Cancellation_Additional_Reason__c}"  required="false" styleClass="slds-input" label="" id="CRAdditionalReason" onchange="hideRating('AdditionalReason')"/>
+                            </div>  
+                        </div>                        
+                        
+                        <div class="slds-form-element slds-is-required"> 
+                            <label class="slds-form-element__label" id="CRSpecificReasonLabel"><strong><abbr class="slds-required" title="required" id="SpecificReasonRequiredSymbol">*</abbr></strong>Specific Reason</label>
+                        </div>
+                        <div class="slds-form-element slds-is-required"> 
+                            <div class="hideCurrDate">
+                                <apex:inputField value="{!case.Cancellation_Specific_Reason__c}"  required="false" styleClass="slds-input" label="" id="CRSpecificReason" onchange="hideRating('SpecificReason')"/>
+                            </div>  
+                        </div>                              
+                        
+                        <div class="slds-form-element"> 
+                            <label class="slds-form-element__label" id="RefundRequiredLabel"><strong><abbr class="slds-required" title="required">*</abbr></strong>Refund Required?</label>
+                        </div>
+                        <div class="slds-form-element"> 
+                            <div class="hideCurrDate">
+                            <apex:inputField value="{!case.Refund_Required__c}"  required="false" styleClass="slds-input" label="" id="RefundRequired" onchange="hideRating('RefundRequired')" />
+                            </div>
+                        </div>
+                        
+                        <div class="slds-form-element slds-is-required"> 
+                            <label class="slds-form-element__label" id="ClearReasonForTheCreditLabel"><strong><abbr class="slds-required" title="required">*</abbr></strong>Clear Reason For the Credit</label>
+                        </div>
+                        <div class="slds-form-element slds-is-required"> 
+                            <div class="hideCurrDate">
+                                <apex:inputField value="{!case.Clear_Reason_For_the_Credit__c}"  required="false" styleClass="slds-input" label="" id="ClearReasonForTheCredit"/>
+                            </div> 
+                        </div>                         
+
+                        <div class="slds-form-element"> 
+                            <label class="slds-form-element__label" id="TotalValueLabel"><strong><abbr class="slds-required" title="required">*</abbr></strong>Total $ Value <br/> (AU = GST Inclusive， NZ = GST Exclusive， Number ONLY Field)</label>
+                        </div>
+                        <div class="slds-form-element"> 
+                            <div class="hideCurrDate">
+                            <apex:inputField value="{!case.Total_Value__c}"  required="false" styleClass="slds-input" label="" id="TotalValue"/>
+                            </div> 
+                        </div> 
+
+                        <div class="slds-form-element"> 
+                            <label class="slds-form-element__label" id="ORLabel">OR</label>   
+                        </div>
+                        
+                        <div class="slds-form-element"> 
+                            <label class="slds-form-element__label" id="RefundDateRangeFromLabel">Date Range From</label>
+                        </div>
+                        <div class="slds-form-element">
+                            <div class="hideCurrDate"> 
+                                <apex:inputField value="{!case.Refund_Data_Range_From__c}"  required="false" styleClass="slds-input" label="" id="RefundDateRangeFrom"/>
+                            </div>
+                        </div> 
+
+                        <div class="slds-form-element"> 
+                            <label class="slds-form-element__label" id="RefundDateRangeToLabel">Date Range To</label>
+                        </div>
+                        <div class="slds-form-element">
+                            <div class="hideCurrDate"> 
+                                <apex:inputField value="{!case.Refund_Data_Range_To__c}"  required="false" styleClass="slds-input" label="" id="RefundDateRangeTo"/>
+                            </div>
+                        </div>                                                                        
+
+                        <div class="slds-form-element"> 
+                            <label class="slds-form-element__label" id="PerMonthLabel">$ Per Month (Optional)</label>
+                        </div>
+                        <div class="slds-form-element"> 
+                            <div class="hideCurrDate">
+                            <apex:inputField value="{!case.Per_Month__c}"  required="false" styleClass="slds-input" label="" id="PerMonth"/>
+                            </div> 
+                        </div> 
+
+                        <!--
+                        <div class="slds-form-element"> 
+                            <label class="slds-form-element__label" id="CancellationRefundNoticeLabel">Saving will trigger notification for territory manager approval. Case will be 'in queue' after territory manager approval completion.</label>   
+                        </div>
+                        -->
+                        <!--End of Release 3.9.2017 Cancellation Form -->    
+
+                        <div class="slds-form-element"> 
+                                <label class="slds-form-element__label" id="ARLBasicLabel">ARL Basic</label>
+                        </div>
+                        <div class="slds-form-element">
+                            <div class="hideCurrDate">
+                                <apex:inputField value="{!case.ARL_Basic__c}"  required="false" styleClass="slds-input" label="" id="ARLBasic"></apex:inputField>
+                            </div>
+                        </div>
+                         
+                        <div class="slds-form-element"> 
+                                <label class="slds-form-element__label" id="ARLStandardLabel">ARL Standard</label>
+                        </div>
+                        <div class="slds-form-element"> 
+                            <div class="hideCurrDate">
+                                <apex:inputField value="{!case.ARL_Standard__c}"  required="false" styleClass="slds-input" label="" id="ARLStandard"></apex:inputField>
+                            </div>
+                         </div>
+                            
+                        <div class="slds-form-element"> 
+                                <label class="slds-form-element__label" id="ARLPlusLabel">ARL Plus</label>
+                        </div>
+                        <div class="slds-form-element"> 
+                            <div class="hideCurrDate">
+                                <apex:inputField value="{!case.ARL_Plus__c}"  required="false" styleClass="slds-input" label="" id="ARLPlus"></apex:inputField>
+                            </div>
+                        </div>
+                            
+                        <div class="slds-form-element"> 
+                                <label class="slds-form-element__label" id="EAStarterLabel">EA Starter</label>
+                        </div>
+                        <div class="slds-form-element"> 
+                            <div class="hideCurrDate">
+                                <apex:inputField value="{!case.EA_Starter__c}"  required="false" styleClass="slds-input" label="" id="EAStarter"></apex:inputField>
+                            </div>
+                        </div>
+                            
+                        <div class="slds-form-element"> 
+                                <label class="slds-form-element__label" id="EAPayrollFor1Label">Essentials Accounting</label>
+                        </div>
+                        <div class="slds-form-element"> 
+                            <div class="hideCurrDate">
+                                <apex:inputField value="{!case.EA_Payroll_For_1__c}"  required="false" styleClass="slds-input" label="" id="EAPayrollFor1"></apex:inputField>
+                            </div>
+                        </div>
+                            
+                        <div class="slds-form-element"> 
+                                <label class="slds-form-element__label" id="EAPayrollUnlimitedLabel">EA Payroll Unlimited</label>
+                        </div>
+                        <div class="slds-form-element"> 
+                            <div class="hideCurrDate">
+                                <apex:inputField value="{!case.EA_Payroll_Unlimited__c}"  required="false" styleClass="slds-input" label="" id="EAPayrollUnlimited"></apex:inputField>
+                            </div>
+                        </div>
+                            
+                        <div class="slds-form-element"> 
+                                <label class="slds-form-element__label" id="ConnectedLedgerLabel">Connected Ledger</label>
+                        </div>
+                        <div class="slds-form-element"> 
+                            <div class="hideCurrDate">
+                                <apex:inputField value="{!case.Connected_Ledger__c}"  required="false" styleClass="slds-input" label="" id="ConnectedLedger"></apex:inputField>
+                            </div> 
+                        </div> 
+
+                        <div class="slds-form-element"> 
+                                <label class="slds-form-element__label" id="EAPayrolNZOnlyLabel">EA Payroll (NZ Only)</label>
+                        </div>
+                        <div class="slds-form-element">
+                            <div class="hideCurrDate">
+                                <apex:inputField value="{!case.EA_Payroll_NZ_Only__c}"  required="false" styleClass="slds-input" label="" id="EAPayrolNZOnly"></apex:inputField>
+                            </div> 
+                        </div> 
+                        
+                        <div class="slds-form-element"> 
+                                <label class="slds-form-element__label" id="MYOBEssentialsConnectedLedgerwPayrollLabel">MYOB Essentials Connected Ledger w Payroll</label>
+                        </div>
+                        <div class="slds-form-element"> 
+                            <div class="hideCurrDate">
+                                <apex:inputField value="{!case.MYOB_Essentials_Connected_Ledger_w_Payro__c}"  required="false" styleClass="slds-input" label="" id="MYOBEssentialsConnectedLedgerwPayroll"></apex:inputField>
+                            </div> 
+                        </div>
+                        
+                        <div class="slds-form-element"> 
+                                <label class="slds-form-element__label" id="MYOBEssentialsPayrollLabel">MYOB Essentials Payroll</label>
+                        </div>
+                        <div class="slds-form-element"> 
+                            <div class="hideCurrDate">
+                                <apex:inputField value="{!case.MYOB_Essentials_Payroll__c}"  required="false" styleClass="slds-input" label="" id="MYOBEssentialsPayroll"></apex:inputField>
+                            </div> 
+                        </div>                             
+                            
+                        <div class="slds-form-element"> 
+                                <label class="slds-form-element__label" id="WhosPayingLabel"><strong><abbr class="slds-required" title="required">*</abbr></strong>Who's Paying?</label>
+                        </div>
+                        <div class="slds-form-element">
+                            <div class="hideCurrDate">
+                                <apex:inputField value="{!case.Who_s_Paying__c}"  required="false" styleClass="slds-input" label="" id="WhosPaying" onchange="hideRating('WhoPays')"></apex:inputField>
+                            </div>
+                        </div>
+                        
+                         <div class="slds-form-element"> 
+                                <label class="slds-form-element__label" id="PartnerPaysLabel"><font color="red">60% off will be applied and the quote will be sent to the partner (contact email on this case)</font></label>
+                        </div>                       
+                        
+                        <div class="slds-form-element"> 
+                                <label class="slds-form-element__label" id="NewAccountLabel"><strong><abbr class="slds-required" title="required">*</abbr></strong>New Account?</label>
+                        </div>
+                        <div class="slds-form-element">
+                            <div class="hideCurrDate">
+                                <apex:inputField value="{!case.New_Account__c}"  required="false" styleClass="slds-input" label="" id="NewAccount" onchange="hideRating('NewAccount')"></apex:inputField>
+                            </div>  
+                        </div>                        
+
+
+                        <div class="slds-form-element"> 
+                                <label class="slds-form-element__label" id="QuoteCreationNewAccountNameLabel"><strong><abbr class="slds-required" title="required">*</abbr></strong>Name of New Account</label>
+                        </div>
+                        <div class="slds-form-element">
+                            <div class="hideCurrDate">
+                                <apex:inputField value="{!case.SubmittedCompany__c}"  required="false" styleClass="slds-input" label="" id="QuoteCreationNewAccountName"></apex:inputField>
+                            </div> 
+                        </div> 
+                        
+                        <div class="slds-form-element"> 
+                                <label class="slds-form-element__label" id="FirstLastNameClientLabel"><strong><abbr class="slds-required" title="required">*</abbr></strong> First and Last Name of client</label>
+                        </div>
+                        <div class="slds-form-element">
+                            <div class="hideCurrDate">
+                                <apex:inputField value="{!case.First_Last_Name_of_client__c}"  required="false" styleClass="slds-input" label="" id="FirstLastNameClient"></apex:inputField>
+                            </div> 
+                        </div> 
+
+
+                        <div class="slds-form-element"> 
+                                <label class="slds-form-element__label" id="ClientEmailAddressLabel"><strong><abbr class="slds-required" title="required">*</abbr></strong>Client Email Address</label>
+                        </div>
+                        <div class="slds-form-element">
+                            <div class="hideCurrDate">
+                                <apex:inputField value="{!case.Buyer_Email__c}"  required="false" styleClass="slds-input" label="" id="ClientEmailAddress"></apex:inputField>
+                            </div> 
+                        </div> 
+
+
+
+                        
+
+                        <div class="slds-form-element"> 
+                                <label class="slds-form-element__label" id="QuoteCreationSerialNumberLabel">Serial Number of Client</label>
+                        </div>
+                        <div class="slds-form-element">
+                            <div class="hideCurrDate">
+                                <apex:inputField value="{!case.Quote_Creation_Serial_Number__c}"  required="false" styleClass="slds-input" label="" id="QuoteCreationSerialNumber"></apex:inputField>
+                            </div>
+                        </div>   
+
+                        <div class="slds-form-element"> 
+                                <label class="slds-form-element__label" id="ProductCreateQuoteLabel"><strong><abbr class="slds-required" title="required">*</abbr></strong>What Product to Create Quote for?</label>
+                        </div>
+                        <div class="slds-form-element">
+                            <div class="hideCurrDate">
+                                <apex:inputField value="{!case.What_Product_to_Create_Quote_for__c}"  required="false" styleClass="slds-input" label="" id="ProductCreateQuote"></apex:inputField>
+                            </div>
+                        </div>
+
+                        <div class="slds-form-element"> 
+                                <label class="slds-form-element__label" id="QuoteCreationSerialEmailLabel"><strong><abbr class="slds-required" title="required">*</abbr></strong>Email Address to send quote to</label>
+                        </div>
+                        <div class="slds-form-element">
+                            <div class="hideCurrDate">
+                                <apex:inputField value="{!case.Quote_Creation_Send_To_Email__c}"  required="false" styleClass="slds-input" label="" id="QuoteCreationSerialEmail"></apex:inputField>
+                            </div> 
+                        </div> 
+
+                        <div class="slds-form-element"> 
+                                <label class="slds-form-element__label" id="BanklinkPracticeCodeLabel">Banklink Practice Code</label>
+                        </div>
+                        <div class="slds-form-element">
+                            <div class="hideCurrDate">
+                                <apex:inputField value="{!case.Banklink_Practice_Code__c}"  required="false" styleClass="slds-input" label="" id="BanklinkPracticeCode"></apex:inputField>
+                            </div> 
+                        </div> 
+
+                        <div class="slds-form-element"> 
+                                <label class="slds-form-element__label" id="BLEssentialSerialNumberClientIdLabel">Serial Number/Client ID of Latest Version of Software That Has Bankfeeds</label>
+                        </div>
+                        <div class="slds-form-element"> 
+                            <div class="hideCurrDate">
+                                <apex:inputField value="{!case.Onboarding_AR_ARL_Serial_Number__c}"  required="false" styleClass="slds-input" label="" id="BLEssentialSerialNumberClientId"></apex:inputField>
+                            </div> 
+                        </div> 
+
+                        <div class="slds-form-element"> 
+                                <label class="slds-form-element__label" id="AccountRightVersion19Label"><font color="red">If this is AccountRight version 19, please migrate from within the software</font></label>
+                        </div> 
+
+                        <div class="slds-form-element"> 
+                                <label class="slds-form-element__label" id="ARAEMigrationServiceLabel"><font color="red">DO NOT Log this case, Go there: <a href="https://www.myob.com/au/support/product-migration" target="_blank">https://www.myob.com/au/support/product-migration</a> and submit form.</font></label>
+                        </div> 
+
+                        <div class="slds-form-element"> 
+                                <label class="slds-form-element__label" id="WhatOfferShouldBeAppliedLabel"><strong><abbr class="slds-required" title="required">*</abbr></strong>What's the Offer That should be Applied? (Use Percentage Rate Where Applicable)</label>
+                        </div>
+                        <div class="slds-form-element">
+                            <div class="hideCurrDate">
+                                <apex:inputField value="{!case.What_s_Offer_to_be_Applied__c}"  required="false" styleClass="slds-input" label="" id="WhatOfferShouldBeApplied"></apex:inputField>
+                            </div>
+                        </div>
+
+                        <div class="slds-form-element"> 
+                                <label class="slds-form-element__label" id="InvoiceNumberLabel">Invoice Number</label>
+                        </div>
+                        <div class="slds-form-element"> 
+                            <div class="hideCurrDate">
+                                <apex:inputField value="{!case.Invoice_Query_Invoice_Number__c}"  required="false" styleClass="slds-input" label="" id="InvoiceNumber"></apex:inputField>
+                            </div>
+                        </div>
+
+                        <div class="slds-form-element"> 
+                                <label class="slds-form-element__label" id="MostAppropriateContactToLiaiseWithLabel"><strong><abbr class="slds-required" title="required">*</abbr></strong>Most Appropriate Contact to Liaise With</label>
+                        </div>
+                        <div class="slds-form-element">
+                            <div class="hideCurrDate">
+                                <apex:inputField value="{!case.Most_Appropriate_Contact_to_Liaise_With__c}"  required="false" styleClass="slds-input" label="" id="MostAppropriateContactToLiaiseWith"></apex:inputField>
+                            </div>
+                        </div>
+
+                        <div class="slds-form-element"> 
+                                <label class="slds-form-element__label" id="MergeAmicableLabel"><strong><abbr class="slds-required" title="required">*</abbr></strong>Is the Merge Amicable? (Yes/No)</label>
+                        </div>
+                        <div class="slds-form-element">
+                            <div class="hideCurrDate">
+                                <apex:inputField value="{!case.Amicable_Merger__c}"  required="false" styleClass="slds-input" label="" id="MergeAmicable"></apex:inputField>
+                            </div>
+                        </div>
+                        
+                        <div class="slds-form-element"> 
+                                <label class="slds-form-element__label" id="SplitAmicableLabel"><strong><abbr class="slds-required" title="required">*</abbr></strong>Is the Split Amicable? (Yes/No)</label>
+                        </div>
+                        <div class="slds-form-element"> 
+                            <div class="hideCurrDate">
+                                <apex:inputField value="{!case.Amicable__c}"  required="false" styleClass="slds-input" label="" id="SplitAmicable"></apex:inputField>
+                            </div> 
+                        </div>                        
+
+                        <div class="slds-form-element"> 
+                                <label class="slds-form-element__label" id="SplitClientIdLabel"><strong><abbr class="slds-required" title="required">*</abbr></strong>Client IDs Involved</label>
+                        </div>
+                        <div class="slds-form-element"> 
+                            <div class="hideCurrDate">
+                                <apex:inputField value="{!case.Practice_Split_Client_IDs__c}"  required="false" styleClass="slds-input" label="" id="SplitClientId"></apex:inputField>
+                            </div>
+                        </div>
+
+                        <div class="slds-form-element"> 
+                                <label class="slds-form-element__label" id="MergeClientIdLabel"><strong><abbr class="slds-required" title="required">*</abbr></strong>Client IDs Involved</label>
+                        </div>
+                        <div class="slds-form-element"> 
+                            <div class="hideCurrDate">
+                                <apex:inputField value="{!case.Practice_Merger_Client_IDs__c}"  required="false" styleClass="slds-input" label="" id="MergeClientId"></apex:inputField>
+                            </div>
+                        </div>
+
+                        <div class="slds-form-element"> 
+                                <label class="slds-form-element__label" id="ServicesRequiredLabel"><strong><abbr class="slds-required" title="required">*</abbr></strong>Are any technical or consulting services required?</label>
+                        </div>
+                        <div class="slds-form-element">
+                            <div class="hideCurrDate">
+                                <apex:inputField value="{!case.Are_Services_Required__c}"  required="false" styleClass="slds-input" label="" id="ServicesRequired" onchange="hideRating('MergerSplitServiceRequired')"></apex:inputField>
+                            </div>
+                        </div>
+                        
+                        <div class="slds-form-element"> 
+                                <label class="slds-form-element__label" id="PartnerEmployeeSplitLabel">Is it a Partner or only an Employee who is splitting away from the practice?</label>
+                        </div>
+                        <div class="slds-form-element"> 
+                            <div class="hideCurrDate">
+                                <apex:inputField value="{!case.Partner_Or_Employee_Split__c}"  required="false" styleClass="slds-input" label="" id="PartnerEmployeeSplit"></apex:inputField>
+                            </div> 
+                        </div>                                             
+
+                        <div class="slds-form-element"> 
+                                <label class="slds-form-element__label" id="MergeEffectiveDateLabel"><strong><abbr class="slds-required" title="required">*</abbr></strong>Effective Date of Merge</label>
+                        </div>
+                        <div class="slds-form-element"> 
+                            <div class="hideCurrDate">
+                                <apex:inputField value="{!case.Practice_Merger_Date__c}"  required="false" styleClass="slds-input" label="" id="MergeEffectiveDate"></apex:inputField>
+                            </div>
+                        </div>
+
+                        <div class="slds-form-element"> 
+                                <label class="slds-form-element__label" id="SplitEffectiveDateLabel"><strong><abbr class="slds-required" title="required">*</abbr></strong>Effective Date of Split</label>
+                        </div>
+                        <div class="slds-form-element"> 
+                            <div class="hideCurrDate">
+                                <apex:inputField value="{!case.Practice_Split_Date__c}"  required="false" styleClass="slds-input" label="" id="SplitEffectiveDate"></apex:inputField>
+                            </div>
+                        </div>
+                        
+
+                        <div class="slds-form-element"> 
+                                <label class="slds-form-element__label" id="WhichPracticePayingServicesLabel"><strong><abbr class="slds-required" title="required">*</abbr></strong>Which Practice is paying for the services</label>
+                        </div>
+                        <div class="slds-form-element"> 
+                            <div class="hideCurrDate">
+                                <apex:inputField value="{!case.Which_Practice_is_paying_for_the_service__c}"  required="false" styleClass="slds-input" label="" id="WhichPracticePayingServices"></apex:inputField>
+                            </div>
+                        </div>                        
+                        
+                        
+                        
+                        
+
+                        <div class="slds-form-element slds-is-required"> 
+                                <label class="slds-form-element__label" id="DashboardCleanupOrProvisioningEmailLabel"><strong><abbr class="slds-required" title="required">*</abbr></strong>Email Address for Cleanup or Provisioning</label>
+                        </div>
+                        <div class="slds-form-element slds-is-required"> 
+                            <div class="hideCurrDate">
+                                <apex:inputField value="{!case.SubmittedEmail__c}"  required="false" styleClass="slds-input" label="" id="DashboardCleanupOrProvisioningEmail"></apex:inputField>
+                            </div> 
+                        </div> 
+
+                        <div class="slds-form-element"> 
+                                <label class="slds-form-element__label" id="OnlineFileRemovalSerialNumberLabel"><strong><abbr class="slds-required" title="required">*</abbr></strong>Serial Number</label>
+                        </div>
+                        <div class="slds-form-element"> 
+                            <div class="hideCurrDate">
+                                <apex:inputField value="{!case.Online_File_Removal_Serial_Number__c}"  required="false" styleClass="slds-input" label="" id="OnlineFileRemovalSerialNumber"></apex:inputField>
+                            </div> 
+                        </div>
+
+                        <div class="slds-form-element"> 
+                                <label class="slds-form-element__label" id="CompanyFileNumberLabel">Company File Number</label>
+                        </div>
+                        <div class="slds-form-element"> 
+                            <div class="hideCurrDate">
+                                <apex:inputField value="{!case.Company_File_Number__c}"  required="false" styleClass="slds-input" label="" id="CompanyFileNumber"></apex:inputField>
+                            </div> 
+                        </div>
+
+
+
+
+                        <div class="slds-form-element"> 
+                                <label class="slds-form-element__label" id="SwapOrSwitchLabel">Swap or Switch?</label>
+                        </div>
+                        <div class="slds-form-element"> 
+                            <div class="hideCurrDate">
+                                <apex:inputField value="{!case.Swap_or_Switch__c}"  required="false" styleClass="slds-input" label="" id="SwapOrSwitch" onchange="hideRating('BankFeedSwapSwitch')"></apex:inputField>
+                            </div>
+                        </div>
+
+                        <div class="slds-form-element"> 
+                                <label class="slds-form-element__label" id="MoveOrCopyLabel">Move or Copy?</label>
+                        </div>
+                        <div class="slds-form-element"> 
+                            <div class="hideCurrDate">
+                                <apex:inputField value="{!case.Move_or_Copy__c}"  required="false" styleClass="slds-input" label="" id="MoveOrCopy"></apex:inputField>
+                            </div>
+                        </div>
+
+                        <div class="slds-form-element"> 
+                                <label class="slds-form-element__label" id="ProductNameFromLabel">Product Name From</label>
+                        </div>
+                        <div class="slds-form-element"> 
+                            <div class="hideCurrDate">
+                                <apex:inputField value="{!case.Product_Name_From__c}"  required="false" styleClass="slds-input" label="" id="ProductNameFrom"></apex:inputField>
+                            </div> 
+                        </div>
+                        
+
+                        <div class="slds-form-element"> 
+                                <label class="slds-form-element__label" id="ProductNameToLabel">Product Name To</label>
+                        </div>
+                        <div class="slds-form-element">
+                            <div class="hideCurrDate">
+                                <apex:inputField value="{!case.Product_Name_To__c}"  required="false" styleClass="slds-input" label="" id="ProductNameTo"></apex:inputField>
+                            </div>  
+                        </div>                        
+                        
+
+
+
+                        <div class="slds-form-element"> 
+                                <label class="slds-form-element__label" id="BankFeedSerialNumberFromLabel">Serial Number From</label>
+                        </div>
+                        <div class="slds-form-element">
+                            <div class="hideCurrDate">
+                                <apex:inputField value="{!case.BankFeed_Swap_Serial_Number_From__c}"  required="false" styleClass="slds-input" label="" id="BankFeedSerialNumberFrom"></apex:inputField>
+                            </div>
+                        </div>
+
+                        <div class="slds-form-element"> 
+                                <label class="slds-form-element__label" id="BankFeedSerialNumberToLabel">Serial Number To</label>
+                        </div>
+                        <div class="slds-form-element">
+                            <div class="hideCurrDate">
+                                <apex:inputField value="{!case.BankFeed_Swap_Serial_Number_To__c}"  required="false" styleClass="slds-input" label="" id="BankFeedSerialNumberTo"></apex:inputField>
+                            </div>
+                        </div>
+
+                        <div class="slds-form-element"> 
+                                <label class="slds-form-element__label" id="BankFeedCompanyDataFileNumberFromLabel">Company Data File Number From (If Applicable)</label>
+                        </div>
+                        <div class="slds-form-element"> 
+                            <div class="hideCurrDate">
+                                <apex:inputField value="{!case.Company_File_Number_1__c}"  required="false" styleClass="slds-input" label="" id="BankFeedCompanyDataFileNumberFrom"></apex:inputField>
+                            </div>
+                        </div>
+
+                        <div class="slds-form-element"> 
+                                <label class="slds-form-element__label" id="BankFeedCompanyDataFileNumberToLabel">Company Data File Number To (If Applicable)</label>
+                        </div>
+                        <div class="slds-form-element"> 
+                            <div class="hideCurrDate">
+                                <apex:inputField value="{!case.Company_File_Number_2__c}"  required="false" styleClass="slds-input" label="" id="BankFeedCompanyDataFileNumberTo"></apex:inputField>
+                            </div>
+                        </div>
+
+                        <div class="slds-form-element"> 
+                                <label class="slds-form-element__label" id="BankFeedRemoveOnlineFileLabel">Remove Online File? (If you choose 'Yes', this will cancel all live services from this file, including Bankfeeds and Paysuper)</label>
+                        </div>
+                        <div class="slds-form-element">
+                            <div class="hideCurrDate">
+                                <apex:inputField value="{!case.Remove_Online_File__c}"  required="false" styleClass="slds-input" label="" id="BankFeedRemoveOnlineFile"></apex:inputField>
+                            </div>
+                        </div>
+
+                        <div class="slds-form-element"> 
+                                <label class="slds-form-element__label" id="BankFeedBankAccountCCSwapLabel">Bank Accounts/Credit Cards to be swapped/switched (Leave Blank if All)</label>
+                        </div>
+                        <div class="slds-form-element">
+                            <div class="hideCurrDate">
+                                <apex:inputField value="{!case.Bank_Accounts_Credit_Cards_to_be_swapped__c}"  required="false" styleClass="slds-input" label="" id="BankFeedBankAccountCCSwap"></apex:inputField>
+                            </div>
+                        </div>
+
+                        <div class="slds-form-element"> 
+                                <label class="slds-form-element__label" id="BankFeedStartDateLabel">Bank Feed Start Date (Date you want the data from)</label>
+                        </div>
+                        <div class="slds-form-element"> 
+                            <div class="hideCurrDate">
+                                <apex:inputField value="{!case.Bank_Feed_Start_Date__c}"  required="false" styleClass="slds-input" label="" id="BankFeedStartDate"></apex:inputField>
+                            </div>
+                        </div>
+
+                        <div class="slds-form-element"> 
+                                <label class="slds-form-element__label" id="SalesPromotionSerialNumberLabel">Serial Number of Client</label>
+                        </div>
+                        <div class="slds-form-element"> 
+                            <div class="hideCurrDate">
+                                <apex:inputField value="{!case.Sales_Promotion_Serial_Number__c}"  required="false" styleClass="slds-input" label="" id="SalesPromotionSerialNumber"></apex:inputField>
+                            </div>
+                        </div>
+
+                        <div class="slds-form-element"> 
+                                <label class="slds-form-element__label" id="AccountRightOrEssentialsLabel">AccountRight or Essentials with Payroll</label>
+                        </div>
+                        <div class="slds-form-element"> 
+                            <div class="hideCurrDate">
+                                <apex:inputField value="{!case.AccountRight_or_Essentials__c}"  required="false" styleClass="slds-input" label="" id="AccountRightOrEssentials"></apex:inputField>
+                            </div>
+                        </div>
+                        
+                        
+                       <div class="slds-form-element"> 
+                                <label class="slds-form-element__label" id="MigrationRequiredLabel"><strong><abbr class="slds-required" title="required">*</abbr></strong>Migration Required?</label>
+                        </div>
+                        <div class="slds-form-element">
+                            <div class="hideCurrDate"> 
+                                <apex:inputField value="{!case.Migration_Required__c}"  required="false" styleClass="slds-input" label="" id="MigrationRequired" onchange="hideRating('MigrationRequired')"></apex:inputField>
+                            </div>
+                        </div>
+
+                        <div class="slds-form-element"> 
+                                <label class="slds-form-element__label" id="IndicativeMigrationDateLabel"><strong><abbr class="slds-required" title="required">*</abbr></strong>Indicative Migration Date</label>
+                        </div>
+                        <div class="slds-form-element">
+                            <div class="hideCurrDate"> 
+                                <apex:inputField value="{!case.Indicative_Migration_Date__c}"  required="false" styleClass="slds-input" label="" id="IndicativeMigrationDate" onchange="hideRating('IndicativeMigration')"></apex:inputField>
+                            </div>
+                        </div>
+
+                        
+                        <div class="slds-form-element"> 
+                                <label class="slds-form-element__label" id="CodedTransactionMigrationRequiredLabel"><strong><abbr class="slds-required" title="required">*</abbr></strong>Coded Transaction Migration Required?</label>
+                        </div>
+                        <div class="slds-form-element">
+                            <div class="hideCurrDate"> 
+                                <apex:inputField value="{!case.Coded_transaction_migration_required__c }"  required="false" styleClass="slds-input" label="" id="CodedTransactionMigrationRequired" onchange="hideRating('CodedTransactionMigrationRequired')"></apex:inputField>
+                            </div>
+                        </div>
+                        
+                        <div class="slds-form-element"> 
+                                <label class="slds-form-element__label" id="TypeOfMigrationLabel"><strong><abbr class="slds-required" title="required">*</abbr></strong>Type Of Migration</label>
+                        </div>
+                        <div class="slds-form-element">
+                            <div class="hideCurrDate"> 
+                                <apex:inputField value="{!case.Type_of_Migration__c}"  required="false" styleClass="slds-input" label="" id="TypeOfMigration" onchange="hideRating('TypeOfMigration')"></apex:inputField>
+                            </div>
+                        </div>
+
+
+
+
+                        <div class="slds-form-element"> 
+                                <label class="slds-form-element__label" id="TotalNumberOfFilesTobeMigratedLabel"><strong><abbr class="slds-required" title="required">*</abbr></strong>Total Number of Files to be Migrated</label>
+                        </div>
+                        <div class="slds-form-element"> 
+                            <div class="hideCurrDate">
+                                <apex:inputField value="{!case.Total_Number_of_Files_to_be_Migrated__c}"  required="false" styleClass="slds-input" label="" id="TotalNumberOfFilesTobeMigrated"></apex:inputField>
+                            </div>
+                        </div>
+
+                        <div class="slds-form-element"> 
+                                <label class="slds-form-element__label" id="ProductForBLEssentialsLabel">Product (Leave Blank if attaching spreadsheet)</label>
+                        </div>
+                        <div class="slds-form-element"> 
+                            <div class="hideCurrDate">
+                                <apex:inputField value="{!case.Product_BL_Essentials__c}"  required="false" styleClass="slds-input" label="" id="ProductForBLEssentials"></apex:inputField>
+                            </div>
+                        </div>
+
+                        <div class="slds-form-element"> 
+                                <label class="slds-form-element__label" id="ProofOfConceptLabel"><strong><abbr class="slds-required" title="required">*</abbr></strong>Proof of Concept</label>
+                        </div>
+                        <div class="slds-form-element"> 
+                            <div class="hideCurrDate">
+                                <apex:inputField value="{!case.Proof_of_Concept__c}"  required="false" styleClass="slds-input" label="" id="ProofOfConcept"></apex:inputField>
+                            </div>
+                        </div>
+
+                        <div class="slds-form-element"> 
+                                <label class="slds-form-element__label" id="ChartOfAccountLabel"><strong><abbr class="slds-required" title="required">*</abbr></strong>Chart of Accounts (Full or Filtered)</label>
+                        </div>
+                        <div class="slds-form-element"> 
+                            <div class="hideCurrDate">
+                                <apex:inputField value="{!case.Chart_of_Accounts__c}"  required="false" styleClass="slds-input" label="" id="ChartOfAccount"></apex:inputField>
+                            </div>
+                        </div>
+
+                        <div class="slds-form-element"> 
+                                <label class="slds-form-element__label" id="OpeningBalancesLabel"><strong><abbr class="slds-required" title="required">*</abbr></strong>Opening Balances</label>
+                        </div>
+                        <div class="slds-form-element"> 
+                            <div class="hideCurrDate">
+                                <apex:inputField value="{!case.Opening_Balances__c}"  required="false" styleClass="slds-input" label="" id="OpeningBalances"></apex:inputField>
+                            </div>
+                        </div>
+
+                        <div class="slds-form-element"> 
+                                <label class="slds-form-element__label" id="BLEssentialsBankfeedStartDateMonthLabel"><strong><abbr class="slds-required" title="required">*</abbr></strong>Bankfeed Start Date (Month, Will Always be the 1st of the Month)</label>
+                        </div>
+                        <div class="slds-form-element"> 
+                            <div class="hideCurrDate">
+                                <apex:inputField value="{!case.Bankfeed_Start_Date_Month__c}"  required="false" styleClass="slds-input" label="" id="BLEssentialsBankfeedStartDateMonth"></apex:inputField>
+                            </div>
+                        </div>
+
+                        <div class="slds-form-element"> 
+                                <label class="slds-form-element__label" id="BLEssentialsBankfeedStartDateYearLabel"><strong><abbr class="slds-required" title="required">*</abbr></strong>Bankfeed Start Date (Year)</label>
+                        </div>
+                        <div class="slds-form-element"> 
+                            <div class="hideCurrDate">
+                                <apex:inputField value="{!case.Bankfeed_Start_Date_Year__c}"  required="false" styleClass="slds-input" label="" id="BLEssentialsBankfeedStartDateYear"></apex:inputField>
+                            </div>
+                        </div>
+                        
+                        <div class="slds-form-element"> 
+                                <label class="slds-form-element__label" id="MoreBankfeedStartDateLabel"><strong><abbr class="slds-required" title="required">*</abbr></strong>Please tick below if you have more than one bankfeed start dates in your concierge spreadsheet</label>
+                        </div>
+                        <div class="slds-form-element"> 
+                            <div class="hideCurrDate">
+                                <apex:inputCheckbox value="{!case.More_Bankfeed_Start_Date__c}"  required="false" styleClass="slds-inputcheckbox" label="" id="MoreBankfeedStartDate"></apex:inputCheckbox>
+                            </div>
+                        </div>                        
+                        
+                        <div class="slds-form-element"> 
+                                <label class="slds-form-element__label" id="CompletedSpreadSheetAttachedLabel"><strong><abbr class="slds-required" title="required">*</abbr></strong>Completed Spreadhsheet Attached?</label>
+                        </div>
+                        <div class="slds-form-element"> 
+                            <div class="hideCurrDate">
+                                <apex:inputField value="{!case.Completed_Spreadsheet_Attached__c}"  required="false" styleClass="slds-input" label="" id="CompletedSpreadSheetAttached"></apex:inputField>
+                            </div>
+                        </div>
+
+                        <div class="slds-form-element"> 
+                                <label class="slds-form-element__label" id="ConciergeLabel"><strong><abbr class="slds-required" title="required">*</abbr></strong>Concierge</label>
+                        </div>
+                        <div class="slds-form-element"> 
+                            <div class="hideCurrDate">
+                                <apex:inputField value="{!case.Concie__c}"  required="false" styleClass="slds-input" label="" id="Concierge" onchange="hideRating('Concierge')"></apex:inputField>
+                            </div>
+                        </div>
+
+                        <div class="slds-form-element"> 
+                                <label class="slds-form-element__label" id="TrainingConsultantInvolvedLabel"><strong><abbr class="slds-required" title="required" >*</abbr></strong>Has a Training Consultant Been Involved? (If No, then please state the reason why in the Expected Outcome field)</label>
+                        </div>
+                        <div class="slds-form-element"> 
+                            <div class="hideCurrDate">
+                                <apex:inputField value="{!case.Has_Trainning_Consultant_Involved__c}"  required="false" styleClass="slds-input" label="" id="TrainingConsultantInvolved" onchange="hideRating('TrainingConsultant')"></apex:inputField>
+                            </div>
+                        </div>
+
+                        <div class="slds-form-element"> 
+                                <label class="slds-form-element__label" id="TrainingConsultantNameLabel"><strong><abbr class="slds-required" title="required">*</abbr></strong>Training Consultant Name</label>
+                        </div>
+                        <div class="slds-form-element"> 
+                            <div class="hideCurrDate">
+                                <apex:inputField value="{!case.Training_Consultant__c}"  required="false" styleClass="slds-input" label="" id="TrainingConsultantName"></apex:inputField>
+                            </div>
+                        </div>                        
+
+                        <div class="slds-form-element"> 
+                                <label class="slds-form-element__label" id="SpokendAboutChartOfAccountToPracticeLabel"><strong><abbr class="slds-required" title="required">*</abbr></strong>Have You Spokend About Chart of Accounts to the Practice?</label>
+                        </div>
+                        <div class="slds-form-element"> 
+                            <div class="hideCurrDate">
+                                <apex:inputField value="{!case.Have_you_spoken_about_Chart_of_Accounts__c}"  required="false" styleClass="slds-input" label="" id="SpokendAboutChartOfAccountToPractice"></apex:inputField>
+                            </div>
+                        </div>
+
+
+
+
+
+                        <div class="slds-form-element"> 
+                                <label class="slds-form-element__label" id="RelevantIndustryQualificationLabel"><strong><abbr class="slds-required" title="required">*</abbr></strong>Has your partner got the relevant industry qualifications, eg BAS agent, ICB, Tax Agent, RTO, CPA, CA, IPA?</label>
+                        </div>
+                        <div class="slds-form-element"> 
+                            <div class="hideCurrDate">
+                                <apex:inputField value="{!case.What_professional_associations__c}"  required="false" styleClass="slds-input" label="" id="RelevantIndustryQualification"></apex:inputField>
+                             </div>
+                        </div>
+
+                        <div class="slds-form-element"> 
+                                <label class="slds-form-element__label" id="PartnerOnNewPartnerProgramLabel"><strong><abbr class="slds-required" title="required">*</abbr></strong>Is your partner on the new Partner Program?</label>
+                        </div>
+                        <div class="slds-form-element"> 
+                            <div class="hideCurrDate">
+                                <apex:inputField value="{!case.Partner_on_new_Partner_Program__c}"  required="false" styleClass="slds-input" label="" id="PartnerOnNewPartnerProgram" onchange="hideRating('PartnerOnNewPartnerProgram')"></apex:inputField>
+                            </div>
+                        </div>
+                        <div class="slds-form-element"> 
+                            <label class="slds-form-element__label" id="PartnerOnNewPartnerProgramNoLabel"><font color="red">Could you please ensure the Partner is on boarded via MySuccess?</font></label>   
+                        </div>                                               
+
+                        <div class="slds-form-element"> 
+                                <label class="slds-form-element__label" id="PartnerCompletedPreworkLabel"><strong><abbr class="slds-required" title="required">*</abbr></strong>Has your Partner completed prework?</label>
+                        </div>
+                        <div class="slds-form-element"> 
+                            <div class="hideCurrDate">
+                                <apex:inputField value="{!case.Has_your_Partner_completed_prework__c}"  required="false" styleClass="slds-input" label="" id="PartnerCompletedPrework" onchange="hideRating('PartnerCompletedPrework')"></apex:inputField>
+                            </div>
+                        </div>
+                        <div class="slds-form-element"> 
+                            <label class="slds-form-element__label" id="PartnerCompletedPreworkNoLabel"><font color="red">Could you please ensure the Partner is enrolled in prework within "Step 3" of the eligibility criteria?</font></label>   
+                        </div>                       
+
+                        <div class="slds-form-element"> 
+                                <label class="slds-form-element__label" id="DashboardSetupLeast10FilesLinkedLabel"><strong><abbr class="slds-required" title="required">*</abbr></strong>Has your partner set up their dashboard and have at least 3 files linked?</label>
+                        </div>
+                        <div class="slds-form-element"> 
+                            <div class="hideCurrDate">
+                                <apex:inputField value="{!case.Dashboard_Set_Up_10_Files_Linked__c}"  required="false" styleClass="slds-input" label="" id="DashboardSetupLeast10FilesLinked" onchange="hideRating('DashboardSetupLeast10FilesLinked')"></apex:inputField>
+                            </div>
+                        </div>
+                        <div class="slds-form-element"> 
+                            <label class="slds-form-element__label" id="DashboardSetupLeast10FilesLinkedNoLabel"><font color="red">Could you please work with your Partner to ensure they have linked their clients?</font></label>   
+                        </div>                       
+
+
+
+
+
+
+
+
+
+                        <!--the last few fields to be displayed-->
+                        <div class="slds-form-element"> 
+                            <label class="slds-form-element__label" id="CaseSubjectLabel">Subject</label>
+                        </div>
+                        <div class="slds-form-element"> 
+                            <div class="hideCurrDate">
+                            <apex:inputField value="{!case.Subject}"  required="false" styleClass="slds-input" label="" id="CaseSubject"></apex:inputField>
+                            </div> 
+                        </div>
+                        
+                        <div class="slds-form-element"> 
+                            <label class="slds-form-element__label" id="CaseDescriptionLabel">Description</label>
+                        </div>
+                        <div class="slds-form-element"> 
+                            <div class="hideCurrDate">
+                            <apex:inputField value="{!case.Description}"  required="false" styleClass="slds-input" label="" style="width:100%;height:200px" id="CaseDescription"/>
+                            </div> 
+                        </div>  
+                        
+                        <div class="slds-form-element"> 
+                            <label class="slds-form-element__label" id="CaseExpectedOutcomeLabel">Expected Outcome</label>
+                        </div>
+                        <div class="slds-form-element">
+                            <div class="hideCurrDate">
+                            <apex:inputField value="{!case.Expected_Outcome__c}"  required="false" styleClass="slds-input" label="" style="width:100%;height:200px" id="CaseExpectedOutcome"/>
+                            </div> 
+                        </div>  
+                        
+                        <div class="slds-form-element"> 
+                            <label class="slds-form-element__label" id="AttachedfileLable">Please click to upload files or drag n drop your files.</label>
+                        </div>
+                        <div class="slds-form-element"> 
+                            <div class="hideCurrDate">
+                            <apex:inputFile value="{!newAttachment.body}" filename="{!newAttachment.name}" styleClass="slds-file-selector__input" style="width:100%;height:200px" id="Attachedfile"/>
+                            </div> 
+                        </div>                                                                                                                             
+                    </div>                        
+                                                                                  
+                                           
+                
+                               <div class="slds-button-group" role="group">
+                                   <apex:commandButton value="Save" action="{!validateSaveRedirect}" styleClass="slds-button slds-button--neutral" onclick="this.onclick=function(){return false;}"/>
+                                   <apex:commandButton value="Cancel" action="{!cancelRedirect}" styleClass="slds-button slds-button--neutral" immediate="true" html-formnovalidate="formnovalidate"/>
+                               </div>
+                                                              
+                                                                                                                      
+                    </form >  
+                                                    
+                 </apex:form>                   
+                </div>
+            </body>
+        </html>
+    </apex:outputPanel>
+</apex:page>

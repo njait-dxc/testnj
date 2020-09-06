@@ -1,0 +1,7 @@
+<!--
+ - Created by Ankit.Bhardwaj on 17/04/2020.
+ -->
+
+<aura:component implements="lightning:availableForFlowActions" access="global" >
+    <aura:attribute name="recordId" type="String" access="global"/>
+</aura:component>

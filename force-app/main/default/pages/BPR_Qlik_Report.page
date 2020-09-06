@@ -1,0 +1,3 @@
+<apex:page sidebar="true" showHeader="true" standardStylesheets="true">
+<apex:iframe width="1000" height="1000" src="https://myobo365.sharepoint.com/sites/OperationReoprting/Nprinting/Forms/AllItems.aspx?viewpath=%2Fsites%2FOperationReoprting%2FNprinting%2FForms%2FAllItems%2Easpx&id=%2Fsites%2FOperationReoprting%2FNprinting%2FBPR%20Nprinting%20version%20word%20template%2Epdf&parent=%2Fsites%2FOperationReoprting%2FNprinting"/>
+</apex:page>

@@ -1,0 +1,511 @@
+<apex:page standardController="Lead" renderAs="pdf" applyBodyTag="false">
+    <head>
+        <style> 
+            body { font-family: 'Arial Unicode MS'; }
+            .companyName { font: bold 30px; color: red; }  
+            .tdcontent {align:left;width:50%}
+        </style>
+    </head>
+    <body>
+        <center>
+            <apex:image id="theImage" value="{!$Resource.MYOBLogo}" width="150" height="150"/>
+
+            <h1 style="color:purple">MYOB Lead Qualification Form</h1>
+            <!--
+            <apex:panelGrid columns="1" width="100%">
+                <apex:outputText value="{!lead.Name}" styleClass="companyName"/>
+                <apex:outputText value="{!NOW()}"></apex:outputText>
+            </apex:panelGrid>
+            -->
+            <table width="100%" styleClass = "content">
+                <tr>
+                    <th align="left"><h3 style="color:purple">COMPANY DETAILS</h3></th>
+                    <th></th>
+                </tr>
+                <tr>
+                    <td width="50%" align="left">
+                        <apex:outputLabel value="Company: " rendered="{!IF(ISNULL(lead.Company),false, true)}"></apex:outputLabel>
+                        <apex:outputText value="{!lead.Company}" label="Company:" rendered="{!IF(ISNULL(lead.Company),false, true)}"></apex:outputText>
+                    </td>
+                    <td width="50%" align="left">
+                        <apex:outputLabel value="Archie ID: " rendered="{!IF(ISNULL(lead.Archie_ID__c),false, true)}"></apex:outputLabel>
+                        <apex:outputText value="{!lead.Archie_ID__c}" label="Archie ID:" rendered="{!IF(ISNULL(lead.Archie_ID__c),false, true)}"></apex:outputText>
+                    </td>
+                </tr>            
+                <tr>
+                    <td width="50%" align="left">
+                        <apex:outputLabel value="City: " rendered="{!IF(ISNULL(lead.PG_City__c),false, true)}"></apex:outputLabel>
+                        <apex:outputText value="{!lead.PG_City__c}" label="City:" rendered="{!IF(ISNULL(lead.PG_City__c),false, true)}"></apex:outputText>
+                    </td>
+                    <td width="50%" align="left">
+                        <apex:outputLabel value="State/Province: " rendered="{!IF(ISNULL(lead.PG_State_Province__c),false, true)}"></apex:outputLabel>
+                        <apex:outputText value="{!lead.PG_State_Province__c}" label="State/Province:" rendered="{!IF(ISNULL(lead.PG_State_Province__c),false, true)}"></apex:outputText>
+                    </td>
+                </tr>              
+                <tr>
+                    <td width="50%" align="left">
+                        <apex:outputLabel value="Country: " rendered="{!IF(ISNULL(lead.PG_Country__c),false, true)}"></apex:outputLabel>
+                        <apex:outputText value="{!lead.PG_Country__c}" label="Country:" rendered="{!IF(ISNULL(lead.PG_Country__c),false, true)}"></apex:outputText>
+                    </td>
+                    <td width="50%" align="left">
+                        <apex:outputLabel value="Industry: " rendered="{!IF(ISNULL(lead.Industry),false, true)}"></apex:outputLabel>
+                        <apex:outputText value="{!lead.Industry}" label="Industry:" rendered="{!IF(ISNULL(lead.Industry),false, true)}"></apex:outputText>
+                    </td>
+                </tr>             
+                <tr>
+                    <td width="50%" align="left">
+                        <apex:outputLabel value="Years Trading: " rendered="{!IF(ISNULL(lead.Years_Trading__c),false, true)}"></apex:outputLabel>
+                        <apex:outputText value="{0,number,###,###,##0}" label="Years Trading:" rendered="{!IF(ISNULL(lead.Years_Trading__c),false, true)}"><apex:param value="{!lead.Years_Trading__c}"/></apex:outputText>
+                    </td>
+                    <td width="50%" align="left">
+                        <apex:outputLabel value="No. Employee: " rendered="{!IF(ISNULL(lead.NumberOfEmployees),false, true)}"></apex:outputLabel>
+                        <apex:outputText value="{!lead.NumberOfEmployees}" label="No. Employee:" rendered="{!IF(ISNULL(lead.NumberOfEmployees),false, true)}"></apex:outputText>
+                    </td>
+                </tr>             
+                <tr>
+                    <td width="50%" align="left">
+                        <apex:outputLabel value="Turnover: " rendered="{!IF(ISNULL(lead.Turnover__c),false, true)}"></apex:outputLabel>
+                        <!--<apex:outputText value="{0,number,###,###,##0}" label="Turnover:" rendered="{!IF(ISNULL(lead.Turnover__c),false, true)}"><apex:param value="{!lead.Turnover__c}"/></apex:outputText>-->
+                        <apex:outputText value="{!lead.Turnover__c}" label="Turnover(million):" rendered="{!IF(ISNULL(lead.Turnover__c),false, true)}"></apex:outputText>
+                    </td>
+                    <td width="50%" align="left">
+                        <apex:outputLabel value="No. Locations: " rendered="{!IF(ISNULL(lead.No_Locations__c),false, true)}"></apex:outputLabel>
+                        <apex:outputText value="{0,number,###,###,##0}" label="No. Locations:" rendered="{!IF(ISNULL(lead.No_Locations__c),false, true)}"><apex:param value="{!lead.No_Locations__c}"/></apex:outputText>
+                    </td>
+                </tr>              
+            
+                <tr>
+                    <th align="left"><h3 style="color:purple">CONTACT DETAILS</h3></th>
+                    <th></th>
+                </tr>            
+                <tr>
+                    <td width="50%" align="left">
+                        <apex:outputLabel value="Name: " rendered="{!IF(ISNULL(lead.name),false, true)}"></apex:outputLabel>
+                        <apex:outputText value="{!lead.name}" label="Name:" rendered="{!IF(ISNULL(lead.name),false, true)}"></apex:outputText>
+                    </td>
+                    <td width="50%" align="left">
+                        <apex:outputLabel value="Title: " rendered="{!IF(ISNULL(lead.title),false, true)}"></apex:outputLabel>
+                        <apex:outputText value="{!lead.title}" label="Title:" rendered="{!IF(ISNULL(lead.title),false, true)}"></apex:outputText>
+                    </td>
+                </tr>
+                <tr>
+                    <td width="50%" align="left">
+                        <apex:outputLabel value="Mobile: " rendered="{!IF(ISNULL(lead.MobilePhone),false, true)}"></apex:outputLabel>
+                        <apex:outputText value="{!lead.MobilePhone}" label="Mobile:" rendered="{!IF(ISNULL(lead.MobilePhone),false, true)}"></apex:outputText>
+                    </td>
+                    <td width="50%" align="left">
+                        <apex:outputLabel value="Phone: " rendered="{!IF(ISNULL(lead.Phone),false, true)}"></apex:outputLabel>
+                        <apex:outputText value="{!lead.Phone}" label="Phone:" rendered="{!IF(ISNULL(lead.Phone),false, true)}"></apex:outputText>
+                    </td>
+                </tr>            
+                <tr>
+                    <td width="50%" align="left">
+                        <apex:outputLabel value="Email: " rendered="{!IF(ISNULL(lead.Email),false, true)}"></apex:outputLabel>
+                        <apex:outputText value="{!lead.Email}" label="Email:" rendered="{!IF(ISNULL(lead.Email),false, true)}"></apex:outputText>
+                    </td>
+                </tr>
+            
+                <tr>
+                    <th align="left"><h3 style="color:purple">PRIMARY CONTACT</h3></th>
+                    <th></th>
+                </tr>
+                <tr>
+                    <td width="50%" align="left">
+                        <apex:outputLabel value="Decision Maker: " rendered="{!IF(lead.Decision_Maker__c==false,false, true)}"></apex:outputLabel>
+                        <apex:outputText value="{!lead.Decision_Maker__c}" label="Decision Make:" rendered="{!IF(lead.Decision_Maker__c==false,false, true)}"></apex:outputText>
+                    </td>
+                    <td width="50%" align="left">
+                        <apex:outputLabel value="Decision Maker Name: " rendered="{!IF(ISNULL(lead.Decision_Maker_Name__c),false, true)}"></apex:outputLabel>
+                        <apex:outputText value="{!lead.Decision_Maker_Name__c}" label="Decision Maker Name:" rendered="{!IF(ISNULL(lead.Decision_Maker_Name__c),false, true)}"></apex:outputText>
+                    </td>
+                </tr>
+                <tr>
+                    <td width="50%" align="left">
+                        <apex:outputLabel value="Decision Maker Title: " rendered="{!IF(ISNULL(lead.Decision_Maker_Title__c),false, true)}"></apex:outputLabel>
+                        <apex:outputText value="{!lead.Decision_Maker_Title__c}" label="Decision Maker Title:" rendered="{!IF(ISNULL(lead.Decision_Maker_Title__c),false, true)}"></apex:outputText>
+                    </td>
+                </tr>            
+            
+                <tr>
+                    <th align="left"><h3 style="color:purple">COMPANY STRUCTURE/EMPLOYEES</h3></th>
+                    <th></th>
+                </tr>
+                <tr>
+                    <td width="50%" align="left">
+                        <apex:outputLabel value="Managers/Directors: " rendered="{!IF(ISNULL(lead.Managers_Directors__c),false, true)}"></apex:outputLabel>
+                        <apex:outputText value="{0,number,###,###,##0}" label="Managers/Directors:" rendered="{!IF(ISNULL(lead.Managers_Directors__c),false, true)}"><apex:param value="{!lead.Managers_Directors__c}"/></apex:outputText>
+                    </td>
+                    <td width="50%" align="left">
+                        <apex:outputLabel value="Admin/Finance: " rendered="{!IF(ISNULL(lead.Admin_Finance__c),false, true)}"></apex:outputLabel>
+                        <apex:outputText value="{0,number,###,###,##0}" label="Admin/Financee:" rendered="{!IF(ISNULL(lead.Admin_Finance__c),false, true)}"><apex:param value="{!lead.Admin_Finance__c}"/></apex:outputText>
+                    </td>
+                </tr>
+                <tr>
+                    <td width="50%" align="left">
+                        <apex:outputLabel value="Sales: " rendered="{!IF(ISNULL(lead.Sales__c),false, true)}"></apex:outputLabel>
+                        <apex:outputText value="{0,number,###,###,##0}" label="Sales:" rendered="{!IF(ISNULL(lead.Sales__c),false, true)}"><apex:param value="{!lead.Sales__c}"/></apex:outputText>
+                    </td>
+                    <td width="50%" align="left">
+                        <apex:outputLabel value="Warehouse: " rendered="{!IF(ISNULL(lead.Warehouse__c),false, true)}"></apex:outputLabel>
+                        <apex:outputText value="{0,number,###,###,##0}" label="Warehouse:" rendered="{!IF(ISNULL(lead.Warehouse__c),false, true)}"><apex:param value="{!lead.Warehouse__c}"/></apex:outputText>
+                    </td>
+                </tr>
+                <tr>
+                    <td width="50%" align="left">
+                        <apex:outputLabel value="Onsite/Construction: " rendered="{!IF(ISNULL(lead.Onsite_Construction__c),false, true)}"></apex:outputLabel>
+                        <apex:outputText value="{0,number,###,###,##0}" label="Onsite/Construction:" rendered="{!IF(ISNULL(lead.Onsite_Construction__c),false, true)}"><apex:param value="{!lead.Onsite_Construction__c}"/></apex:outputText>
+                    </td>
+                    <td width="50%" align="left">
+                        <apex:outputLabel value="Manufacturers: " rendered="{!IF(ISNULL(lead.Manufacturers__c),false, true)}"></apex:outputLabel>
+                        <apex:outputText value="{0,number,###,###,##0}" label="Manufacturers:" rendered="{!IF(ISNULL(lead.Manufacturers__c),false, true)}"><apex:param value="{!lead.Manufacturers__c}"/></apex:outputText>
+                    </td>
+                </tr>
+                <tr>
+                    <td width="50%" align="left">
+                        <apex:outputLabel value="Job/Project Management: " rendered="{!IF(ISNULL(lead.Job_Project_Management__c),false, true)}"></apex:outputLabel>
+                        <apex:outputText value="{0,number,###,###,##0}" label="Job/Project Management:" rendered="{!IF(ISNULL(lead.Job_Project_Management__c),false, true)}"><apex:param value="{!lead.Job_Project_Management__c}"/></apex:outputText>
+                    </td>
+                    <td width="50%" align="left">
+                        <apex:outputLabel value="Other: " rendered="{!IF(ISNULL(lead.Other__c),false, true)}"></apex:outputLabel>
+                        <apex:outputText value="{0,number,###,###,##0}" label="Other:" rendered="{!IF(ISNULL(lead.Other__c),false, true)}"><apex:param value="{!lead.Other__c}"/></apex:outputText>
+                    </td>
+                </tr>            
+            
+                <tr>
+                    <th align="left"><h3 style="color:purple">EXISTING SOFTWARE</h3></th>
+                    <th></th>
+                </tr>
+                <tr>
+                    <td width="50%" align="left">
+                        <apex:outputLabel value="Accounting: " rendered="{!IF(ISNULL(lead.Accounting__c),false, true)}"></apex:outputLabel>
+                        <apex:outputText value="{!lead.Accounting__c}" label="Accounting:" rendered="{!IF(ISNULL(lead.Accounting__c),false, true)}"></apex:outputText>
+                    </td>
+                    <td width="50%" align="left">
+                        <apex:outputLabel value="Other Software: " rendered="{!IF(ISNULL(lead.Other_Software__c),false, true)}"></apex:outputLabel>
+                        <apex:outputText value="{!lead.Other_Software__c}" label="Other Software:" rendered="{!IF(ISNULL(lead.Other_Software__c),false, true)}"></apex:outputText>
+                    </td>
+                </tr> 
+                
+                
+                
+              
+                <!--
+                <apex:pageBlock id="Advanced" rendered="{!lead.Lead_Product_Line__c='Advanced'}" >
+                    <tr>
+                        <th align="left"><h3 style="color:purple">ADVANCED LICENSES QUOTED</h3></th>
+                        <th></th>
+                    </tr>   
+                    
+                    <tr>
+                        <td width="60%" align="left">
+                            <apex:outputLabel value="Advanced Standard: " rendered="{!IF(ISNULL(lead.Advanced_Standard__c),false, true)}"></apex:outputLabel>
+                            <apex:outputText value="{0,number,###,###,##0}" label="Advanced Standard:" rendered="{!IF(ISNULL(lead.Advanced_Standard__c),false, true)}"><apex:param value="{!lead.Advanced_Standard__c}"/></apex:outputText>
+                        </td>
+                        <td width="40%" align="left">
+                            <apex:outputLabel value="Timeframe from Client: " rendered="{!IF(ISNULL(lead.Timeframe_from_Client__c),false, true)}"></apex:outputLabel>
+                            <apex:outputText value="{!lead.Timeframe_from_Client__c}" label="Timeframe from Client:" rendered="{!IF(ISNULL(lead.Timeframe_from_Client__c),false, true)}"></apex:outputText>
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td width="50%" align="left">
+                            <apex:outputLabel value="Advanced Plus: " rendered="{!IF(ISNULL(lead.Advanced_Plus__c),false, true)}"></apex:outputLabel>
+                            <apex:outputText value="{0,number,###,###,##0}" label="Advanced Plus:" rendered="{!IF(ISNULL(lead.Advanced_Plus__c),false, true)}"><apex:param value="{!lead.Advanced_Plus__c}"/></apex:outputText>
+                        </td>
+                        <td width="50%" align="left">
+                            <apex:outputLabel value="Advanced Ballpark Given: " rendered="{!IF(ISNULL(lead.Advanced_Ballpark_Given__c),false, true)}"></apex:outputLabel>
+                            <apex:outputText value="{!lead.Advanced_Ballpark_Given__c}" label="Advanced Ballpark Given:" rendered="{!IF(ISNULL(lead.Advanced_Ballpark_Given__c),false, true)}"></apex:outputText>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td width="50%" align="left">
+                            <apex:outputLabel value="Advanced Enterprise: " rendered="{!IF(ISNULL(lead.Advanced_Enterprise__c),false, true)}"></apex:outputLabel>
+                            <apex:outputText value="{0,number,###,###,##0}" label="Advanced Enterprise:" rendered="{!IF(ISNULL(lead.Advanced_Enterprise__c),false, true)}"><apex:param value="{!lead.Advanced_Enterprise__c}"/></apex:outputText>
+                        </td>
+                    </tr>  
+                    <tr>
+                        <td width="50%" align="left">
+                            <apex:outputLabel value="Advanced People: " rendered="{!IF(ISNULL(lead.Advanced_People__c),false, true)}"></apex:outputLabel>
+                            <apex:outputText value="{0,number,###,###,##0}" label="Advanced People:" rendered="{!IF(ISNULL(lead.Advanced_People__c),false, true)}"><apex:param value="{!lead.Advanced_People__c}"/></apex:outputText>
+                        </td>
+                    </tr>           
+                </apex:pageBlock>
+                -->
+                
+                <apex:pageBlock id="Advanced" rendered="{!lead.Lead_Product_Line__c='Advanced'}" >
+                    <tr>
+                        <th align="left"><h3 style="color:purple">ADVANCED LICENSES QUOTED</h3></th>
+                        <th></th>
+                    </tr>   
+                    
+                    <tr>
+                        <td width="60%" align="left">
+                            <apex:outputLabel value="Advanced Standard: " rendered="{!IF(ISNULL(lead.Advanced_Standard__c),false, true)}"></apex:outputLabel>
+                            <apex:outputText value="{!lead.Advanced_Standard__c}" label="Advanced Standard:" rendered="{!IF(ISNULL(lead.Advanced_Standard__c),false, true)}"></apex:outputText>
+                        </td>
+                        <td width="40%" align="left">
+                            <apex:outputLabel value="Timeframe from Client: " rendered="{!IF(ISNULL(lead.Timeframe_from_Client__c),false, true)}"></apex:outputLabel>
+                            <apex:outputText value="{!lead.Timeframe_from_Client__c}" label="Timeframe from Client:" rendered="{!IF(ISNULL(lead.Timeframe_from_Client__c),false, true)}"></apex:outputText>
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td width="50%" align="left">
+                            <apex:outputLabel value="Advanced Plus: " rendered="{!IF(ISNULL(lead.Advanced_Plus__c),false, true)}"></apex:outputLabel>
+                            <apex:outputText value="{!lead.Advanced_Plus__c}" label="Advanced Plus:" rendered="{!IF(ISNULL(lead.Advanced_Plus__c),false, true)}"></apex:outputText>
+                        </td>
+                        <td width="50%" align="left">
+                            <apex:outputLabel value="Advanced Ballpark Given: " rendered="{!IF(ISNULL(lead.Advanced_Ballpark_Given__c),false, true)}"></apex:outputLabel>
+                            <apex:outputText value="{!lead.Advanced_Ballpark_Given__c}" label="Advanced Ballpark Given:" rendered="{!IF(ISNULL(lead.Advanced_Ballpark_Given__c),false, true)}"></apex:outputText>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td width="50%" align="left">
+                            <apex:outputLabel value="Advanced Enterprise: " rendered="{!IF(ISNULL(lead.Advanced_Enterprise__c),false, true)}"></apex:outputLabel>
+                            <apex:outputText value="{!lead.Advanced_Enterprise__c}" label="Advanced Enterprise:" rendered="{!IF(ISNULL(lead.Advanced_Enterprise__c),false, true)}"></apex:outputText>
+                        </td>
+                    </tr>  
+                    <tr>
+                        <td width="50%" align="left">
+                            <apex:outputLabel value="Advanced People: " rendered="{!IF(ISNULL(lead.Advanced_People__c),false, true)}"></apex:outputLabel>
+                            <apex:outputText value="{!lead.Advanced_People__c}" label="Advanced People:" rendered="{!IF(ISNULL(lead.Advanced_People__c),false, true)}"></apex:outputText>
+                        </td>
+                    </tr>           
+                </apex:pageBlock>                
+                
+                
+                
+                
+                <apex:pageBlock id="EXO" rendered="{!lead.Lead_Product_Line__c='EXO'}">
+                    <tr>
+                        <th align="left"><h3 style="color:purple">EXO LICENSES QUOTED</h3></th>
+                        <th></th>
+                    </tr>   
+                    <tr>
+                        <td width="60%" align="left">
+                            <apex:outputLabel value="EXO Finance: " rendered="{!IF(ISNULL(lead.EXO_Finance__c),false, true)}"></apex:outputLabel>
+                            <apex:outputText value="{0,number,###,###,##0}" label="EXO Finance:" rendered="{!IF(ISNULL(lead.EXO_Finance__c),false, true)}"><apex:param value="{!lead.EXO_Finance__c}"/></apex:outputText>
+                        </td>
+                        <td width="40%" align="left">
+                            <apex:outputLabel value="EXO Payroll: " rendered="{!IF(ISNULL(lead.EXO_Payroll__c),false, true)}"></apex:outputLabel>
+                            <apex:outputText value="{0,number,###,###,##0}" label="EXO Payroll:" rendered="{!IF(ISNULL(lead.EXO_Payroll__c),false, true)}"><apex:param value="{!lead.EXO_Payroll__c}"/></apex:outputText>
+                        </td>
+                    </tr>  
+                    <tr>
+                        <td width="50%" align="left">
+                            <apex:outputLabel value="EXO CRM: " rendered="{!IF(ISNULL(lead.EXO_CRM__c),false, true)}"></apex:outputLabel>
+                            <apex:outputText value="{0,number,###,###,##0}" label="EXO CRM:" rendered="{!IF(ISNULL(lead.EXO_CRM__c),false, true)}"><apex:param value="{!lead.EXO_CRM__c}"/></apex:outputText>
+                        </td>
+                        <td width="50%" align="left">
+                            <apex:outputLabel value="EXO EXO Job Timesheets: " rendered="{!IF(ISNULL(lead.EXO_Job_Timesheet__c),false, true)}"></apex:outputLabel>
+                            <apex:outputText value="{0,number,###,###,##0}" label="EXO EXO Job Timesheets:" rendered="{!IF(ISNULL(lead.EXO_Job_Timesheet__c),false, true)}"><apex:param value="{!lead.EXO_Job_Timesheet__c}"/></apex:outputText>
+                        </td>
+                    </tr>                    
+                    <tr>
+                        <td width="50%" align="left">
+                            <apex:outputLabel value="EXO Job Costing: " rendered="{!IF(ISNULL(lead.EXO_Job_Costing__c),false, true)}"></apex:outputLabel>
+                            <apex:outputText value="{0,number,###,###,##0}" label="EXO Job Costing:" rendered="{!IF(ISNULL(lead.EXO_Job_Costing__c),false, true)}"><apex:param value="{!lead.EXO_Job_Costing__c}"/></apex:outputText>
+                        </td>
+                        <td width="50%" align="left">
+                            <apex:outputLabel value="EXO My Staff Info:" rendered="{!IF(ISNULL(lead.EXO_My_Staff_Info__c),false, true)}"></apex:outputLabel>
+                            <apex:outputText value="{0,number,###,###,##0}" label="EXO My Staff Info:" rendered="{!IF(ISNULL(lead.EXO_My_Staff_Info__c),false, true)}"><apex:param value="{!lead.EXO_My_Staff_Info__c}"/></apex:outputText>
+                        </td>
+                    </tr>  
+                    <tr>
+                        <td width="50%" align="left">
+                            <apex:outputLabel value="EXO Intercompany: " rendered="{!IF(ISNULL(lead.EXO_Intercompany__c),false, true)}"></apex:outputLabel>
+                            <apex:outputText value="{0,number,###,###,##0}" label="EXO Intercompany:" rendered="{!IF(ISNULL(lead.EXO_Intercompany__c),false, true)}"><apex:param value="{!lead.EXO_Intercompany__c}"/></apex:outputText>
+                        </td>
+                        <td width="50%" align="left">
+                            <apex:outputLabel value="EXO Time & Attnd: " rendered="{!IF(ISNULL(lead.EXO_Time_Ann__c),false, true)}"></apex:outputLabel>
+                            <apex:outputText value="{0,number,###,###,##0}" label="EXO Time & Attnd:" rendered="{!IF(ISNULL(lead.EXO_Time_Ann__c),false, true)}"><apex:param value="{!lead.EXO_Time_Ann__c}"/></apex:outputText>
+                        </td>
+                    </tr>                    
+                    <tr>
+                        <td width="50%" align="left">
+                            <apex:outputLabel value="EXO 5 Company Files: " rendered="{!IF(ISNULL(lead.EXO_5_Company_File__c),false, true)}"></apex:outputLabel>
+                            <apex:outputText value="{0,number,###,###,##0}" label="EXO 5 Company Files:" rendered="{!IF(ISNULL(lead.EXO_5_Company_File__c),false, true)}"><apex:param value="{!lead.EXO_5_Company_File__c}"/></apex:outputText>
+                        </td>
+                        <td width="50%" align="left">
+                            <apex:outputLabel value="EXO Employee Info: " rendered="{!IF(ISNULL(lead.EXO_Employee_Info__c),false, true)}"></apex:outputLabel>
+                            <apex:outputText value="{0,number,###,###,##0}" label="EXO Employee Info:" rendered="{!IF(ISNULL(lead.EXO_Employee_Info__c),false, true)}"><apex:param value="{!lead.EXO_Employee_Info__c}"/></apex:outputText>
+                        </td>
+                    </tr>                       
+
+                    <tr>
+                        <td width="50%" align="left">
+                            <apex:outputLabel value="EXO Fixed Assets: " rendered="{!IF(ISNULL(lead.EXO_Fixed_Assets__c),false, true)}"></apex:outputLabel>
+                            <apex:outputText value="{0,number,###,###,##0}" label="EXO Fixed Assets:" rendered="{!IF(ISNULL(lead.EXO_Fixed_Assets__c),false, true)}"><apex:param value="{!lead.EXO_Fixed_Assets__c}"/></apex:outputText>
+                        </td>
+                    </tr>                     
+                    <tr>
+                        <td width="50%" align="left">
+                            <apex:outputLabel value="EXO Serv. Unit: " rendered="{!IF(ISNULL(lead.EXO_Serv_Unit__c),false, true)}"></apex:outputLabel>
+                            <apex:outputText value="{0,number,###,###,##0}" label="EXO Serv. Unit::" rendered="{!IF(ISNULL(lead.EXO_Serv_Unit__c),false, true)}"><apex:param value="{!lead.EXO_Serv_Unit__c}"/></apex:outputText>
+                        </td>
+                    </tr>  
+                    <tr>
+                        <td width="50%" align="left">
+                            <apex:outputLabel value="EXO Acct. Asst.: " rendered="{!IF(ISNULL(lead.EXO_Accnt_Asst__c),false, true)}"></apex:outputLabel>
+                            <apex:outputText value="{0,number,###,###,##0}" label="EXO Acct. Asst.:" rendered="{!IF(ISNULL(lead.EXO_Accnt_Asst__c),false, true)}"><apex:param value="{!lead.EXO_Accnt_Asst__c}"/></apex:outputText>
+                        </td>
+                    </tr>                     
+                    <tr>
+                        <td width="50%" align="left">
+                            <apex:outputLabel value="EXO POS: " rendered="{!IF(ISNULL(lead.EXO_POS__c),false, true)}"></apex:outputLabel>
+                            <apex:outputText value="{0,number,###,###,##0}" label="EXO POS:" rendered="{!IF(ISNULL(lead.EXO_POS__c),false, true)}"><apex:param value="{!lead.EXO_POS__c}"/></apex:outputText>
+                        </td>
+                    </tr>  
+                    <tr>
+                        <td width="50%" align="left">
+                            <apex:outputLabel value="EXO POS Adv.: " rendered="{!IF(ISNULL(lead.EXO_POS_Adv__c),false, true)}"></apex:outputLabel>
+                            <apex:outputText value="{0,number,###,###,##0}" label="EXO POS Adv.:" rendered="{!IF(ISNULL(lead.EXO_POS_Adv__c),false, true)}"><apex:param value="{!lead.EXO_POS_Adv__c}"/></apex:outputText>
+                        </td>
+                    </tr>                     
+                    <tr>
+                        <td width="50%" align="left">
+                            <apex:outputLabel value="EXO On The Go: " rendered="{!IF(ISNULL(lead.EXO_On_the_Go__c),false, true)}"></apex:outputLabel>
+                            <apex:outputText value="{0,number,###,###,##0}" label="EXO On The Go:" rendered="{!IF(ISNULL(lead.EXO_On_the_Go__c),false, true)}"><apex:param value="{!lead.EXO_On_the_Go__c}"/></apex:outputText>
+                        </td>
+                    </tr>   
+                    <tr>
+                        <td width="50%" align="left">
+                            <apex:outputLabel value="EXO Ballpark Given: " rendered="{!IF(ISNULL(lead.EXO_BallPark_Given__c),false, true)}"></apex:outputLabel>
+                            <apex:outputText value="{!lead.EXO_BallPark_Given__c}" label="EXO Ballpark Given:" rendered="{!IF(ISNULL(lead.EXO_BallPark_Given__c),false, true)}"></apex:outputText>
+                        </td>
+                    </tr>                                   
+                </apex:pageBlock>
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+                <apex:pageBlock id="Greentree" rendered="{!lead.Lead_Product_Line__c='Greentree'}">
+                    <tr>
+                        <th align="left"><h3 style="color:purple">GREENTREE LICENSES QUOTED</h3></th>
+                        <th></th>
+                    </tr>    
+                    
+                    <tr>
+                        <td width="50%" align="left">
+                            <apex:outputLabel value="Greentree: " rendered="{!IF(ISNULL(lead.Greentree__c),false, true)}"></apex:outputLabel>
+                            <apex:outputText value="{!lead.Greentree__c}" label="Greentree:" rendered="{!IF(ISNULL(lead.Greentree__c),false, true)}"></apex:outputText>
+                        </td>
+                        <td width="50%" align="left">
+                            <apex:outputLabel value="Greentree Ballpark Given: " rendered="{!IF(ISNULL(lead.Greentree_Ballpark_Given__c),false, true)}"></apex:outputLabel>
+                            <apex:outputText value="{!lead.Greentree_Ballpark_Given__c}" label="Greentree Ballpark Given:" rendered="{!IF(ISNULL(lead.Greentree_Ballpark_Given__c),false, true)}"></apex:outputText>
+                        </td>
+                    </tr>            
+                </apex:pageBlock>
+                 
+                 
+                 
+                 
+                 
+                <!--
+                <tr>
+                    <th align="left"><h3 style="color:purple">LICENSES QUOTED</h3></th>
+                    <th></th>
+                </tr>
+                <tr>
+                    <td width="50%" align="left">
+                        <apex:outputLabel value="Advanced Standard: " rendered="{!IF(ISNULL(lead.Advanced_Standard__c),false, true)}"></apex:outputLabel>
+                        <apex:outputText value="{!lead.Advanced_Standard__c}" label="Advanced Standard:" rendered="{!IF(ISNULL(lead.Advanced_Standard__c),false, true)}"></apex:outputText>
+                    </td>
+                    <td width="50%" align="left">
+                        <apex:outputLabel value="Advanced Plus: " rendered="{!IF(ISNULL(lead.Advanced_Plus__c),false, true)}"></apex:outputLabel>
+                        <apex:outputText value="{!lead.Advanced_Plus__c}" label="Advanced Plus:" rendered="{!IF(ISNULL(lead.Advanced_Plus__c),false, true)}"></apex:outputText>
+                    </td>
+                </tr>
+                <tr>
+                    <td width="50%" align="left">
+                        <apex:outputLabel value="Advanced Enterprise: " rendered="{!IF(ISNULL(lead.Advanced_Enterprise__c),false, true)}"></apex:outputLabel>
+                        <apex:outputText value="{!lead.Advanced_Enterprise__c}" label="Advanced Enterprise:" rendered="{!IF(ISNULL(lead.Advanced_Enterprise__c),false, true)}"></apex:outputText>
+                    </td>
+                    <td width="50%" align="left">
+                        <apex:outputLabel value="Advanced People: " rendered="{!IF(ISNULL(lead.Advanced_People__c),false, true)}"></apex:outputLabel>
+                        <apex:outputText value="{!lead.Advanced_People__c}" label="Advanced People:" rendered="{!IF(ISNULL(lead.Advanced_People__c),false, true)}"></apex:outputText>
+                    </td>
+                </tr>
+                <tr>
+                    <td width="50%" align="left">
+                        <apex:outputLabel value="EXO Business: " rendered="{!IF(ISNULL(lead.EXO_Business__c),false, true)}"></apex:outputLabel>
+                        <apex:outputText value="{!lead.EXO_Business__c}" label="EXO Business:" rendered="{!IF(ISNULL(lead.EXO_Business__c),false, true)}"></apex:outputText>
+                    </td>
+                    <td width="50%" align="left">
+                        <apex:outputLabel value="EXO Employee Services: " rendered="{!IF(ISNULL(lead.EXO_Employee_Services__c),false, true)}"></apex:outputLabel>
+                        <apex:outputText value="{!lead.EXO_Employee_Services__c}" label="EXO Employee Services:" rendered="{!IF(ISNULL(lead.EXO_Employee_Services__c),false, true)}"></apex:outputText>
+                    </td>
+                </tr>
+                <tr>
+                    <td width="50%" align="left">
+                        <apex:outputLabel value="Greentree: " rendered="{!IF(ISNULL(lead.Greentree__c),false, true)}"></apex:outputLabel>
+                        <apex:outputText value="{!lead.Greentree__c}" label="Greentree:" rendered="{!IF(ISNULL(lead.Greentree__c),false, true)}"></apex:outputText>
+                    </td>
+                    <td width="50%" align="left">
+                        <apex:outputLabel value="Timeframe from Client: " rendered="{!IF(ISNULL(lead.Timeframe_from_Client__c),false, true)}"></apex:outputLabel>
+                        <apex:outputText value="{!lead.Timeframe_from_Client__c}" label="Timeframe from Client:" rendered="{!IF(ISNULL(lead.Timeframe_from_Client__c),false, true)}"></apex:outputText>
+                    </td>
+                </tr>
+                <tr>
+                    <td width="50%" align="left">
+                        <apex:outputLabel value="Ballpark Given: " rendered="{!IF(ISNULL(lead.Advanced_Ballpark_Given__c),false, true)}"></apex:outputLabel>
+                        <apex:outputText value="{!lead.Advanced_Ballpark_Given__c}" label="Ballpark Given:" rendered="{!IF(ISNULL(lead.Advanced_Ballpark_Given__c),false, true)}"></apex:outputText>
+                    </td>
+                </tr> 
+                -->
+             </table>   
+             <table>    
+                <tr>
+                    <th align="left"><h3 style="color:purple">EXISTING PAIN POINTS</h3></th>
+                    <th></th>
+                </tr>
+                <tr>
+                    <td width="100%" align="left">
+                        <apex:outputLabel value="Pain Points: " rendered="{!IF(ISNULL(lead.Existing_Pain_Point_1__c),false, true)}"></apex:outputLabel><br/>
+                        <apex:outputText value="{!SUBSTITUTE(lead.Existing_Pain_Point_1__c,'\n','<br/>')}" label="Pain Points:" escape="false" style="white-space: pre-wrap" rendered="{!IF(ISNULL(lead.Existing_Pain_Point_1__c),false, true)}"></apex:outputText>
+                    </td>
+                </tr>            
+            
+                <tr>
+                    <th align="left"><h3 style="color:purple">ADDITIONAL INFORMATION</h3></th>
+                    <th></th>
+                </tr>
+                <tr>
+                    <td width="100%" align="left">
+                        <apex:outputLabel value="Additional Information: " rendered="{!IF(ISNULL(lead.Additional_Information__c),false, true)}">
+                        </apex:outputLabel><apex:outputText value="{!lead.Additional_Information__c}" label="Additional Information:" escape="false" style="white-space: pre-wrap" rendered="{!IF(ISNULL(lead.Additional_Information__c),false, true)}"></apex:outputText></td>
+                </tr>  
+                <tr>
+                    <th align="left"><h3 style="color:purple">DESCRIPTION</h3></th>
+                    <th></th>
+                </tr>
+                <tr>
+                    <td width="100%" align="left">
+                        <apex:outputLabel value="Description: " rendered="{!IF(ISNULL(lead.Description),false, true)}">
+                        </apex:outputLabel><apex:outputText value="{!lead.Description}" label="Description:" escape="false" style="white-space: pre-wrap" rendered="{!IF(ISNULL(lead.Description),false, true)}"></apex:outputText></td>
+                </tr>                  
+            </table>   
+            <table>             
+                <tr>
+                    <th align="left"><h3 style="color:purple">LEAD GENERATION DETAILS</h3></th>
+                    <th></th>
+                </tr>
+                <tr>
+                    <td width="50%" align="left"><apex:outputLabel value="Lead Owner: "></apex:outputLabel><apex:outputText value="{!lead.owner.name}" label="Lead Owner:" title="Lead Owner"></apex:outputText></td>
+                    <td width="50%" align="left"><apex:outputLabel value="PDG Generation Datetime: " ></apex:outputLabel><apex:outputText value="{!NOW()}"></apex:outputText></td>
+                    
+                </tr>
+                <tr>
+                    <td width="50%" align="left"><apex:outputLabel value="Lead Product Line: "></apex:outputLabel><apex:outputText value="{!lead.Lead_Product_Line__c}" label="Lead Product Line:" title="Lead Product Line"></apex:outputText></td> 
+                    <td width="50%" align="left"><apex:outputLabel value="Lead Source: "></apex:outputLabel><apex:outputText value="{!lead.LeadSource}" label="Lead Source:" title="Lead Source"></apex:outputText></td>                   
+                </tr>
+                
+            </table>
+            
+ 
+        </center>
+    </body>
+</apex:page>

@@ -1,0 +1,1166 @@
+<apex:page standardController="Case" showHeader="false" tabStyle="Case" lightningStylesheets="true">
+
+<style>
+        .myFormStyle {
+            background-color: white;
+        }
+</style>
+
+<!--<div class="slds cv">-->
+    <apex:form styleClass="myFormStyle">
+        <apex:outputPanel id="CategoryCancellations" rendered="{!case.Categ__c = 'Cancellations'}">
+            <apex:pageBlock mode="view" id="DetailViewCancellation">
+                <apex:pageBlockSection title="" columns="2" showHeader="false">
+                    <apex:pageBlockSectionItem >
+                        <apex:outputLabel value="Product Name or Serial Number" style="font-weight:bold"></apex:outputLabel>
+                        <apex:outputField value="{!case.Serial_Number__c}" label="Product Name or Serial Number or Company file Name/Number to be Cancelled" title="Product Name or Serial Number to be Cancelled"/>
+                    </apex:pageBlockSectionItem>
+                    <apex:pageBlockSectionItem >
+                        <apex:outputLabel value="Effective Date of Cancellation" style="font-weight:bold"></apex:outputLabel>
+                        <apex:outputField value="{!case.Cancellation_Effective_Date__c}"/>
+                    </apex:pageBlockSectionItem>
+                </apex:pageBlockSection>
+
+                <apex:pageBlockSection title="" columns="2" showHeader="false">
+                    <apex:pageBlockSectionItem >
+                        <apex:outputLabel value="Cancellation Reason" style="font-weight:bold"></apex:outputLabel>
+                        <apex:outputField value="{!case.Cancellation_Reason__c}" label="" title=""/>
+                    </apex:pageBlockSectionItem>
+                    <apex:pageBlockSectionItem >
+                        <apex:outputLabel value="Competitor" style="font-weight:bold"></apex:outputLabel>
+                        <apex:outputField value="{!case.Cancellation_Reason_Competitor__c}" label="" title=""/>
+                    </apex:pageBlockSectionItem>
+                </apex:pageBlockSection>
+
+                <apex:pageBlockSection title="" columns="2" showHeader="false">
+                    <apex:pageBlockSectionItem >
+                        <apex:outputLabel value="Additional Reason" style="font-weight:bold"></apex:outputLabel>
+                        <apex:outputField value="{!case.Cancellation_Additional_Reason__c}" label="" title=""/>
+                    </apex:pageBlockSectionItem>
+                    <apex:pageBlockSectionItem >
+                        <apex:outputLabel value="Specific Reason" style="font-weight:bold"></apex:outputLabel>
+                        <apex:outputField value="{!case.Cancellation_Specific_Reason__c}" label="" title=""/>
+                    </apex:pageBlockSectionItem>
+                </apex:pageBlockSection>
+
+                <apex:pageBlockSection title="" columns="2" showHeader="false">
+                    <apex:pageBlockSectionItem >
+                        <apex:outputLabel value="Refund Required?" style="font-weight:bold"></apex:outputLabel>
+                        <apex:outputField value="{!case.Refund_Required__c}" label="" title=""/>
+                    </apex:pageBlockSectionItem>
+                    <apex:pageBlockSectionItem >
+                        <apex:outputLabel value="Total $ Value" style="font-weight:bold"></apex:outputLabel>
+                        <apex:outputField value="{!case.Total_Value__c}" label="" title=""/>
+                    </apex:pageBlockSectionItem>
+                </apex:pageBlockSection>
+
+                <apex:pageBlockSection title="" columns="2" showHeader="false">
+                    <apex:pageBlockSectionItem >
+                        <apex:outputLabel value="Date Range From" style="font-weight:bold"></apex:outputLabel>
+                        <apex:outputField value="{!case.Refund_Data_Range_From__c}" label="" title=""/>
+                    </apex:pageBlockSectionItem>
+                    <apex:pageBlockSectionItem >
+                        <apex:outputLabel value="Date Range To" style="font-weight:bold"></apex:outputLabel>
+                        <apex:outputField value="{!case.Refund_Data_Range_To__c}" label="" title=""/>
+                    </apex:pageBlockSectionItem>
+                </apex:pageBlockSection>
+                
+                <apex:pageBlockSection title="" columns="2" showHeader="false">
+                    <apex:pageBlockSectionItem >
+                        <apex:outputLabel value="$ Per Month (Optional)" style="font-weight:bold"></apex:outputLabel>
+                        <apex:outputField value="{!case.Per_Month__c}" label="" title=""/>
+                    </apex:pageBlockSectionItem>
+                    <apex:pageBlockSectionItem >
+                        <apex:outputLabel value="Quantity of Subscriptions to Cancel" style="font-weight:bold"></apex:outputLabel>
+                        <apex:outputField value="{!case.Number_of_Files_to_Cancelled__c}" label="" title=""/>
+                    </apex:pageBlockSectionItem>                    
+                </apex:pageBlockSection>
+                
+            </apex:pageBlock>                        
+        </apex:outputPanel>
+        
+        <apex:outputPanel id="CategoryCreditNote" rendered="{!case.Categ__c = 'Credit Note'}">
+            <apex:pageBlock mode="view" id="DetailViewCreditNote">
+                <apex:pageBlockSection title="" columns="2" showHeader="false">
+                    <apex:pageBlockSectionItem >
+                        <apex:outputLabel value="Clear Reason For the Credit Note?" style="font-weight:bold"></apex:outputLabel>
+                        <apex:outputField value="{!case.Clear_Reason_For_the_Credit__c}" label="" title=""/>
+                    </apex:pageBlockSectionItem>
+                    <apex:pageBlockSectionItem >
+                        <apex:outputLabel value="Total $ Value" style="font-weight:bold"></apex:outputLabel>
+                        <apex:outputField value="{!case.Total_Value__c}" label="" title=""/>
+                    </apex:pageBlockSectionItem>
+                </apex:pageBlockSection>
+                
+                <apex:pageBlockSection title="" columns="2" showHeader="false">
+                    <apex:pageBlockSectionItem >
+                        <apex:outputLabel value="Date Range From" style="font-weight:bold"></apex:outputLabel>
+                        <apex:outputField value="{!case.Refund_Data_Range_From__c}" label="" title=""/>
+                    </apex:pageBlockSectionItem>
+                    <apex:pageBlockSectionItem >
+                        <apex:outputLabel value="Date Range To" style="font-weight:bold"></apex:outputLabel>
+                        <apex:outputField value="{!case.Refund_Data_Range_To__c}" label="" title=""/>
+                    </apex:pageBlockSectionItem>
+                </apex:pageBlockSection>
+
+                <apex:pageBlockSection title="" columns="2" showHeader="false">
+                    <apex:pageBlockSectionItem >
+                        <apex:outputLabel value="$ Per Month (Optional)" style="font-weight:bold"></apex:outputLabel>
+                        <apex:outputField value="{!case.Per_Month__c}" label="" title=""/>
+                    </apex:pageBlockSectionItem>
+                </apex:pageBlockSection>                
+            </apex:pageBlock>   
+                  
+        </apex:outputPanel>
+        
+        <apex:outputPanel id="PartnerProgram" rendered="{!case.Primary_Category__c = 'Partner Program' && case.Categ__c != 'Certified Consultant On Boarding'}">
+            <apex:pageBlock mode="view" id="DetailViewPartnerProgram">
+                    <apex:pageBlockSection title="" columns="2" showHeader="false">
+                    <apex:pageBlockSectionItem >
+                        <apex:outputLabel value="Practice / Company Name (submitted)" style="font-weight:bold"></apex:outputLabel>
+                        <apex:outputField value="{!case.SubmittedCompany__c}" label="" title=""/>
+                        </apex:pageBlockSectionItem>
+                        <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="ABN" style="font-weight:bold"></apex:outputLabel>
+                            <apex:outputField value="{!case.ABN__c}" label="" title=""/>
+                        </apex:pageBlockSectionItem>
+                    </apex:pageBlockSection>
+                    <apex:pageBlockSection title="" columns="2" showHeader="false">
+                        <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="First Name" style="font-weight:bold"/>
+                            <apex:outputField value="{!case.WebFirstName__c}" label="" title=""/>
+                        </apex:pageBlockSectionItem>
+                        <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="Last Name" style="font-weight:bold"></apex:outputLabel>
+                            <apex:outputField value="{!case.WebLastName__c}" label="" title=""/>
+                        </apex:pageBlockSectionItem>
+                    </apex:pageBlockSection> 
+                    <apex:pageBlockSection title="" columns="2" showHeader="false">
+                        <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="Phone" style="font-weight:bold"></apex:outputLabel>
+                            <apex:outputField value="{!case.SubmittedPhone__c}" label="" title=""/>
+                        </apex:pageBlockSectionItem>
+                        <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="Email" style="font-weight:bold"></apex:outputLabel>
+                            <apex:outputField value="{!case.SubmittedEmail__c}" label="" title=""/>
+                        </apex:pageBlockSectionItem>
+                    </apex:pageBlockSection> 
+                    <apex:pageBlockSection title="" columns="2" showHeader="false">
+                        <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="Serial Number" style="font-weight:bold"></apex:outputLabel>
+                            <apex:outputField value="{!case.SerialNumber__c}" label="" title=""/>
+                        </apex:pageBlockSectionItem>
+                        <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="I require access to Desktop Software" style="font-weight:bold"></apex:outputLabel>
+                            <apex:outputField value="{!case.SoftwareAccess__c}" label="" title=""/>
+                        </apex:pageBlockSectionItem>
+                    </apex:pageBlockSection>
+                    <apex:pageBlockSection title="" columns="2" showHeader="false">
+                        <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="My Qualification" style="font-weight:bold"></apex:outputLabel>
+                            <apex:outputField value="{!case.Qualification__c}" label="" title=""/>
+                        </apex:pageBlockSectionItem>
+                        <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="Document Requested" style="font-weight:bold"></apex:outputLabel>
+                            <apex:outputField value="{!case.DocumentReq__c}" label="" title=""/>
+                        </apex:pageBlockSectionItem>
+                    </apex:pageBlockSection> 
+                    <apex:pageBlockSection title="" columns="2" showHeader="false">
+                        <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="Registration No." style="font-weight:bold"></apex:outputLabel>
+                            <apex:outputField value="{!case.Registration__c}" label="" title=""/>
+                        </apex:pageBlockSectionItem>
+                        <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="Direct Debit Acknowledgement" style="font-weight:bold"></apex:outputLabel>
+                            <apex:outputField value="{!case.DDAckn__c}" label="" title=""/>
+                        </apex:pageBlockSectionItem>
+                    </apex:pageBlockSection>
+                    <apex:pageBlockSection title="" columns="2" showHeader="false">
+                        <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="Direct Debit Authorisation" style="font-weight:bold"></apex:outputLabel>
+                            <apex:outputField value="{!case.DDAuth__c}" label="" title=""/>
+                        </apex:pageBlockSectionItem>
+                        <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="Bank" style="font-weight:bold"></apex:outputLabel>
+                            <apex:outputField value="{!case.Bank__c}" label="" title=""/>
+                        </apex:pageBlockSectionItem>
+                    </apex:pageBlockSection>
+                    <apex:pageBlockSection title="" columns="2" showHeader="false">
+                        <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="Bank Account Name" style="font-weight:bold"></apex:outputLabel>
+                            <apex:outputField value="{!case.BankAccName__c}" label="" title=""/>
+                        </apex:pageBlockSectionItem>
+                        <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="Bank BSB" style="font-weight:bold"></apex:outputLabel>
+                            <apex:outputField value="{!case.BankBSB__c}" label="" title=""/>
+                        </apex:pageBlockSectionItem>
+                    </apex:pageBlockSection>
+                    <apex:pageBlockSection title="" columns="2" showHeader="false">
+                        <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="Bank Account Number" style="font-weight:bold"></apex:outputLabel>
+                            <apex:outputField value="{!case.BankAccNum__c}" label="" title=""/>
+                        </apex:pageBlockSectionItem>
+                        <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="Address" style="font-weight:bold"></apex:outputLabel>
+                            <apex:outputField value="{!case.Address__c}" label="" title=""/>
+                        </apex:pageBlockSectionItem>
+                    </apex:pageBlockSection>
+                    <apex:pageBlockSection title="" columns="2" showHeader="false">
+                        <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="Suburb" style="font-weight:bold"></apex:outputLabel>
+                            <apex:outputField value="{!case.Suburb__c}" label="" title=""/>
+                        </apex:pageBlockSectionItem>
+                        <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="State" style="font-weight:bold"></apex:outputLabel>
+                            <apex:outputField value="{!case.State__c}" label="" title=""/>
+                        </apex:pageBlockSectionItem>
+                    </apex:pageBlockSection>
+                    <apex:pageBlockSection title="" columns="2" showHeader="false">
+                        <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="Postcode" style="font-weight:bold"></apex:outputLabel>
+                            <apex:outputField value="{!case.Postcode__c}" label="" title=""/>
+                        </apex:pageBlockSectionItem>
+
+                    </apex:pageBlockSection>  
+                    
+                    <apex:pageBlockSection title="" columns="2" showHeader="false">
+                        <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="how many staff work for your business?" style="font-weight:bold"></apex:outputLabel>
+                            <apex:outputField value="{!case.how_many_staff_do_you_employ_in_your_bus__c}" label="" title=""/>
+                        </apex:pageBlockSectionItem>
+                        <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="Partner Of Other Companies?" style="font-weight:bold"></apex:outputLabel>
+                            <apex:outputField value="{!case.Competitor_Partner_Program__c}" label="" title=""/>
+                        </apex:pageBlockSectionItem>
+                    </apex:pageBlockSection> 
+                    
+                    <apex:pageBlockSection title="" columns="2" showHeader="false">
+                        <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="What Industry Association You Belong To?" style="font-weight:bold"></apex:outputLabel>
+                            <apex:outputField value="{!case.Professional_Association__c}" label="" title=""/>
+                        </apex:pageBlockSectionItem>
+                        <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="Where Do You Operate Out Of?" style="font-weight:bold"></apex:outputLabel>
+                            <apex:outputField value="{!case.operate_out_of_an_office_or_a_home_offi__c}" label="" title=""/>
+                        </apex:pageBlockSectionItem>
+                    </apex:pageBlockSection>                    
+                    
+                    <apex:pageBlockSection title="" columns="2" showHeader="false">
+                        <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="How many clients on desktop software?" style="font-weight:bold"></apex:outputLabel>
+                            <apex:outputField value="{!case.how_many_desktop_software__c}" label="" title=""/>
+                        </apex:pageBlockSectionItem>
+                        <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="Plan on growing your practice in future?" style="font-weight:bold"></apex:outputLabel>
+                            <apex:outputField value="{!case.Plan_On_Growing__c}" label="" title=""/>
+                        </apex:pageBlockSectionItem>
+                    </apex:pageBlockSection>  
+                    
+                    <apex:pageBlockSection title="" columns="2" showHeader="false">
+                        <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="What marketing channels are you using?" style="font-weight:bold"></apex:outputLabel>
+                            <apex:outputField value="{!case.What_marketing_channels_are_you_using__c}" label="" title=""/>
+                        </apex:pageBlockSectionItem>
+                        <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="Additional comments" style="font-weight:bold"></apex:outputLabel>
+                            <apex:outputField value="{!case.Additional_comments__c}" label="" title=""/>
+                        </apex:pageBlockSectionItem>
+                    </apex:pageBlockSection>                                                            
+            </apex:pageBlock>      
+        </apex:outputPanel> 
+        
+               
+        <apex:outputPanel id="CategoryLicenseReduction" rendered="{!case.Categ__c = 'License Reduction'}">
+            <apex:pageBlock mode="view" id="DetailViewLicenseReduction">
+                <apex:pageBlockSection title="" columns="2" showHeader="false">
+                    <apex:pageBlockSectionItem >
+                        <apex:outputLabel value="Product Name or Serial Number" style="font-weight:bold"></apex:outputLabel>
+                        <apex:outputField value="{!case.Serial_Number__c}" label="Product Name or Serial Number or Company file Name/Number to be Cancelled" title="Product Name or Serial Number to be Cancelled"/>
+                    </apex:pageBlockSectionItem>
+                    <apex:pageBlockSectionItem >
+                        <apex:outputLabel value="Effective Date of Cancellation" style="font-weight:bold"></apex:outputLabel>
+                        <apex:outputField value="{!case.Cancellation_Effective_Date__c}"/>
+                    </apex:pageBlockSectionItem>
+                </apex:pageBlockSection>
+
+                <apex:pageBlockSection title="" columns="2" showHeader="false">
+                    <apex:pageBlockSectionItem >
+                        <apex:outputLabel value="From" style="font-weight:bold"></apex:outputLabel>
+                        <apex:outputField value="{!case.License_Reduction_From__c}"/>
+                    </apex:pageBlockSectionItem>
+                    <apex:pageBlockSectionItem >
+                        <apex:outputLabel value="To" style="font-weight:bold"></apex:outputLabel>
+                        <apex:outputField value="{!case.License_Reduction_To__c}"/>
+                    </apex:pageBlockSectionItem>
+                </apex:pageBlockSection>
+
+                <apex:pageBlockSection title="" columns="2" showHeader="false">
+                    <apex:pageBlockSectionItem >
+                        <apex:outputLabel value="Cancellation Reason" style="font-weight:bold"></apex:outputLabel>
+                        <apex:outputField value="{!case.Cancellation_Reason__c}" label="" title=""/>
+                    </apex:pageBlockSectionItem>
+                    <apex:pageBlockSectionItem >
+                        <apex:outputLabel value="Competitor" style="font-weight:bold"></apex:outputLabel>
+                        <apex:outputField value="{!case.Cancellation_Reason_Competitor__c}" label="" title=""/>
+                    </apex:pageBlockSectionItem>
+                </apex:pageBlockSection>
+
+                <apex:pageBlockSection title="" columns="2" showHeader="false">
+                    <apex:pageBlockSectionItem >
+                        <apex:outputLabel value="Additional Reason" style="font-weight:bold"></apex:outputLabel>
+                        <apex:outputField value="{!case.Cancellation_Additional_Reason__c}" label="" title=""/>
+                    </apex:pageBlockSectionItem>
+                    <apex:pageBlockSectionItem >
+                        <apex:outputLabel value="Specific Reason" style="font-weight:bold"></apex:outputLabel>
+                        <apex:outputField value="{!case.Cancellation_Specific_Reason__c}" label="" title=""/>
+                    </apex:pageBlockSectionItem>
+                </apex:pageBlockSection>
+
+                <apex:pageBlockSection title="" columns="2" showHeader="false">
+                    <apex:pageBlockSectionItem >
+                        <apex:outputLabel value="Refund Required?" style="font-weight:bold"></apex:outputLabel>
+                        <apex:outputField value="{!case.Refund_Required__c}" label="" title=""/>
+                    </apex:pageBlockSectionItem>
+                    <apex:pageBlockSectionItem >
+                        <apex:outputLabel value="Total $ Value" style="font-weight:bold"></apex:outputLabel>
+                        <apex:outputField value="{!case.Total_Value__c}" label="" title=""/>
+                    </apex:pageBlockSectionItem>
+                </apex:pageBlockSection>
+
+                <apex:pageBlockSection title="" columns="2" showHeader="false">
+                    <apex:pageBlockSectionItem >
+                        <apex:outputLabel value="Date Range From" style="font-weight:bold"></apex:outputLabel>
+                        <apex:outputField value="{!case.Refund_Data_Range_From__c}" label="" title=""/>
+                    </apex:pageBlockSectionItem>
+                    <apex:pageBlockSectionItem >
+                        <apex:outputLabel value="Date Range To" style="font-weight:bold"></apex:outputLabel>
+                        <apex:outputField value="{!case.Refund_Data_Range_To__c}" label="" title=""/>
+                    </apex:pageBlockSectionItem>
+                </apex:pageBlockSection>
+                
+                <apex:pageBlockSection title="" columns="2" showHeader="false">
+                    <apex:pageBlockSectionItem >
+                        <apex:outputLabel value="$ Per Month (Optional)" style="font-weight:bold"></apex:outputLabel>
+                        <apex:outputField value="{!case.Per_Month__c}" label="" title=""/>
+                    </apex:pageBlockSectionItem>
+                </apex:pageBlockSection>
+                
+            </apex:pageBlock>                                        
+        </apex:outputPanel>  
+        
+        <apex:outputPanel id="SubCategoryWholesaleOrder" rendered="{!case.Sub_Category__c= 'Wholesale Order'}">
+                    <apex:pageBlock mode="view" id="DetailViewWholesaleOrder">
+                        <apex:pageBlockSection title="" columns="2" showHeader="false">
+                            <apex:pageBlockSectionItem >
+                                <apex:outputLabel value="ARL Basic" style="font-weight:bold"></apex:outputLabel>
+                                <apex:outputField value="{!case.ARL_Basic__c}"/>
+                            </apex:pageBlockSectionItem>
+                              <apex:pageBlockSectionItem >
+                                <apex:outputLabel value="ARL Standard" style="font-weight:bold"></apex:outputLabel>
+                                <apex:outputField value="{!case.ARL_Standard__c}"/>
+                            </apex:pageBlockSectionItem>
+                 </apex:pageBlockSection>
+                
+                <apex:pageBlockSection title="" columns="2" showHeader="false">
+                    <apex:pageBlockSectionItem >
+                        <apex:outputLabel value="ARL Plus" style="font-weight:bold"></apex:outputLabel>
+                        <apex:outputField value="{!case.ARL_Plus__c}"/>
+                    </apex:pageBlockSectionItem>
+                    <apex:pageBlockSectionItem >
+                        <apex:outputLabel value="EA Starter" style="font-weight:bold"></apex:outputLabel>
+                        <apex:outputField value="{!case.EA_Starter__c}"/>
+                    </apex:pageBlockSectionItem>
+                </apex:pageBlockSection>
+
+                <apex:pageBlockSection title="" columns="2" showHeader="false">
+                    <apex:pageBlockSectionItem >
+                        <apex:outputLabel value="Essentials Accounting" style="font-weight:bold"></apex:outputLabel>
+                        <apex:outputField value="{!case.EA_Payroll_For_1__c}" label="" title=""/>
+                    </apex:pageBlockSectionItem>
+                    <apex:pageBlockSectionItem >
+                        <apex:outputLabel value="EA Payroll Unlimited" style="font-weight:bold"></apex:outputLabel>
+                        <apex:outputField value="{!case.EA_Payroll_Unlimited__c}" label="" title=""/>
+                    </apex:pageBlockSectionItem>
+                </apex:pageBlockSection>
+
+                <apex:pageBlockSection title="" columns="2" showHeader="false">
+                    <apex:pageBlockSectionItem >
+                        <apex:outputLabel value="Connected Ledger" style="font-weight:bold"></apex:outputLabel>
+                        <apex:outputField value="{!case.Connected_Ledger__c}" label="" title=""/>
+                    </apex:pageBlockSectionItem>
+                    <apex:pageBlockSectionItem >
+                        <apex:outputLabel value="Partner Status" style="font-weight:bold"></apex:outputLabel>
+                        <apex:outputField value="{!case.Partner_Status__c}" label="" title=""/>
+                    </apex:pageBlockSectionItem>
+                </apex:pageBlockSection>
+                
+                <apex:pageBlockSection title="" columns="2" showHeader="false">
+                    <apex:pageBlockSectionItem >
+                        <apex:outputLabel value="Discount Amount" style="font-weight:bold"></apex:outputLabel>
+                        <apex:outputField value="{!case.Discount_Amount__c}" label="" title=""/>
+                    </apex:pageBlockSectionItem>
+                    </apex:pageBlockSection>
+                    <apex:pageBlockSection title="" columns="2" showHeader="false">
+                    <apex:pageBlockSectionItem >
+                        <apex:outputLabel value="MYOB Essentials Connected Ledger w Payro" style="font-weight:bold"></apex:outputLabel>
+                        <apex:outputField value="{!case.MYOB_Essentials_Connected_Ledger_w_Payro__c}" label="" title=""/>
+                    </apex:pageBlockSectionItem>
+                    <apex:pageBlockSectionItem >
+                        <apex:outputLabel value="MYOB Essentials Payroll" style="font-weight:bold"></apex:outputLabel>
+                        <apex:outputField value="{!case.MYOB_Essentials_Payroll__c}" label="" title=""/>
+                    </apex:pageBlockSectionItem>
+                </apex:pageBlockSection>
+
+                
+                </apex:pageBlock>                                        
+        </apex:outputPanel> 
+
+        <apex:outputPanel id="SubCategoryQuoteCreation" rendered="{!case.Sub_Category__c= 'Quote Creation'}">
+                <apex:pageBlock mode="view" id="DetailViewQuoteCreation">
+                    <apex:pageBlockSection title="" columns="2" showHeader="false">
+                        <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="Who's Paying?" style="font-weight:bold"></apex:outputLabel>
+                            <apex:outputField value="{!case.Who_s_Paying__c}"/>
+                        </apex:pageBlockSectionItem>
+                        <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="New Account?" style="font-weight:bold"></apex:outputLabel>
+                            <apex:outputField value="{!case.New_Account__c}"/>
+                        </apex:pageBlockSectionItem>
+                    </apex:pageBlockSection>
+                
+                <apex:pageBlockSection title="" columns="2" showHeader="false">
+                    <apex:pageBlockSectionItem >
+                        <apex:outputLabel value="Name of New Account" style="font-weight:bold"></apex:outputLabel>
+                        <apex:outputField value="{!case.SubmittedCompany__c}"/>
+                    </apex:pageBlockSectionItem>
+                    <apex:pageBlockSectionItem >
+                        <apex:outputLabel value="Serial Number of Client" style="font-weight:bold"></apex:outputLabel>
+                        <apex:outputField value="{!case.Quote_Creation_Serial_Number__c}"/>
+                    </apex:pageBlockSectionItem>
+                </apex:pageBlockSection>
+
+                <apex:pageBlockSection title="" columns="2" showHeader="false">
+                    <apex:pageBlockSectionItem >
+                        <apex:outputLabel value="Email Address to send quote to" style="font-weight:bold"></apex:outputLabel>
+                        <apex:outputField value="{!case.Quote_Creation_Send_To_Email__c}" label="" title=""/>
+                    </apex:pageBlockSectionItem>
+                    <apex:pageBlockSectionItem >
+                        <apex:outputLabel value="What Product to Create Quote for?" style="font-weight:bold"></apex:outputLabel>
+                        <apex:outputField value="{!case.What_Product_to_Create_Quote_for__c}" label="" title=""/>
+                    </apex:pageBlockSectionItem>                    
+                </apex:pageBlockSection>
+                
+                <apex:pageBlockSection title="" columns="2" showHeader="false">
+                    <apex:pageBlockSectionItem >
+                        <apex:outputLabel value="First & Last Name of client" style="font-weight:bold"></apex:outputLabel>
+                        <apex:outputField value="{!case.First_Last_Name_of_client__c}" label="" title=""/>
+                    </apex:pageBlockSectionItem>
+                    <apex:pageBlockSectionItem >
+                        <apex:outputLabel value="Client Email address" style="font-weight:bold"></apex:outputLabel>
+                        <apex:outputField value="{!case.Buyer_Email__c}" label="" title=""/>
+                    </apex:pageBlockSectionItem>                    
+                </apex:pageBlockSection>                
+                </apex:pageBlock>                                        
+        </apex:outputPanel>         
+ 
+        <apex:outputPanel id="CategoryBLEssentials" rendered="{!case.Categ__c = 'BL - Essentials'}">
+                <apex:pageBlock mode="view" id="BlockCategoryBLEssentials">
+                    <apex:pageBlockSection title="" columns="2" showHeader="false">
+                        <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="Type Of Migration" style="font-weight:bold"></apex:outputLabel>
+                            <apex:outputField value="{!case.Type_of_Migration__c}"/>
+                        </apex:pageBlockSectionItem>
+                        <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="Total Number of Files to be Migrated" style="font-weight:bold"></apex:outputLabel>
+                            <apex:outputField value="{!case.Total_Number_of_Files_to_be_Migrated__c}"/>
+                        </apex:pageBlockSectionItem>                        
+                    </apex:pageBlockSection> 
+                    
+                    <apex:pageBlockSection title="" columns="2" showHeader="false">
+                       <apex:pageBlockSectionItem >
+                         <apex:outputLabel value="Product (Leave Blank if attaching spreadsheet)" style="font-weight:bold"></apex:outputLabel>
+                            <apex:outputField value="{!case.Product_BL_Essentials__c}"/>
+                        </apex:pageBlockSectionItem>
+                        <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="Proof of Concept" style="font-weight:bold"></apex:outputLabel>
+                            <apex:outputField value="{!case.Proof_of_Concept__c}"/>
+                        </apex:pageBlockSectionItem>                        
+                    </apex:pageBlockSection> 
+                    
+                   <apex:pageBlockSection title="" columns="2" showHeader="false">
+                        <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="Chart of Accounts (Full or Filtered)" style="font-weight:bold"></apex:outputLabel>
+                            <apex:outputField value="{!case.Chart_of_Accounts__c}"/>
+                        </apex:pageBlockSectionItem>
+                        <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="Opening Balances" style="font-weight:bold"></apex:outputLabel>
+                            <apex:outputField value="{!case.Opening_Balances__c}"/>
+                        </apex:pageBlockSectionItem>                        
+                    </apex:pageBlockSection>  
+                    
+                  <apex:pageBlockSection title="" columns="2" showHeader="false">
+                        <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="Bankfeed Start Date (Month, Will Always be the 1st of the Month)" style="font-weight:bold"></apex:outputLabel>
+                            <apex:outputField value="{!case.Bankfeed_Start_Date_Month__c}"/>
+                        </apex:pageBlockSectionItem>
+                        <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="Bankfeed Start Date (Year)" style="font-weight:bold"></apex:outputLabel>
+                            <apex:outputField value="{!case.Bankfeed_Start_Date_Year__c}"/>
+                        </apex:pageBlockSectionItem>                       
+                    </apex:pageBlockSection> 
+                    
+                    <apex:pageBlockSection title="" columns="2" showHeader="false">
+                        <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="Completed Spreadhsheet Attached?" style="font-weight:bold"></apex:outputLabel>
+                            <apex:outputField value="{!case.Completed_Spreadsheet_Attached__c}"/>
+                        </apex:pageBlockSectionItem>                     
+                        <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="Coded transaction migration required?" style="font-weight:bold"></apex:outputLabel>
+                            <apex:outputField value="{!case.Coded_transaction_migration_required__c}"/>
+                        </apex:pageBlockSectionItem>
+                       
+                    </apex:pageBlockSection>
+                    
+                    <apex:pageBlockSection title="" columns="2" showHeader="false">
+                        <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="Has a Training Consultant been Involved?" style="font-weight:bold"></apex:outputLabel>
+                            <apex:outputField value="{!case.Has_Trainning_Consultant_Involved__c}"/>
+                        </apex:pageBlockSectionItem>                     
+                        <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="Have You Spokend About Chart of Accounts to the Practice?" style="font-weight:bold"></apex:outputLabel>
+                            <apex:outputField value="{!case.Have_you_spoken_about_Chart_of_Accounts__c}"/>
+                        </apex:pageBlockSectionItem>                  
+                    </apex:pageBlockSection>
+                    
+                    <apex:pageBlockSection title="" columns="2" showHeader="false">
+                        <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="Training Consultant Name" style="font-weight:bold"></apex:outputLabel>
+                            <apex:outputField value="{!case.Training_Consultant__c}"/>
+                        </apex:pageBlockSectionItem>                     
+                        <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="More than one Bankfeed start date" style="font-weight:bold"></apex:outputLabel>
+                            <apex:outputField value="{!case.More_Bankfeed_Start_Date__c}"/>
+                        </apex:pageBlockSectionItem>                    
+                    </apex:pageBlockSection>                                                                                                                                         
+                </apex:pageBlock>                                        
+        </apex:outputPanel> 
+           
+        <apex:outputPanel id="CategoryARARL" rendered="{!case.Categ__c = 'AR - ARL'}">
+                <apex:pageBlock mode="view" id="BlockCategorARARL">
+                    <apex:pageBlockSection title="" columns="2" showHeader="false">
+                        <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="Serial Number/Client ID of Latest Version of Software That Has Bankfeeds" style="font-weight:bold"></apex:outputLabel>
+                            <apex:outputField value="{!case.Onboarding_AR_ARL_Serial_Number__c}"/>
+                        </apex:pageBlockSectionItem>
+                    </apex:pageBlockSection>                
+                </apex:pageBlock>                                        
+        </apex:outputPanel> 
+
+        <apex:outputPanel id="CategorySalesPromotion" rendered="{!case.Categ__c = 'Sales Promotion/Agreement Adjustment'}">
+                <apex:pageBlock mode="view" id="BlockSalesPromotion">
+                    <apex:pageBlockSection title="" columns="2" showHeader="false">
+                        <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="What's the Offer That should be Applied? (Use Percentage Rate Where Applicable)" style="font-weight:bold"></apex:outputLabel>
+                            <apex:outputField value="{!case.What_s_Offer_to_be_Applied__c}"/>
+                        </apex:pageBlockSectionItem>
+                        <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="Serial Number of Client" style="font-weight:bold"></apex:outputLabel>
+                            <apex:outputField value="{!case.Sales_Promotion_Serial_Number__c}"/>
+                        </apex:pageBlockSectionItem>
+                    </apex:pageBlockSection>                
+                </apex:pageBlock>                                        
+        </apex:outputPanel> 
+ 
+        <apex:outputPanel id="CategorySplit" rendered="{!case.Sub_Category__c= 'Practice Split'}">
+                <apex:pageBlock mode="view" id="BlockSplit">
+                    <apex:pageBlockSection title="" columns="2" showHeader="false">
+                        <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="Most Appropriate Contact to Liaise With" style="font-weight:bold"></apex:outputLabel>
+                            <apex:outputField value="{!case.Most_Appropriate_Contact_to_Liaise_With__c}"/>
+                        </apex:pageBlockSectionItem>
+                        <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="Is the Split Amicable? (Yes/No)" style="font-weight:bold"></apex:outputLabel>
+                            <apex:outputField value="{!case.Amicable__c}"/>
+                        </apex:pageBlockSectionItem>
+                    </apex:pageBlockSection>
+                    
+                    <apex:pageBlockSection title="" columns="2" showHeader="false">
+                        <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="Client IDs Involved" style="font-weight:bold"></apex:outputLabel>
+                            <apex:outputField value="{!case.Practice_Split_Client_IDs__c}"/>
+                        </apex:pageBlockSectionItem>
+                        <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="Effective Date of Split" style="font-weight:bold"></apex:outputLabel>
+                            <apex:outputField value="{!case.Practice_Split_Date__c}"/>
+                        </apex:pageBlockSectionItem>
+                    </apex:pageBlockSection> 
+                    
+                    <apex:pageBlockSection title="" columns="2" showHeader="false">
+                        <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="Are any technical or consulting services required?" style="font-weight:bold"></apex:outputLabel>
+                            <apex:outputField value="{!case.Are_Services_Required__c}"/>
+                        </apex:pageBlockSectionItem>
+                        <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="Is it a Partner or only an Employee who is splitting away from the practice?" style="font-weight:bold"></apex:outputLabel>
+                            <apex:outputField value="{!case.Partner_Or_Employee_Split__c}"/>
+                        </apex:pageBlockSectionItem>                        
+                    </apex:pageBlockSection>  
+                    
+                    <apex:pageblockSection >
+                        <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="Which Practice is paying for the services?" style="font-weight:bold"></apex:outputLabel>
+                            <apex:outputField value="{!case.Which_Practice_is_paying_for_the_service__c}"/>
+                        </apex:pageBlockSectionItem> 
+                    </apex:pageblockSection>                                                        
+                </apex:pageBlock>                                        
+        </apex:outputPanel> 
+        
+        <apex:outputPanel id="CategoryMerge" rendered="{!case.Sub_Category__c= 'Practice Merger'}">
+                <apex:pageBlock mode="view" id="BlockMerge">
+                    <apex:pageBlockSection title="" columns="2" showHeader="false">
+                        <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="Most Appropriate Contact to Liaise With" style="font-weight:bold"></apex:outputLabel>
+                            <apex:outputField value="{!case.Most_Appropriate_Contact_to_Liaise_With__c}"/>
+                        </apex:pageBlockSectionItem>
+                        <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="Is the Merge Amicable? (Yes/No)" style="font-weight:bold"></apex:outputLabel>
+                            <apex:outputField value="{!case.Amicable_Merger__c}"/>
+                        </apex:pageBlockSectionItem>
+                    </apex:pageBlockSection>
+                    
+                    <apex:pageBlockSection title="" columns="2" showHeader="false">
+                        <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="Client IDs Involved" style="font-weight:bold"></apex:outputLabel>
+                            <apex:outputField value="{!case.Practice_Merger_Client_IDs__c}"/>
+                        </apex:pageBlockSectionItem>
+                        <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="Effective Date of Merge" style="font-weight:bold"></apex:outputLabel>
+                            <apex:outputField value="{!case.Practice_Merger_Date__c}"/>
+                        </apex:pageBlockSectionItem>
+                    </apex:pageBlockSection>  
+                    
+                    <apex:pageBlockSection title="" columns="2" showHeader="false">
+                        <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="Are any technical or consulting services required?" style="font-weight:bold"></apex:outputLabel>
+                            <apex:outputField value="{!case.Are_Services_Required__c}"/>
+                        </apex:pageBlockSectionItem>
+                        
+                        <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="Which Practice is paying for the services?" style="font-weight:bold"></apex:outputLabel>
+                            <apex:outputField value="{!case.Which_Practice_is_paying_for_the_service__c}"/>
+                        </apex:pageBlockSectionItem>                        
+                    </apex:pageBlockSection>                                                         
+                </apex:pageBlock>                                        
+        </apex:outputPanel>
+        
+        <apex:outputPanel id="CategoryDashboardCleanUpProvisioning" rendered="{!case.Sub_Category__c= 'Dashboard Cleanup or Provisioning'}">
+                <apex:pageBlock mode="view" id="BlockDashboardCleanUpProvisioning">
+                    <apex:pageBlockSection title="" columns="2" showHeader="false">
+                        <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="Email Address for Cleanup or Provisioning" style="font-weight:bold"></apex:outputLabel>
+                            <apex:outputField value="{!case.SubmittedEmail__c}"/>
+                        </apex:pageBlockSectionItem>
+                    </apex:pageBlockSection>                
+                </apex:pageBlock>                                        
+        </apex:outputPanel>
+        
+        <apex:outputPanel id="CategoryInvoiceQuery" rendered="{!case.Categ__c = 'Invoicing Query'}">
+                <apex:pageBlock mode="view" id="BlockInvoiceQuery">
+                    <apex:pageBlockSection title="" columns="2" showHeader="false">
+                        <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="Invoice Number" style="font-weight:bold"></apex:outputLabel>
+                            <apex:outputField value="{!case.Invoice_Query_Invoice_Number__c}"/>
+                        </apex:pageBlockSectionItem>
+                    </apex:pageBlockSection>                
+                </apex:pageBlock>                                        
+        </apex:outputPanel>          
+
+        <apex:outputPanel id="CategoryOnlineFileRemoval" rendered="{!case.Sub_Category__c= 'Online File Removal'}">
+                <apex:pageBlock mode="view" id="BlockOnlineFileRemoval">
+                    <apex:pageBlockSection title="" columns="2" showHeader="false">
+                        <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="Serial Number" style="font-weight:bold"></apex:outputLabel>
+                            <apex:outputField value="{!case.Online_File_Removal_Serial_Number__c}"/>
+                        </apex:pageBlockSectionItem>
+                        <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="Company File Number" style="font-weight:bold"></apex:outputLabel>
+                            <apex:outputField value="{!case.Company_File_Number__c}"/>
+                        </apex:pageBlockSectionItem>
+                    </apex:pageBlockSection>
+                                                         
+                </apex:pageBlock>                                        
+        </apex:outputPanel> 
+        
+        <apex:outputPanel id="CategoryBankFeedSwapSwitch" rendered="{!case.Sub_Category__c= 'BankFeed Swap/Switch'}">
+                <apex:pageBlock mode="view" id="BlockBankFeedSwapSwitch">
+                    <apex:pageBlockSection title="" columns="2" showHeader="false">
+                        <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="Swap or Switch" style="font-weight:bold"></apex:outputLabel>
+                            <apex:outputField value="{!case.Swap_or_Switch__c}"/>
+                        </apex:pageBlockSectionItem>
+                        <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="Move or Copy" style="font-weight:bold"></apex:outputLabel>
+                            <apex:outputField value="{!case.Move_or_Copy__c}"/>
+                        </apex:pageBlockSectionItem>
+                    </apex:pageBlockSection>
+
+                    <apex:pageBlockSection title="" columns="2" showHeader="false">
+                        <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="Product Name From" style="font-weight:bold"></apex:outputLabel>
+                            <apex:outputField value="{!case.Product_Name_From__c}"/>
+                        </apex:pageBlockSectionItem>
+                        <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="Product Name to" style="font-weight:bold"></apex:outputLabel>
+                            <apex:outputField value="{!case.Product_Name_To__c}"/>
+                        </apex:pageBlockSectionItem>
+                    </apex:pageBlockSection>                    
+                                    
+                    <apex:pageBlockSection title="" columns="2" showHeader="false">
+                        <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="Serial Number From" style="font-weight:bold"></apex:outputLabel>
+                            <apex:outputField value="{!case.BankFeed_Swap_Serial_Number_From__c}"/>
+                        </apex:pageBlockSectionItem>
+                        <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="Serial Number To" style="font-weight:bold"></apex:outputLabel>
+                            <apex:outputField value="{!case.BankFeed_Swap_Serial_Number_To__c}"/>
+                        </apex:pageBlockSectionItem>
+                    </apex:pageBlockSection>
+
+                    <apex:pageBlockSection title="" columns="2" showHeader="false">
+                        <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="Company Data File Number From (If Applicable)" style="font-weight:bold"></apex:outputLabel>
+                            <apex:outputField value="{!case.Company_File_Number_1__c}"/>
+                        </apex:pageBlockSectionItem>
+                        <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="Company Data File Number To (If Applicable)" style="font-weight:bold"></apex:outputLabel>
+                            <apex:outputField value="{!case.Company_File_Number_2__c}"/>
+                        </apex:pageBlockSectionItem>
+                    </apex:pageBlockSection>                                                         
+
+                    <apex:pageBlockSection title="" columns="2" showHeader="false">
+                        <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="Remove Online File? If you choose 'Yes', this will cancel all live services from this file, including Bankfeeds and Paysuper" style="font-weight:bold"></apex:outputLabel>
+                            <apex:outputField value="{!case.Remove_Online_File__c}"/>
+                        </apex:pageBlockSectionItem>
+                        <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="Bank Accounts/Credit Cards to be swapped/switched (Leave Blank if All)" style="font-weight:bold"></apex:outputLabel>
+                            <apex:outputField value="{!case.Bank_Accounts_Credit_Cards_to_be_swapped__c}"/>
+                        </apex:pageBlockSectionItem>
+                    </apex:pageBlockSection>
+                    
+                    <apex:pageBlockSection title="" columns="2" showHeader="false">
+                        <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="Bank Feed Start Date (date you want the data from)" style="font-weight:bold"></apex:outputLabel>
+                            <apex:outputField value="{!case.Bank_Feed_Start_Date__c}"/>
+                        </apex:pageBlockSectionItem>
+                    </apex:pageBlockSection>                      
+                </apex:pageBlock>                                        
+        </apex:outputPanel> 
+        
+        <apex:outputPanel id="AccountRightOrEssentials" rendered="{!case.Sub_Category__c= 'Free File'}">
+                <apex:pageBlock mode="view" id="AccountRightOrEssentialsView">
+                    <apex:pageBlockSection title="" columns="2" showHeader="false">
+                        <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="AccountRight or Essentials" style="font-weight:bold"></apex:outputLabel>
+                            <apex:outputField value="{!case.AccountRight_or_Essentials__c}"/>
+                        </apex:pageBlockSectionItem>
+                    </apex:pageBlockSection>
+                                                         
+                </apex:pageBlock>                                        
+        </apex:outputPanel> 
+        
+        <apex:outputPanel id="ChangeBillingContactDetails" rendered="{!case.Categ__c = 'Change Billing Contact/Details'}">
+                <apex:pageBlock mode="view" id="ChangeBillingContactDetailsView">
+                    <apex:pageBlockSection title="" columns="2" showHeader="false">
+                        <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="Authoriser" style="font-weight:bold"></apex:outputLabel>
+                            <apex:outputField value="{!case.Direct_Debit_Requestors__c}"/>
+                        </apex:pageBlockSectionItem>                      
+                    </apex:pageBlockSection>
+
+                    <apex:pageBlockSection title="" columns="2" showHeader="false">
+                        <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="Bank" style="font-weight:bold"></apex:outputLabel>
+                            <apex:outputField value="{!case.Bank__c}"/>
+                        </apex:pageBlockSectionItem>
+                       <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="Branch" style="font-weight:bold"></apex:outputLabel>
+                            <apex:outputField value="{!case.Bank_Branch__c}"/>
+                        </apex:pageBlockSectionItem>                        
+                    </apex:pageBlockSection>
+                    
+                    <apex:pageBlockSection title="" columns="2" showHeader="false">
+                        <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="BSB" style="font-weight:bold"></apex:outputLabel>
+                            <apex:outputField value="{!case.BankBSB__c}"/>
+                        </apex:pageBlockSectionItem>
+                       <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="Account Number" style="font-weight:bold"></apex:outputLabel>
+                            <apex:outputField value="{!case.BankAccNum__c}"/>
+                        </apex:pageBlockSectionItem>                        
+                    </apex:pageBlockSection>  
+                    
+                    <apex:pageBlockSection title="" columns="2" showHeader="false">
+                        <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="Account Name" style="font-weight:bold"></apex:outputLabel>
+                            <apex:outputField value="{!case.BankAccName__c}"/>
+                        </apex:pageBlockSectionItem>                      
+                    </apex:pageBlockSection>
+                    
+                   
+                    
+                    <apex:pageBlockSection title="" columns="2" showHeader="false">
+                        <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="Serial Number" style="font-weight:bold"></apex:outputLabel>
+                            <apex:outputField value="{!case.Serial_Number__c}"/>
+                        </apex:pageBlockSectionItem>
+                       <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="Business Name" style="font-weight:bold"></apex:outputLabel>
+                            <apex:outputField value="{!case.New_Trading_Name__c}"/>
+                        </apex:pageBlockSectionItem>                        
+                    </apex:pageBlockSection> 
+                    
+                    <apex:pageBlockSection title="" columns="2" showHeader="false">
+                        <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="Client First Name" style="font-weight:bold"></apex:outputLabel>
+                            <apex:outputField value="{!case.WebFirstName__c}"/>
+                        </apex:pageBlockSectionItem>
+                       <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="Client Last Name" style="font-weight:bold"></apex:outputLabel>
+                            <apex:outputField value="{!case.WebLastName__c}"/>
+                        </apex:pageBlockSectionItem>                        
+                    </apex:pageBlockSection>
+                    
+                    <apex:pageBlockSection title="" columns="2" showHeader="false">
+                        <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="Client Email" style="font-weight:bold"></apex:outputLabel>
+                            <apex:outputField value="{!case.SubmittedEmail__c}"/>
+                        </apex:pageBlockSectionItem>
+                       <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="Client Phone" style="font-weight:bold"></apex:outputLabel>
+                            <apex:outputField value="{!case.SubmittedPhone__c}"/>
+                        </apex:pageBlockSectionItem>                        
+                    </apex:pageBlockSection>
+                    
+                    <apex:pageBlockSection title="" columns="2" showHeader="false">
+                        <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="Client ABN/NZBN" style="font-weight:bold"></apex:outputLabel>
+                            <apex:outputField value="{!case.ABN__c}"/>
+                        </apex:pageBlockSectionItem>                       
+                    </apex:pageBlockSection>                                                                                                                                                                                   
+                </apex:pageBlock>                                        
+        </apex:outputPanel>  
+        
+        <apex:outputPanel id="ChangeofName" rendered="{!case.Sub_Category__c= 'Company Name Change'}">
+                <apex:pageBlock mode="view" id="ChangeofNameView">
+                    <apex:pageBlockSection title="" columns="2" showHeader="false">
+                        <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="Original Trading Name" style="font-weight:bold"></apex:outputLabel>
+                            <apex:outputField value="{!case.Original_Trading_Name__c}"/>
+                        </apex:pageBlockSectionItem>
+                        <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="Original Company Name" style="font-weight:bold"></apex:outputLabel>
+                            <apex:outputField value="{!case.Original_Company_Name__c}"/>
+                        </apex:pageBlockSectionItem>                        
+                    </apex:pageBlockSection>
+
+                    <apex:pageBlockSection title="" columns="2" showHeader="false">
+                        <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="Original Owner/Director Name" style="font-weight:bold"></apex:outputLabel>
+                            <apex:outputField value="{!case.Original_Owner_Director_name__c}"/>
+                        </apex:pageBlockSectionItem>
+                        <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="Original ABN/Company/GST Number" style="font-weight:bold"></apex:outputLabel>
+                            <apex:outputField value="{!case.Original_ABN_NZBN_GST_Number__c}"/>
+                        </apex:pageBlockSectionItem> 
+                    </apex:pageBlockSection>     
+                    <apex:pageBlockSection title="" columns="2" showHeader="false">
+                        <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="New Trading Name" style="font-weight:bold"></apex:outputLabel>
+                            <apex:outputField value="{!case.New_Trading_Name__c}"/>
+                        </apex:pageBlockSectionItem>
+                        <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="New Company Name" style="font-weight:bold"></apex:outputLabel>
+                            <apex:outputField value="{!case.SubmittedCompany__c}"/>
+                        </apex:pageBlockSectionItem>                        
+                    </apex:pageBlockSection>
+
+                    <apex:pageBlockSection title="" columns="2" showHeader="false">
+                        <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="New Owner/Director Name" style="font-weight:bold"></apex:outputLabel>
+                            <apex:outputField value="{!case.New_Owner_Director_Name__c}"/>
+                        </apex:pageBlockSectionItem>
+                        <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="New ABN/Company/GST Number" style="font-weight:bold"></apex:outputLabel>
+                            <apex:outputField value="{!case.ABN__c}"/>
+                        </apex:pageBlockSectionItem>                                               
+                    </apex:pageBlockSection>                                                         
+                </apex:pageBlock>                                        
+        </apex:outputPanel>  
+        
+        <apex:outputPanel id="CCOnboarding" rendered="{!case.Categ__c = 'Certified Consultant On Boarding'}">
+                <apex:pageBlock mode="view" id="CCOnboardingView">
+                    <apex:pageBlockSection title="" columns="2" showHeader="false">
+                        <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="Has your partner got the relevant industry qualifications, eg BAS agent, ICB, Tax Agent, RTO, CPA, CA, IPA?" style="font-weight:bold"></apex:outputLabel>
+                            <apex:outputField value="{!case.What_professional_associations__c}"/>
+                        </apex:pageBlockSectionItem>
+                        <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="Is your partner on the new Partner Program?"></apex:outputLabel>
+                            <apex:outputField value="{!case.Partner_on_new_Partner_Program__c}"/>
+                        </apex:pageBlockSectionItem>                        
+                    </apex:pageBlockSection>
+
+                    <apex:pageBlockSection title="" columns="2" showHeader="false">
+                        <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="Has your Partner completed prework?"></apex:outputLabel>
+                            <apex:outputField value="{!case.Has_your_Partner_completed_prework__c}"/>
+                        </apex:pageBlockSectionItem>
+                        <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="Has your partner set up their dashboard and have at least 3 files linked?"></apex:outputLabel>
+                            <apex:outputField value="{!case.Dashboard_Set_Up_10_Files_Linked__c}"/>
+                        </apex:pageBlockSectionItem>                        
+                    </apex:pageBlockSection>                                                         
+                </apex:pageBlock>                                        
+        </apex:outputPanel>
+        
+        <apex:outputPanel id="EntityTransfer" rendered="{!case.Categ__c = 'Account Administration'}">
+                <apex:pageBlock mode="view" id="EntityTransferView">
+                    <apex:pageBlockSection title="" columns="2" showHeader="false">
+                        <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="Existing Entity" style="font-weight:bold"></apex:outputLabel>
+                        </apex:pageBlockSectionItem>                      
+                    </apex:pageBlockSection>
+                                    
+                    <apex:pageBlockSection title="" columns="2" showHeader="false">
+                        <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="I/We" style="font-weight:bold"></apex:outputLabel>
+                            <apex:outputField value="{!case.Requestors_1__c}"/>
+                        </apex:pageBlockSectionItem>
+                        <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="ABN/Company Number/GST Number"></apex:outputLabel>
+                            <apex:outputField value="{!case.Original_ABN_NZBN_GST_Number__c}"/>
+                        </apex:pageBlockSectionItem>                        
+                    </apex:pageBlockSection>
+
+                    <apex:pageBlockSection title="" columns="2" showHeader="false">
+                        <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="Entity Type"></apex:outputLabel>
+                            <apex:outputField value="{!case.Entity_Type_1__c}"/>
+                        </apex:pageBlockSectionItem>
+                        <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="Date change of entity comes into effect"></apex:outputLabel>
+                            <apex:outputField value="{!case.Date_of_Sale__c}"/>
+                        </apex:pageBlockSectionItem>                        
+                    </apex:pageBlockSection>
+
+                    <apex:pageBlockSection title="" columns="2" showHeader="false">
+                        <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="New Entity" style="font-weight:bold"></apex:outputLabel>
+                        </apex:pageBlockSectionItem>                      
+                    </apex:pageBlockSection>
+                                        
+                    <apex:pageBlockSection title="" columns="2" showHeader="false">
+                        <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="I/We"></apex:outputLabel>
+                            <apex:outputField value="{!case.Requestors_2__c}"/>
+                        </apex:pageBlockSectionItem>
+                        <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="Client ID"></apex:outputLabel>
+                            <apex:outputField value="{!case.SerialNumber__c}"/>
+                        </apex:pageBlockSectionItem>                        
+                    </apex:pageBlockSection>
+                    
+                    <apex:pageBlockSection title="" columns="2" showHeader="false">
+                        <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="Account Name"></apex:outputLabel>
+                            <apex:outputField value="{!case.SubmittedCompany__c}"/>
+                        </apex:pageBlockSectionItem>
+                        <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="Trading Name"></apex:outputLabel>
+                            <apex:outputField value="{!case.New_Trading_Name__c}"/>
+                        </apex:pageBlockSectionItem>                        
+                    </apex:pageBlockSection>
+                    
+                    <apex:pageBlockSection title="" columns="2" showHeader="false">
+                        <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="Street address"></apex:outputLabel>
+                            <apex:outputField value="{!case.Address__c}"/>
+                        </apex:pageBlockSectionItem>
+                        <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="Postal address"></apex:outputLabel>
+                            <apex:outputField value="{!case.Post_Address__c}"/>
+                        </apex:pageBlockSectionItem>                        
+                    </apex:pageBlockSection>
+                    
+                    <apex:pageBlockSection title="" columns="2" showHeader="false">
+                        <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="Registered address"></apex:outputLabel>
+                            <apex:outputField value="{!case.Registered_Address__c}"/>
+                        </apex:pageBlockSectionItem>
+                        <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="Invoice/Statement contact"></apex:outputLabel>
+                            <apex:outputField value="{!case.Most_Appropriate_Contact_to_Liaise_With__c}"/>
+                        </apex:pageBlockSectionItem>                        
+                    </apex:pageBlockSection>
+                    
+                    <apex:pageBlockSection title="" columns="2" showHeader="false">
+                        <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="First Name"></apex:outputLabel>
+                            <apex:outputField value="{!case.WebFirstName__c}"/>
+                        </apex:pageBlockSectionItem>
+                        <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="Last Name"></apex:outputLabel>
+                            <apex:outputField value="{!case.WebLastName__c}"/>
+                        </apex:pageBlockSectionItem>                        
+                    </apex:pageBlockSection>
+                    
+                    <apex:pageBlockSection title="" columns="2" showHeader="false">
+                        <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="Email"></apex:outputLabel>
+                            <apex:outputField value="{!case.SubmittedEmail__c}"/>
+                        </apex:pageBlockSectionItem>
+                        <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="ABN/Company Number/GST Number"></apex:outputLabel>
+                            <apex:outputField value="{!case.ABN__c}"/>
+                        </apex:pageBlockSectionItem>                        
+                    </apex:pageBlockSection> 
+
+                    <apex:pageBlockSection title="" columns="2" showHeader="false">
+                        <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="Entity Type"></apex:outputLabel>
+                            <apex:outputField value="{!case.Entity_Type_2__c}"/>
+                        </apex:pageBlockSectionItem>                      
+                    </apex:pageBlockSection> 
+                    
+                    <apex:pageBlockSection title="" columns="2" showHeader="false">
+                        <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="Buyer or Seller" style="font-weight:bold"></apex:outputLabel>
+                        </apex:pageBlockSectionItem>                      
+                    </apex:pageBlockSection>  
+                    
+                    <apex:pageBlockSection title="" columns="2" showHeader="false">
+                        <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="Buyer Email"></apex:outputLabel>
+                            <apex:outputField value="{!case.Buyer_Email__c}"/>
+                        </apex:pageBlockSectionItem>
+                        <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="Seller Email"></apex:outputLabel>
+                            <apex:outputField value="{!case.Seller_Email__c}"/>
+                        </apex:pageBlockSectionItem>                        
+                    </apex:pageBlockSection>                                                                                                                                                                                                                                             
+                </apex:pageBlock>                                        
+        </apex:outputPanel> 
+        
+        <apex:outputPanel id="CategoryProjectX" rendered="{!case.Categ__c = 'Project X'}">
+                <apex:pageBlock mode="view" id="BlockProjectX">
+                    
+
+                    
+                    <apex:pageBlockSection title="" columns="2" showHeader="false">
+                        <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="Connected Ledger" style="font-weight:bold"></apex:outputLabel>
+                            <apex:outputField value="{!case.Connected_Ledger__c}" label="" title=""/>
+                        </apex:pageBlockSectionItem>
+                        <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="EA Starter" style="font-weight:bold"></apex:outputLabel>
+                            <apex:outputField value="{!case.EA_Starter__c}"/>
+                        </apex:pageBlockSectionItem>
+                    </apex:pageBlockSection>
+
+                    <apex:pageBlockSection title="" columns="2" showHeader="false">
+                        <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="Essentials Accounting" style="font-weight:bold"></apex:outputLabel>
+                            <apex:outputField value="{!case.EA_Payroll_For_1__c}" label="" title=""/>
+                        </apex:pageBlockSectionItem>
+                        <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="EA Payroll Unlimited" style="font-weight:bold"></apex:outputLabel>
+                            <apex:outputField value="{!case.EA_Payroll_Unlimited__c}" label="" title=""/>
+                        </apex:pageBlockSectionItem>
+                    </apex:pageBlockSection>
+                   
+                    
+                    <apex:pageBlockSection title="" columns="2" showHeader="false">
+                        <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="Banklink Practice Code" style="font-weight:bold"></apex:outputLabel>
+                            <apex:outputField value="{!case.Banklink_Practice_Code__c}"/>
+                        </apex:pageBlockSectionItem>
+                        <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="Migration Required" style="font-weight:bold"></apex:outputLabel>
+                            <apex:outputField value="{!case.Migration_Required__c}"/>
+                        </apex:pageBlockSectionItem>                        
+                    </apex:pageBlockSection> 
+                    
+                    <apex:pageBlockSection title="" columns="2" showHeader="false">
+                        <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="Product (Leave Blank if attaching spreadsheet)" style="font-weight:bold"></apex:outputLabel>
+                            <apex:outputField value="{!case.Product_BL_Essentials__c}"/>
+                        </apex:pageBlockSectionItem>
+                        <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="Indicative Migration Date" style="font-weight:bold"></apex:outputLabel>
+                            <apex:outputField value="{!case.Indicative_Migration_Date__c}"/>
+                        </apex:pageBlockSectionItem>                        
+                    </apex:pageBlockSection> 
+                    
+                    <apex:pageBlockSection title="" columns="2" showHeader="false">
+                        <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="Chart of Accounts (Full or Filtered)" style="font-weight:bold"></apex:outputLabel>
+                            <apex:outputField value="{!case.Chart_of_Accounts__c}"/>
+                        </apex:pageBlockSectionItem>
+                        <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="Opening Balances" style="font-weight:bold"></apex:outputLabel>
+                            <apex:outputField value="{!case.Opening_Balances__c}"/>
+                        </apex:pageBlockSectionItem>                        
+                    </apex:pageBlockSection>  
+                    
+                    <apex:pageBlockSection title="" columns="2" showHeader="false">
+                        <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="Bankfeed Start Date (Month, Will Always be the 1st of the Month)" style="font-weight:bold"></apex:outputLabel>
+                            <apex:outputField value="{!case.Bankfeed_Start_Date_Month__c}"/>
+                        </apex:pageBlockSectionItem>
+                        <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="Bankfeed Start Date (Year)" style="font-weight:bold"></apex:outputLabel>
+                            <apex:outputField value="{!case.Bankfeed_Start_Date_Year__c}"/>
+                        </apex:pageBlockSectionItem>                       
+                    </apex:pageBlockSection>
+                    
+                    <apex:pageBlockSection title="" columns="2" showHeader="false">
+                        <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="Completed Spreadhsheet Attached?" style="font-weight:bold"></apex:outputLabel>
+                            <apex:outputField value="{!case.Completed_Spreadsheet_Attached__c}"/>
+                        </apex:pageBlockSectionItem>                     
+                        <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="Concierge" style="font-weight:bold"></apex:outputLabel>
+                            <apex:outputField value="{!case.Concie__c}"/>
+                        </apex:pageBlockSectionItem>
+                       
+                    </apex:pageBlockSection>
+                    
+                    <apex:pageBlockSection title="" columns="2" showHeader="false">
+                        <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="Has a Training Consultant been Involved?" style="font-weight:bold"></apex:outputLabel>
+                            <apex:outputField value="{!case.Has_Trainning_Consultant_Involved__c}"/>
+                        </apex:pageBlockSectionItem>                     
+                        <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="Have You Spokend About Chart of Accounts to the Practice?" style="font-weight:bold"></apex:outputLabel>
+                            <apex:outputField value="{!case.Have_you_spoken_about_Chart_of_Accounts__c}"/>
+                        </apex:pageBlockSectionItem>                        
+                    </apex:pageBlockSection>
+                    
+                    <apex:pageBlockSection title="" columns="2" showHeader="false">
+                        <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="Training Consultant Name" style="font-weight:bold"></apex:outputLabel>
+                            <apex:outputField value="{!case.Training_Consultant__c}"/>
+                        </apex:pageBlockSectionItem>                     
+                        <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="More than one Bankfeed start date" style="font-weight:bold"></apex:outputLabel>
+                            <apex:outputField value="{!case.More_Bankfeed_Start_Date__c}"/>
+                        </apex:pageBlockSectionItem>                        
+                    </apex:pageBlockSection>  
+
+                    
+                </apex:pageBlock>                                        
+        </apex:outputPanel>                                                                                        
+    </apex:form>  
+<!-- </div> -->  
+</apex:page>
